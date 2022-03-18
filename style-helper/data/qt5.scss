@@ -1,0 +1,380 @@
+@import "global";
+@import "functions";
+
+// default
+$default_background_normal: #{"" + internal_default(background)};
+$default_background_insensitive: #{"" + internal_insensitive(internal_default(background))};
+$default_background_backdrop: #{"" + internal_backdrop(internal_default(background))};
+$default_background_backdrop_insensitive: #{"" + internal_insensitive(internal_backdrop(internal_default(background)))};
+$default_foreground_normal: #{"" + internal_default(foreground)};
+$default_foreground_insensitive: #{"" + internal_insensitive(internal_default(foreground))};
+$default_foreground_backdrop: #{"" + internal_backdrop(internal_default(foreground))};
+$default_foreground_backdrop_insensitive: #{"" + internal_insensitive(internal_backdrop(internal_default(foreground)))};
+$default_border_normal: #{"" + internal_default(border)};
+$default_border_insensitive: #{"" + internal_insensitive(internal_default(border))};
+$default_border_backdrop: #{"" + internal_backdrop(internal_default(border))};
+$default_border_backdrop_insensitive: #{"" + internal_insensitive(internal_backdrop(internal_default(border)))};
+$default_warning: #{"" + internal_default(warning)};
+$default_warning_backdrop: #{"" + internal_backdrop(internal_default(warning))};
+$default_error: #{"" + internal_default(error)};
+$default_error_backdrop: #{"" + internal_backdrop(internal_default(error))};
+$default_success: #{"" + internal_default(success)};
+$default_success_backdrop: #{"" + internal_backdrop(internal_default(success))};
+
+// selection
+$selection_background_normal: #{"" + internal_selection(background)};
+$selection_foreground_normal: #{"" + internal_selection(foreground)};
+$selection_background_insensitive: #{"" + internal_insensitive(internal_selection(background))};
+$selection_foreground_insensitive: #{"" + internal_insensitive(internal_selection(foreground))};
+$selection_background_backdrop: #{"" + internal_backdrop(internal_selection(background))};
+$selection_foreground_backdrop: #{"" + internal_backdrop(internal_selection(foreground))};
+
+// widget
+$widget_background_normal: #{"" + internal_widget(background)};
+$widget_background_hover: #{"" + internal_widget(background-hover)};
+$widget_background_active: #{"" + internal_widget(background-active)};
+$widget_background_checked: #{"" + internal_widget(background-checked)};
+$widget_background_insensitive: #{"" + internal_insensitive(internal_widget(background))};
+$widget_background_backdrop: #{"" + internal_backdrop(internal_widget(background))};
+$widget_background_backdrop_checked: #{"" + internal_backdrop(internal_widget(background-checked))};
+$widget_background_backdrop_insensitive: #{"" + internal_insensitive(internal_backdrop(internal_widget(background)))};
+$widget_foreground_normal: #{"" + internal_widget(foreground)};
+$widget_foreground_hover: #{"" + internal_widget(foreground-hover)};
+$widget_foreground_active: #{"" + internal_widget(foreground-active)};
+$widget_foreground_checked: #{"" + internal_widget(foreground-checked)};
+$widget_foreground_insensitive: #{"" + internal_insensitive(internal_widget(foreground))};
+$widget_foreground_backdrop: #{"" + internal_backdrop(internal_widget(foreground))};
+$widget_foreground_backdrop_checked: #{"" + internal_backdrop(internal_widget(foreground-checked))};
+$widget_foreground_backdrop_insensitive: #{"" + internal_insensitive(internal_backdrop(internal_widget(foreground)))};
+$widget_border_normal: #{"" + internal_widget(border)};
+$widget_border_hover: #{"" + internal_widget(border-hover)};
+$widget_border_focus: #{"" + internal_widget(border-focus)};
+$widget_border_insensitive: #{"" + internal_insensitive(internal_widget(border))};
+$widget_border_backdrop: #{"" + internal_backdrop(internal_widget(border))};
+$widget_border_backdrop_insensitive: #{"" + internal_insensitive(internal_backdrop(internal_widget(border)))};
+
+// bare
+$bare_background_normal: #{"" + internal_bare(background)};
+$bare_background_hover: #{"" + internal_bare(background-hover)};
+$bare_background_active: #{"" + internal_bare(background-active)};
+$bare_background_checked: #{"" + internal_bare(background-checked)};
+$bare_background_insensitive: #{"" + internal_insensitive(internal_bare(background))};
+$bare_background_backdrop: #{"" + internal_backdrop(internal_bare(background))};
+$bare_background_backdrop_checked: #{"" + internal_backdrop(internal_bare(background-checked))};
+$bare_background_backdrop_insensitive: #{"" + internal_insensitive(internal_backdrop(internal_bare(background)))};
+$bare_foreground_normal: #{"" + internal_bare(foreground)};
+$bare_foreground_hover: #{"" + internal_bare(foreground-hover)};
+$bare_foreground_active: #{"" + internal_bare(foreground-active)};
+$bare_foreground_checked: #{"" + internal_bare(foreground-checked)};
+$bare_foreground_insensitive: #{"" + internal_insensitive(internal_bare(foreground))};
+$bare_foreground_backdrop: #{"" + internal_backdrop(internal_bare(foreground))};
+$bare_foreground_backdrop_checked: #{"" + internal_backdrop(internal_bare(foreground-checked))};
+$bare_foreground_backdrop_insensitive: #{"" + internal_insensitive(internal_backdrop(internal_bare(foreground)))};
+
+// window
+$window_background_normal: #{"" + internal_window(background)};
+$window_background_insensitive: #{"" + internal_insensitive(internal_window(background))};
+$window_background_backdrop: #{"" + internal_backdrop(internal_window(background))};
+$window_background_backdrop_insensitive: #{"" + internal_insensitive(internal_backdrop(internal_window(background)))};
+$window_foreground_normal: #{"" + internal_window(foreground)};
+$window_foreground_insensitive: #{"" + internal_insensitive(internal_window(foreground))};
+$window_foreground_backdrop: #{"" + internal_backdrop(internal_window(foreground))};
+$window_foreground_backdrop_insensitive: #{"" + internal_insensitive(internal_backdrop(internal_window(foreground)))};
+$window_border_normal: #{"" + internal_window(border)};
+$window_border_insensitive: #{"" + internal_insensitive(internal_window(border))};
+$window_border_backdrop: #{"" + internal_backdrop(internal_window(border))};
+$window_border_backdrop_insensitive: #{"" + internal_insensitive(internal_backdrop(internal_window(border)))};
+
+
+// view
+$view_background_normal: #{"" + internal_view(background)};
+$view_background_insensitive: #{"" + internal_insensitive(internal_view(background))};
+$view_background_backdrop: #{"" + internal_backdrop(internal_view(background))};
+$view_background_backdrop_insensitive: #{"" + internal_insensitive(internal_backdrop(internal_view(background)))};
+$view_foreground_normal: #{"" + internal_view(foreground)};
+$view_foreground_insensitive: #{"" + internal_insensitive(internal_view(foreground))};
+$view_foreground_backdrop: #{"" + internal_backdrop(internal_view(foreground))};
+$view_foreground_backdrop_insensitive: #{"" + internal_insensitive(internal_backdrop(internal_view(foreground)))};
+$view_border_normal: #{"" + internal_view(border)};
+$view_border_focus: #{"" + internal_view(border-focus)};
+$view_border_insensitive: #{"" + internal_insensitive(internal_view(border))};
+$view_border_backdrop: #{"" + internal_backdrop(internal_view(border))};
+$view_border_backdrop_insensitive: #{"" + internal_insensitive(internal_backdrop(internal_view(border)))};
+
+// title bar
+$titlebar_background_normal: #{"" + internal_titlebar(background)};
+$titlebar_background_insensitive: #{"" + internal_insensitive(internal_titlebar(background))};
+$titlebar_background_backdrop: #{"" + internal_backdrop(internal_titlebar(background))};
+$titlebar_background_backdrop_insensitive: #{"" + internal_insensitive(internal_backdrop(internal_titlebar(background)))};
+$titlebar_foreground_normal: #{"" + internal_titlebar(foreground)};
+$titlebar_foreground_insensitive: #{"" + internal_insensitive(internal_titlebar(foreground))};
+$titlebar_foreground_backdrop: #{"" + internal_backdrop(internal_titlebar(foreground))};
+$titlebar_foreground_backdrop_insensitive: #{"" + internal_insensitive(internal_backdrop(internal_titlebar(foreground)))};
+$titlebar_border_normal: #{"" + internal_titlebar(border)};
+$titlebar_border_insensitive: #{"" + internal_insensitive(internal_titlebar(border))};
+$titlebar_border_backdrop: #{"" + internal_backdrop(internal_titlebar(border))};
+$titlebar_border_backdrop_insensitive: #{"" + internal_insensitive(internal_backdrop(internal_titlebar(border)))};
+
+
+// === palette ===
+Palette:active {
+  Window: $window_background_normal;
+  WindowText: $window_foreground_normal;
+
+  Base: $view_background_normal;
+  Text: $view_foreground_normal;
+
+  Button: $widget_background_normal;
+  ButtonText: $widget_foreground_normal;
+
+  Highlight: $selection_background_normal;
+  HighlightedText: $selection_foreground_normal;
+
+  ToolTipBase: $window_background_normal;
+  ToolTipText: $window_foreground_normal;
+}
+
+Palette {
+  Window: $window_background_backdrop;
+  WindowText: $window_foreground_backdrop;
+
+  Base: $view_background_backdrop;
+  Text: $view_foreground_backdrop;
+
+  Button: $widget_background_backdrop;
+  ButtonText: $widget_foreground_backdrop;
+
+  Highlight: $selection_background_backdrop;
+  HighlightedText: $selection_foreground_backdrop;
+
+  ToolTipBase: $window_background_backdrop;
+  ToolTipText: $window_foreground_backdrop;
+}
+
+Palette:disabled {
+  Window: $window_background_insensitive;
+  WindowText: $window_foreground_insensitive;
+
+  Base: $view_background_insensitive;
+  Text: $view_foreground_insensitive;
+
+  Button: $widget_background_insensitive;
+  ButtonText: $widget_foreground_insensitive;
+
+  Highlight: $selection_background_insensitive;
+  HighlightedText: $selection_foreground_insensitive;
+
+  ToolTipBase: $window_background_insensitive;
+  ToolTipText: $window_foreground_insensitive;
+}
+
+// === widget ===
+Widget {
+  BorderColor: $widget_border_normal;
+  BackgroundColor: $widget_background_normal;
+  ForegroundColor: $widget_foreground_normal;
+}
+
+Widget:hover{
+  BorderColor: $widget_border_hover;
+  BackgroundColor: $widget_background_hover;
+  ForegroundColor: $widget_foreground_hover;
+}
+
+Widget:focus{
+  BorderColor: $widget_border_focus;
+  BackgroundColor: $widget_background_normal;
+  ForegroundColor: $widget_foreground_normal;
+}
+
+Widget:disabled{
+  ForegroundColor: $widget_foreground_insensitive;
+}
+
+// === window ===
+Window{
+  BorderColor: $window_border_normal;
+  BackgroundColor: $window_background_normal;
+}
+
+Window:disabled {
+  BorderColor: $window_border_insensitive;
+  BackgroundColor: $window_background_insensitive;
+}
+
+// === button ===
+Button {
+  BorderColor: $widget_border_normal;
+  BackgroundColor: $widget_background_normal;
+}
+
+Button:disabled {
+  BorderColor: $widget_border_insensitive;
+  BackgroundColor: $widget_background_insensitive;
+}
+
+//Button:window-inactive {
+//  BorderColor: $widget_border_backdrop;
+//}
+
+//Button:disabled:window-inactive {
+//  BorderColor: $widget_border_backdrop_insensitive;
+//}
+
+Button:hover {
+  BackgroundColor: $widget_background_hover;
+}
+
+Button:pressed {
+  BackgroundColor: $widget_background_active;
+}
+
+// === radio button ===
+RadioButton{
+  IndicatorIcon:url(":/style-helper/images/radio-unchecked-normal.svg");
+}
+
+RadioButton:hover{
+  IndicatorIcon: url(":/style-helper/images/radio-unchecked-hover.svg");
+}
+
+RadioButton:pressed{
+  IndicatorIcon: url(":/style-helper/images/radio-unchecked-active.svg");
+}
+
+RadioButton:disabled{
+  IndicatorIcon: url(":/style-helper/images/radio-unchecked-disabled.svg");
+}
+
+RadioButton:checked{
+  IndicatorIcon:url(":/style-helper/images/radio-checked-normal.svg");
+}
+
+RadioButton:checked:hover{
+  IndicatorIcon:url(":/style-helper/images/radio-checked-hover.svg");
+}
+
+RadioButton:checked:pressed{
+  IndicatorIcon:url(":/style-helper/images/radio-checked-active.svg");
+}
+
+RadioButton:checked:disabled{
+  IndicatorIcon:url(":/style-helper/images/radio-checked-disabled.svg");
+}
+
+// === checkbox button ===
+CheckBox{
+  IndicatorIcon:url(":/style-helper/images/check-unchecked-normal.svg");
+}
+
+CheckBox:hover{
+  IndicatorIcon: url(":/style-helper/images/check-unchecked-hover.svg");
+}
+
+CheckBox:pressed{
+  IndicatorIcon: url(":/style-helper/images/check-unchecked-active.svg");
+}
+
+CheckBox:disabled{
+  IndicatorIcon: url(":/style-helper/images/check-unchecked-disabled.svg");
+}
+
+CheckBox:indeterminate{
+  IndicatorIcon:url(":/style-helper/images/check-indeterminate-normal.svg");
+}
+
+CheckBox:indeterminate:hover{
+  IndicatorIcon:url(":/style-helper/images/check-indeterminate-hover.svg");
+}
+
+CheckBox:indeterminate:pressed{
+  IndicatorIcon:url(":/style-helper/images/check-indeterminate-active.svg");
+}
+
+CheckBox:indeterminate:disabled{
+  IndicatorIcon:url(":/style-helper/images/check-indeterminate-disabled.svg");
+}
+
+CheckBox:checked{
+  IndicatorIcon:url(":/style-helper/images/check-checked-normal.svg");
+}
+
+CheckBox:checked:hover{
+  IndicatorIcon:url(":/style-helper/images/check-checked-hover.svg");
+}
+
+CheckBox:checked:pressed{
+  IndicatorIcon:url(":/style-helper/images/check-checked-active.svg");
+}
+
+CheckBox:checked:disabled{
+  IndicatorIcon:url(":/style-helper/images/check-checked-disabled.svg");
+}
+
+// === lineedit ===
+LineEdit
+{
+  BorderColor: $view_border_normal;
+  BackgroundColor: $view_background_normal;
+}
+
+LineEdit:focus
+{
+  BorderColor: $view_border_focus;
+}
+
+LineEdit:disabled
+{
+  BorderColor: $view_border_insensitive;
+  BackgroundColor: $view_background_insensitive;
+}
+
+// === item view ===
+ItemView
+{
+  BorderColor: $widget_border_normal;
+  BackgroundColor: $widget_background_normal;
+  ArrowColor: $widget_foreground_normal;
+  BranchLineColor: $widget_border_normal;
+}
+
+ItemView:disabled
+{
+  BorderColor:$widget_border_insensitive;
+  BackgroundColor:$widget_background_insensitive;
+  ArrowColor: $widget_foreground_insensitive;
+  BranchLineColor: $widget_border_insensitive;
+}
+
+// === scrollbar ===
+ScrollBar
+{
+  HandleColor:$bare_background_normal;
+  GrooveColor: transparent;
+}
+
+ScrollBar:hover
+{
+  HandleColor:$bare_background_hover;
+  GrooveColor:$widget_background_normal;
+}
+
+ScrollBar:pressed
+{
+  HandleColor:$bare_background_checked;
+  GrooveColor:$widget_background_normal;
+}
+
+
+// === scrollbar ===
+ProgressBar
+{
+  GrooveColor:   $bare_background_normal;
+  ContentsColor: $selection_background_normal;
+}
+
+ProgressBar:disabled
+{
+  GrooveColor:   $bare_background_insensitive;
+  ContentsColor: $selection_background_insensitive;
+}

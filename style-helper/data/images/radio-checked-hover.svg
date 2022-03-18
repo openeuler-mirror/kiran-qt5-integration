@@ -1,0 +1,15 @@
+<svg id="单选-选中-悬浮" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: #43a3f2;
+      }
+
+      .cls-1 {
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <path id="_1_拷贝" data-name="1 拷贝" class="cls-1" d="M846,95a7,7,0,1,1,7-7A7,7,0,0,1,846,95Zm0-13a6,6,0,1,0,6,6A6,6,0,0,0,846,82Z" transform="translate(-839 -81)"/>
+  <circle id="_2" data-name="2" class="cls-2" cx="7" cy="7" r="4"/>
+</svg>
