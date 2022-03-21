@@ -33,7 +33,6 @@ namespace Kiran
 {
 namespace Style
 {
-// 由 QtGui private qcssparser_p.h提供,拷贝定义在该处是为了避免引用到Qt私有文件
 enum PseudoClassType
 {
     PseudoClass_Unknown = Q_UINT64_C(0x0000000000000000),
@@ -85,6 +84,7 @@ enum PseudoClassType
     // The Any specifier is never generated, but can be used as a wildcard in searches.
     PseudoClass_Any = Q_UINT64_C(0x0000ffffffffffff)
 };
+//提供给KiranStyle以及KiranWidget内部获取颜色表定义
 class SchemeLoaderPrivate;
 class SchemeLoader : public QObject
 {

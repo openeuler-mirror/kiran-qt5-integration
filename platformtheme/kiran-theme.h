@@ -38,9 +38,6 @@ public:
     const QPalette* palette(Palette type) const override;
     const QFont* font(Font type) const override;
 
-public:
-    static const char* name;
-
 private:
     void init();
     static bool enableRealTimeScaling();

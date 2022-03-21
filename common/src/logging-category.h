@@ -11,35 +11,12 @@
  *
  * Author:     liuxinhao <liuxinhao@kylinos.com.cn>
  */
-#ifndef KIRAN_QT5_PLATFORMTHEME_TEST_QT_WIDGET_FACTOR_H_
-#define KIRAN_QT5_PLATFORMTHEME_TEST_QT_WIDGET_FACTOR_H_
 
-#include <QWidget>
-#include <QTabWidget>
+#ifndef KIRAN_QT5_INTEGRATION_COMMON_SRC_LOGGING_CATEGORY_H_
+#define KIRAN_QT5_INTEGRATION_COMMON_SRC_LOGGING_CATEGORY_H_
 
-QT_BEGIN_NAMESPACE
-namespace Ui
-{
-class QtWidgetFactor;
-}
-QT_END_NAMESPACE
+#include <QLoggingCategory>
 
-class QtWidgetFactor : public QWidget
-{
-    Q_OBJECT
+Q_DECLARE_LOGGING_CATEGORY(kiranPlatformThemeCommon)
 
-public:
-    explicit QtWidgetFactor(QWidget *parent = nullptr);
-    ~QtWidgetFactor() override;
-
-    void initStyleSwitch();
-    void initDisableSwitch();
-    void initMenu();
-    void initToolBar();
-    void initTabBar();
-
-private:
-    Ui::QtWidgetFactor *ui;
-};
-
-#endif  //KIRAN_QT5_PLATFORMTHEME_TEST_QT_WIDGET_FACTOR_H_
+#endif  //KIRAN_QT5_INTEGRATION_COMMON_SRC_LOGGING_CATEGORY_H_

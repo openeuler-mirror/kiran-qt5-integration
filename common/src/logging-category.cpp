@@ -11,21 +11,7 @@
  *
  * Author:     liuxinhao <liuxinhao@kylinos.com.cn>
  */
-#include "kiran-theme-plugin.h"
-#include "kiran-theme.h"
 
 #include "logging-category.h"
-#include <QCoreApplication>
 
-QPlatformTheme* KiranThemePlugin::create(const QString& key, const QStringList& paramList)
-{
-    static QSet<QString> keySet = {"kiran","gnome","gtk3","qgnomeplatform"};
-
-    if(keySet.contains(key))
-    {
-        qDebug(kiranPlatformTheme) << "create kiran style for" << QCoreApplication::applicationName();
-        return new KiranTheme(paramList);
-    }
-
-    return nullptr;
-}
+Q_LOGGING_CATEGORY(kiranPlatformThemeCommon,"kiran.platformtheme.common",QtWarningMsg)

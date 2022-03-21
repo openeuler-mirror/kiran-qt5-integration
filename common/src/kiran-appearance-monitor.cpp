@@ -15,6 +15,7 @@
 #include "kiran-appearance-monitor.h"
 #include "kiran_appearance_proxy.h"
 #include "kiran_display_proxy.h"
+#include "logging-category.h"
 
 #include <kiran-session-daemon/appearance-i.h>
 
@@ -39,11 +40,11 @@ KiranAppearanceMonitor::KiranAppearanceMonitor(QObject *parent)
         {
             m_appFontName = tempFontName;
             m_appFontSize = tempFontSize;
-            qDebug("appearance monitor: app font <%s %d>",m_appFontName.toStdString().c_str(),m_appFontSize);
+            qDebug(kiranPlatformThemeCommon,"application font: %s %d",m_appFontName.toStdString().c_str(),m_appFontSize);
         }
         else
         {
-            qWarning() << "appearance monitor: parse application font failed!";
+            qWarning(kiranPlatformThemeCommon) << "appearance monitor: parse application font failed!";
         }
 
         //window titlebar font
@@ -52,11 +53,11 @@ KiranAppearanceMonitor::KiranAppearanceMonitor(QObject *parent)
         {
             m_titleBarFontName = tempFontName;
             m_titleBarFontSize = tempFontSize;
-            qDebug("appearance monitor: title bar font <%s %d>",m_titleBarFontName.toStdString().c_str(),m_titleBarFontSize);
+            qDebug(kiranPlatformThemeCommon,"title bar font: %s %d",m_titleBarFontName.toStdString().c_str(),m_titleBarFontSize);
         }
         else
         {
-            qWarning() << "appearance monitor: parse titlebar font failed!";
+            qWarning(kiranPlatformThemeCommon) << "parse titlebar font failed!";
         }
 
         //icon theme
@@ -65,11 +66,11 @@ KiranAppearanceMonitor::KiranAppearanceMonitor(QObject *parent)
         if( !themeReply.isError() )
         {
             m_iconTheme = themeReply.value();
-            qDebug("appearance monitor: icon theme <%s>",m_iconTheme.toStdString().c_str());
+            qDebug(kiranPlatformThemeCommon,"icon theme: %s",m_iconTheme.toStdString().c_str());
         }
         else
         {
-            qWarning() << "appearance monitor: get  icon theme failed," << themeReply.error();
+            qWarning(kiranPlatformThemeCommon) << "get  icon theme failed," << themeReply.error();
         }
 
         //gtk theme
@@ -84,11 +85,11 @@ KiranAppearanceMonitor::KiranAppearanceMonitor(QObject *parent)
             else
                 m_gtkThemeName = "kiran";
 
-            qDebug("appearance monitor: gtk theme <%s>",m_gtkThemeName.toStdString().c_str());
+            qDebug(kiranPlatformThemeCommon,"gtk theme: %s",m_gtkThemeName.toStdString().c_str());
         }
         else
         {
-            qWarning() << "get gtk theme failed," << themeReply.error();
+            qWarning(kiranPlatformThemeCommon) << "get gtk theme failed," << themeReply.error();
         }
     }
     else

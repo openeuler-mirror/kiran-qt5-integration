@@ -21,8 +21,8 @@ class KiranThemePlugin : public QPlatformThemePlugin
     Q_OBJECT
     Q_PLUGIN_METADATA(IID QPlatformThemeFactoryInterface_iid FILE "qkiran.json")
 public:
-    explicit KiranThemePlugin(QObject *parent = nullptr);
-    ~KiranThemePlugin() override;
+    explicit KiranThemePlugin(QObject *parent=nullptr) :QPlatformThemePlugin(parent){};
+    ~KiranThemePlugin() override = default;
 
     QPlatformTheme *create(const QString &key, const QStringList &paramList) override;
 

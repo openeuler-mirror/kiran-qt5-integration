@@ -14,6 +14,7 @@
 
 #include "kiran-theme.h"
 #include "kiran-appearance-monitor.h"
+#include "logging-category.h"
 
 #include <private/qwidgetwindow_p.h>
 #include <private/qguiapplication_p.h>
@@ -33,8 +34,6 @@
 #include <QWindow>
 #include <QLabel>
 #include <QTimer>
-
-const char* KiranTheme::name = "kiran";
 
 KiranTheme::KiranTheme(const QStringList& paramList)
     : QGenericUnixTheme()
@@ -96,16 +95,20 @@ const QPalette* KiranTheme::palette(QPlatformTheme::Palette type) const
 
 void KiranTheme::init()
 {
+    qDebug(kiranPlatformTheme) << "init kiran theme...";
     m_settingsMonitor = KiranAppearanceMonitor::instance();
 
     m_scaleFactor = m_settingsMonitor->scaleFactor();
+    qDebug(kiranPlatformTheme) << "\t" << "scale factor:" << m_scaleFactor;
 
     m_systemFont.setFamily(m_settingsMonitor->appFont().family());
     m_systemFont.setPointSize(m_settingsMonitor->appFont().pointSize());
     QApplication::setFont(m_systemFont);
+    qDebug(kiranPlatformTheme) << "\t" << "application font:" << m_settingsMonitor->appFont().family() << m_settingsMonitor->appFont().pointSize();
 
     m_titleBarFont.setFamily(m_settingsMonitor->titleBarFont().family());
     m_titleBarFont.setPointSize(m_settingsMonitor->titleBarFont().pointSize());
+    qDebug(kiranPlatformTheme) << "\t" << "title bar font:" << m_settingsMonitor->titleBarFont().family() << m_settingsMonitor->titleBarFont().pointSize();
 
     QObject::connect(m_settingsMonitor, &KiranAppearanceMonitor::appFontChanged, this, &KiranTheme::handleAppFontChanged);
     QObject::connect(m_settingsMonitor, &KiranAppearanceMonitor::titleBarFontChanged, this,&KiranTheme::handleTitleBarFontChanged);
@@ -147,17 +150,24 @@ const QFont* KiranTheme::font(QPlatformTheme::Font type) const
 //但是若是设置了样式表(setStyleSheet)会抑制字体的传递。该方法可能耗资源更少
 void KiranTheme::handleAppFontChanged()
 {
+    qDebug(kiranPlatformTheme) << "application font changed:"
+                               << m_settingsMonitor->appFont().family()
+                               << m_settingsMonitor->appFont().pointSize();
+
     m_systemFont.setFamily(m_settingsMonitor->appFont().family());
     m_systemFont.setPointSize(m_settingsMonitor->appFont().pointSize());
-    qDebug() << "update app font" << m_systemFont;
     QApplication::setFont(m_systemFont);
 }
 
 void KiranTheme::handleTitleBarFontChanged()
 {
+    qDebug(kiranPlatformTheme) << "title bar font changed:"
+                               << m_settingsMonitor->titleBarFont().family()
+                               << m_settingsMonitor->titleBarFont().pointSize();
+
     m_titleBarFont.setFamily(m_settingsMonitor->titleBarFont().family());
     m_titleBarFont.setPointSize(m_settingsMonitor->titleBarFont().pointSize());
-    qDebug() << "update title bar font" << m_titleBarFont;
+
     // 遍历所有窗口，判断是否是KiranWidget中的自定义标题栏修改其标题栏字体
     for(auto window:qGuiApp->allWindows())
     {
@@ -176,10 +186,13 @@ void KiranTheme::handleTitleBarFontChanged()
 
 void KiranTheme::handleScaleFactorChanged(int factor)
 {
+    qDebug(kiranPlatformTheme) << "scale factor changed:"
+                               << m_settingsMonitor->scaleFactor();
+
     //缩放的话，同时也应该调整设置到窗口管理器的边缘阴影属性
     if (enableRealTimeScaling())
     {
-        if (factor == 0)
+        if (factor == 0) //自动缩放
         {
             //QPlatformScreen* screenHandle = screen->handle();
             //qInfo() << screenHandle->name();
@@ -187,10 +200,9 @@ void KiranTheme::handleScaleFactorChanged(int factor)
             //qInfo() << "\t pixel density:" << screenHandle->pixelDensity();
             //TODO:清空全局分辨率,对每个屏幕单独设置分辨率
         }
-        else if (factor == 1 || factor == 2)
+        else if (factor == 1 || factor == 2) //手动固定分辨率
         {
-            qInfo() << "update scale factor:" << factor;
-
+            qDebug(kiranPlatformTheme) << "update scale factor:" << factor;
             if (qFuzzyCompare(QHighDpiScaling::m_factor, factor))
             {
                 return;
@@ -233,12 +245,12 @@ void KiranTheme::handleScaleFactorChanged(int factor)
                     if (!currentGeo.isValid())
                         return;
 
-                    qInfo() << window->type();
-                    qInfo() << "current geo:" << currentGeo;
+                    //qInfo() << window->type();
+                    //qInfo() << "current geo:" << currentGeo;
                     QRect nativeGeo = window->handle()->geometry();
                     qreal scale = QHighDpiScaling::factor(window);
                     nativeGeo.setSize(currentGeo.size() * scale);
-                    qInfo() << "native geo:" << nativeGeo;
+                    //qInfo() << "native geo:" << nativeGeo;
 
                     window->handle()->setGeometry(nativeGeo);
                     QGuiApplication::sendEvent(window, new QEvent(QEvent::UpdateRequest));
@@ -247,13 +259,13 @@ void KiranTheme::handleScaleFactorChanged(int factor)
         }
         else
         {
-            qWarning() << "not support this factor:" << factor;
+            qWarning(kiranPlatformTheme) << "not support this factor:" << factor;
             return;
         }
     }
     else
     {
-        qWarning() << "disable real time scaling,ignore scale factor changed!";
+        qWarning(kiranPlatformTheme) << "disable real time scaling,ignore scale factor changed!";
     }
 }
 
@@ -271,9 +283,13 @@ bool KiranTheme::enableRealTimeScaling()
 
 void KiranTheme::handleScreenAdded(QScreen* screen)
 {
-    if (m_scaleFactor == 0)
+    if ( m_scaleFactor == 0 ) //计算并自动调整该屏幕的缩放
     {
         //TODO:根据QPlatformTheme中的pixel density设置该屏幕子分辨率
+    }
+    else if( m_scaleFactor == 1 || m_scaleFactor == 2 ) 
+    {
+        //TODO:应用全局分辨率至屏幕上
     }
 }
 
