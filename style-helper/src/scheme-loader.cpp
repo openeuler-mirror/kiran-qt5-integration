@@ -389,6 +389,18 @@ QColor SchemeLoader::getColor(SchemeLoader::SchemePropertyName propertyName, qui
     return QColor();
 }
 
+QColor SchemeLoader::getColor(QString propertyName,quint64 pseudoClass)
+{
+    static const QMetaEnum schemePropertyMetaEnum = QMetaEnum::fromType<SchemePropertyName>();
+    bool  convertOk = false;
+    SchemePropertyName propertyEnum = static_cast<SchemePropertyName>(schemePropertyMetaEnum.keyToValue(propertyName.toStdString().c_str(),&convertOk));
+    if( !convertOk )
+    {
+        return QColor();
+    }
+    return getColor(propertyEnum,pseudoClass);
+}
+
 QString SchemeLoader::getUrl(const QWidget* widget, const QStyleOption* opt, SchemeLoader::SchemePropertyName name, quint64 specialPseudoClass)
 {
     QVariant var = fetchPropertyValue(widget,opt,name,SCHEME_VALUE_URL);

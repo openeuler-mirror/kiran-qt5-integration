@@ -85,7 +85,6 @@ $window_border_insensitive: #{"" + internal_insensitive(internal_window(border))
 $window_border_backdrop: #{"" + internal_backdrop(internal_window(border))};
 $window_border_backdrop_insensitive: #{"" + internal_insensitive(internal_backdrop(internal_window(border)))};
 
-
 // view
 $view_background_normal: #{"" + internal_view(background)};
 $view_background_insensitive: #{"" + internal_insensitive(internal_view(background))};
@@ -166,6 +165,22 @@ Palette:disabled {
 
   ToolTipBase: $window_background_insensitive;
   ToolTipText: $window_foreground_insensitive;
+}
+
+// === kiran palette ===
+KiranPalette:active
+{
+
+}
+
+KiranPalette
+{
+
+}
+
+KiranPalette:disabled
+{
+
 }
 
 // === widget ===

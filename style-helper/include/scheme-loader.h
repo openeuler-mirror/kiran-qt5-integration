@@ -181,6 +181,8 @@ public:
     QColor getColor(SchemePropertyName propertyName,
                     quint64 pseudoClass);
 
+    QColor getColor(QString propertyName,quint64 pseudoClass);
+
     // url
     QString getUrl(const QWidget* widget,
                 const QStyleOption* opt,
