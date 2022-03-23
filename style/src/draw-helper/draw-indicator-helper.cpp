@@ -12,10 +12,10 @@
  * Author:     liuxinhao <liuxinhao@kylinos.com.cn>
  */
 #include "draw-indicator-helper.h"
+#include "kiran-palette.h"
 #include "draw-common-helper.h"
 #include "metrics.h"
 #include "render-helper.h"
-#include "scheme-loader.h"
 
 #include <QStyle>
 #include <QStyleOption>
@@ -26,11 +26,7 @@
 
 using namespace Kiran::Style;
 
-bool Kiran::Style::drawPEIndicatorButtonDropDown(const QStyle *style,
-                                                 const QStyleOption *option,
-                                                 QPainter *painter,
-                                                 const QWidget *widget,
-                                                 SchemeLoader *scheme)
+bool Kiran::Style::drawPEIndicatorButtonDropDown(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
 {
     const auto toolButtonOption( qstyleoption_cast<const QStyleOptionToolButton*>( option ) );
     if( !toolButtonOption )
@@ -49,8 +45,10 @@ bool Kiran::Style::drawPEIndicatorButtonDropDown(const QStyle *style,
     const QPalette& palette( option->palette );
     const QRect& rect( option->rect );
 
-    QColor borderColor = scheme->getColor(widget,option,SchemeLoader::Button_BorderColor);
-    QColor backgroundColor = scheme->getColor(widget,option,SchemeLoader::Button_BackgroundColor);
+    auto backgroundColor = KiranPalette::instance()->color(widget,option,KiranPalette::Widget,KiranPalette::Background);
+    //此处只考虑启用和禁用状态边框
+    auto borderColor = KiranPalette::instance()->color(enabled?KiranPalette::Normal:KiranPalette::Disabled,KiranPalette::Widget,KiranPalette::Border);
+    auto separatorColor = KiranPalette::instance()->color(enabled?KiranPalette::Normal:KiranPalette::Disabled,KiranPalette::Widget,KiranPalette::Border);
 
     QRect frameRect( rect );
     painter->setClipRect( rect );
@@ -64,68 +62,59 @@ bool Kiran::Style::drawPEIndicatorButtonDropDown(const QStyle *style,
     QRect separatorRect( rect.adjusted( 0, 2, -2, -2 ) );
     separatorRect.setWidth( 1 );
     separatorRect = QStyle::visualRect( option->direction,option->rect, separatorRect );
-    QColor separatorColor = scheme->getColor(SchemeLoader::Widget_BorderColor, enabled ? PseudoClass_Unspecified : PseudoClass_Unspecified | PseudoClass_Disabled);
     RenderHelper::renderSeparator(painter, separatorRect, true, separatorColor);
 
     return true;
 }
 
-bool drawPEIndicatorArrow(ArrowOrientation orientation,
-                          const QStyleOption *option,
-                          QPainter *painter,
-                          const QWidget *widget,
-                          SchemeLoader* scheme)
+bool drawPEIndicatorArrow(ArrowOrientation orientation, const QStyleOption *option, QPainter *painter, const QWidget *widget)
 {
-    quint64 specifiedClass = (option->state & QStyle::State_Enabled)?PseudoClass_Unspecified:PseudoClass_Disabled;
-    QColor color = scheme->getColor(SchemeLoader::Widget_ForegroundColor, specifiedClass);
-    RenderHelper::renderArrow(painter, option->rect, orientation, color);
+    bool enabled = (option->state & QStyle::State_Enabled);
+    auto arrowColor = KiranPalette::instance()->color(enabled?KiranPalette::Normal:KiranPalette::Disabled,KiranPalette::Widget,KiranPalette::Foreground);
+    RenderHelper::renderArrow(painter, option->rect, orientation, arrowColor);
     return true;
 }
 
-bool Kiran::Style::drawPEIndicatorArrowUp(const QStyle *style,
-                                          const QStyleOption *option,
-                                          QPainter *painter,
-                                          const QWidget *widget,
-                                          SchemeLoader *scheme)
+bool Kiran::Style::drawPEIndicatorArrowUp(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
 {
-    return drawPEIndicatorArrow(Arrow_Up,option,painter,widget,scheme);
+    return drawPEIndicatorArrow(Arrow_Up, option, painter, widget);
 }
 
-bool Kiran::Style::drawPEIndicatorArrowDown(const QStyle *style,
-                                            const QStyleOption *option,
-                                            QPainter *painter,
-                                            const QWidget *widget,
-                                            SchemeLoader *scheme)
+bool Kiran::Style::drawPEIndicatorArrowDown(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
 {
-    return drawPEIndicatorArrow(Arrow_Down,option,painter,widget,scheme);
+    return drawPEIndicatorArrow(Arrow_Down, option, painter, widget);
 }
 
-bool Kiran::Style::drawPEIndicatorArrowLeft(const QStyle *style,
-                                            const QStyleOption *option,
-                                            QPainter *painter,
-                                            const QWidget *widget,
-                                            SchemeLoader *scheme)
+bool Kiran::Style::drawPEIndicatorArrowLeft(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
 {
-    return drawPEIndicatorArrow(Arrow_Left,option,painter,widget,scheme);
+    return drawPEIndicatorArrow(Arrow_Left, option, painter, widget);
 }
 
-bool Kiran::Style::drawPEIndicatorArrowRight(const QStyle *style,
-                                             const QStyleOption *option,
-                                             QPainter *painter,
-                                             const QWidget *widget,
-                                             SchemeLoader *scheme)
+bool Kiran::Style::drawPEIndicatorArrowRight(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
 {
-    return drawPEIndicatorArrow(Arrow_Right,option,painter,widget,scheme);
+    return drawPEIndicatorArrow(Arrow_Right, option, painter, widget);
 }
 
-bool Kiran::Style::drawPEIndicatorRadioButton(const QStyle *style,
-                                              const QStyleOption *option,
-                                              QPainter *painter,
-                                              const QWidget *widget,
-                                              SchemeLoader *scheme)
+bool Kiran::Style::drawPEIndicatorRadioButton(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
 {
     const auto &rect(option->rect);
-    QString iconUrl = scheme->getUrl(widget, option, SchemeLoader::RadioButton_IndicatorIcon);
+
+    bool checked = option->state & QStyle::State_On;
+    QString state = "normal";
+    if(  !(option->state & QStyle::State_Enabled) )
+    {
+        state = "disabled";
+    }
+    else if( (option->state & QStyle::State_Sunken) )
+    {
+        state = "active";
+    }
+    else if( (option->state & QStyle::State_MouseOver) )
+    {
+        state = "hover";
+    }
+    QString iconUrl = QString(":/style-helper/images/radio-%1-%2.svg").arg(checked?"checked":"unchecked").arg(state);
+
     painter->save();
     painter->setRenderHints(QPainter::SmoothPixmapTransform|QPainter::HighQualityAntialiasing);
     QSvgRenderer renderer(iconUrl);
@@ -134,14 +123,26 @@ bool Kiran::Style::drawPEIndicatorRadioButton(const QStyle *style,
     return true;
 }
 
-bool Kiran::Style::drawPEIndicatorCheckBox(const QStyle *style,
-                                           const QStyleOption *option,
-                                           QPainter *painter,
-                                           const QWidget *widget,
-                                           SchemeLoader *scheme)
+bool Kiran::Style::drawPEIndicatorCheckBox(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
 {
     const auto &rect(option->rect);
-    QString iconUrl = scheme->getUrl(widget, option, SchemeLoader::CheckBox_IndicatorIcon);
+
+    bool checked = option->state & QStyle::State_On;
+    QString state = "normal";
+    if(  !(option->state & QStyle::State_Enabled) )
+    {
+        state = "disabled";
+    }
+    else if( (option->state & QStyle::State_Sunken) )
+    {
+        state = "active";
+    }
+    else if( (option->state & QStyle::State_MouseOver) )
+    {
+        state = "hover";
+    }
+    QString iconUrl = QString(":/style-helper/images/check-%1-%2.svg").arg(checked?"checked":"unchecked").arg(state);
+
     painter->save();
     painter->setRenderHints(QPainter::SmoothPixmapTransform|QPainter::HighQualityAntialiasing);
     QSvgRenderer renderer(iconUrl);
@@ -150,7 +151,7 @@ bool Kiran::Style::drawPEIndicatorCheckBox(const QStyle *style,
     return true;
 }
 
-bool Kiran::Style::drawPEIndicatorBranch(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget, SchemeLoader *scheme)
+bool Kiran::Style::drawPEIndicatorBranch(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
 {
     const QRect &rect(option->rect);
     const QPalette &palette(option->palette);
@@ -181,8 +182,7 @@ bool Kiran::Style::drawPEIndicatorBranch(const QStyle *style, const QStyleOption
         } else {
             orientation = Arrow_Right;
         }
-
-        QColor arrowColor = scheme->getColor(widget,option,SchemeLoader::ItemView_ArrowColor);
+        auto arrowColor = KiranPalette::instance()->color(widget,option,KiranPalette::Widget,KiranPalette::Foreground);
         RenderHelper::renderArrow(painter,arrowRect,orientation,arrowColor);
     }
 
@@ -193,7 +193,7 @@ bool Kiran::Style::drawPEIndicatorBranch(const QStyle *style, const QStyleOption
 //    }
 
     QPoint center(rect.center());
-    QColor lineColor = scheme->getColor(widget,option,SchemeLoader::ItemView_BranchLineColor);
+    auto lineColor = KiranPalette::instance()->color(widget,option,KiranPalette::Widget,KiranPalette::Border);
     painter->save();
     painter->setRenderHint(QPainter::Antialiasing, true);
     painter->translate(0.5, 0.5);
@@ -221,27 +221,25 @@ bool Kiran::Style::drawPEIndicatorBranch(const QStyle *style, const QStyleOption
     return true;
 }
 
-bool Kiran::Style::drawPEIndicatorToolBarSeparator(const QStyle *style, const QStyleOption *option,
-                                                   QPainter *painter, const QWidget *widget,
-                                                   SchemeLoader *scheme)
+bool Kiran::Style::drawPEIndicatorToolBarSeparator(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
 {
     const QStyle::State & state = option->state;
     bool enable = (state & QStyle::State_Enabled);
     bool separatorIsVertical( state & QStyle::State_Horizontal );
 
-    QColor separatorColor = scheme->getColor(SchemeLoader::ItemView_BranchLineColor,enable?PseudoClass_Unspecified:PseudoClass_Disabled);
+    auto separatorColor = KiranPalette::instance()->color(enable?KiranPalette::Normal:KiranPalette::Disabled,KiranPalette::Widget,KiranPalette::Border);
     RenderHelper::renderSeparator(painter,option->rect,separatorIsVertical,separatorColor);
     return true;
 }
 
-bool Kiran::Style::drawPEIndicatorToolBarHandle(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget, SchemeLoader *scheme)
+bool Kiran::Style::drawPEIndicatorToolBarHandle(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
 {
     const QStyle::State& state = option->state;
     QRect rect( option->rect );
     bool separatorIsVertical( state & QStyle::State_Horizontal );
     bool enabled(state & QStyle::State_Enabled);
 
-    QColor separatorColor = scheme->getColor(SchemeLoader::ItemView_BranchLineColor,enabled?PseudoClass_Unspecified:PseudoClass_Disabled);
+    auto separatorColor = KiranPalette::instance()->color(enabled?KiranPalette::Normal:KiranPalette::Disabled,KiranPalette::Widget,KiranPalette::Border);
     if( separatorIsVertical )
     {
         rect.setWidth( Metrics::ToolBar_HandleWidth );
@@ -265,5 +263,4 @@ bool Kiran::Style::drawPEIndicatorToolBarHandle(const QStyle *style, const QStyl
     }
 
     return true;
-
 }

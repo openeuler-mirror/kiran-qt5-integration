@@ -30,10 +30,10 @@ class SchemeLoader;
 
 bool scrollBarSubControlRect(const QStyle *style, const QStyleOptionComplex *option, QStyle::SubControl subControl, const QWidget *widget, QRect &controlRect);
 
-bool drawCCScrollBar(const QStyle* style, const QStyleOptionComplex* option, QPainter *painter, const QWidget *widget,SchemeLoader* scheme);
+bool drawCCScrollBar(const QStyle *style, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget);
 
 bool drawControlScrollBarGroove(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget, Kiran::Style::SchemeLoader *scheme);
-bool drawControlScrollBarSlider(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget, Kiran::Style::SchemeLoader *scheme);
+bool drawControlScrollBarSlider(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget);
 }
 }
 

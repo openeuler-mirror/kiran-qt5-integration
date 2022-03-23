@@ -12,15 +12,16 @@
  * Author:     liuxinhao <liuxinhao@kylinos.com.cn>
  */
 #include "draw-slider-helper.h"
+#include "../../../style-helper/src/scheme-loader.h"
 #include "draw-common-helper.h"
 #include "metrics.h"
 #include "render-helper.h"
-#include "scheme-loader.h"
 #include "style.h"
 
+#include <kiran-palette.h>
 #include <QPainter>
-#include <QStyleOption>
 #include <QProxyStyle>
+#include <QStyleOption>
 
 //TODO: 之后整合所有的绘制过程中的是否启用的开关
 static const bool sliderDrawTickMarks = true;
@@ -74,12 +75,7 @@ QSize Kiran::Style::sliderSizeFromContents(const QStyle *style,
     return size;
 }
 
-
-bool Kiran::Style::drawCCSlider(const QStyle *style,
-                                const QStyleOptionComplex *option,
-                                QPainter *painter,
-                                const QWidget *widget,
-                                Kiran::Style::SchemeLoader *scheme)
+bool Kiran::Style::drawCCSlider(const QStyle *style, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget)
 {
     // cast option and check
     const auto sliderOption(qstyleoption_cast<const QStyleOptionSlider *>(option));
@@ -102,8 +98,9 @@ bool Kiran::Style::drawCCSlider(const QStyle *style,
     if (!horizontal && sliderOption->tickPosition == QSlider::TicksLeft) tickSide = (Side)((int)tickSide | (int)SideLeft);
     if (!horizontal && sliderOption->tickPosition == QSlider::TicksRight) tickSide = (Side)((int)tickSide | (int)SideRight);
 
-    QColor grooveColor = scheme->getColor(widget,option,SchemeLoader::ProgressBar_GrooveColor);
-    QColor contentColor = scheme->getColor(widget,option,SchemeLoader::ProgressBar_ContentsColor);
+
+    QColor grooveColor = KiranPalette::instance()->color(enabled?KiranPalette::Normal:KiranPalette::Disabled,KiranPalette::Bare,KiranPalette::Background);
+    QColor contentColor = KiranPalette::instance()->color(enabled?KiranPalette::Checked:KiranPalette::Disabled,KiranPalette::Bare,KiranPalette::Foreground);
 
     // tickmarks
     if ( sliderDrawTickMarks && (sliderOption->subControls & QStyle::SC_SliderTickmarks) )

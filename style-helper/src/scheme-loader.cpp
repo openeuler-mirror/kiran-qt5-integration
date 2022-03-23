@@ -12,7 +12,6 @@
  * Author:     liuxinhao <liuxinhao@kylinos.com.cn>
  */
 #include "scheme-loader.h"
-#include "scheme-loader-private.h"
 #include "kiran-appearance-monitor.h"
 
 #include <private/qcssparser_p.h>
@@ -78,58 +77,15 @@ bool FuzzyMatch(const QVector<QCss::Selector>& selectors, quint64 pseudoClass);
 
 Kiran::Style::SchemeLoader::SchemeLoader(QObject* parent)
     : QObject(parent),
-      d_ptr(new SchemeLoaderPrivate(this))
+      m_isValid(false),
+      m_styleScheme(new QCss::StyleSheet)
 {
-    connect(KiranAppearanceMonitor::instance(),&KiranAppearanceMonitor::gtkThemeChanged,
-            this,&SchemeLoader::handleGtkThemeChanged);
-    handleGtkThemeChanged(KiranAppearanceMonitor::instance()->gtkTheme());
-}
 
-SchemeLoader* SchemeLoader::instance()
-{
-    static QMutex mutex;
-    static QScopedPointer<SchemeLoader> pInst;
-
-    if (Q_UNLIKELY(!pInst))
-    {
-        QMutexLocker locker(&mutex);
-        if (pInst.isNull())
-        {
-            pInst.reset(new SchemeLoader);
-        }
-    }
-
-    return pInst.data();
 }
 
 SchemeLoader::~SchemeLoader()
 {
-    delete d_ptr;
-}
-
-bool SchemeLoader::load()
-{
-    // clang-format off
-    static QString schemeFile[SCHEME_LAST] = {
-        QStringLiteral(":/style-helper/colors/light.css"),
-        QStringLiteral(":/style-helper/colors/dark.css")
-    };
-    // clang-format on
-
-    QWriteLocker writeLocker(&d_ptr->m_rwLock);
-
-    //clean cache
-    d_ptr->m_styleSchemeCache.clear();
-
-    QCss::Parser parser(schemeFile[d_ptr->m_schemeType], true);
-    if (!parser.parse(d_ptr->m_styleScheme))
-    {
-        qWarning() << "parse style scheme failed!" << parser.errorSymbol().text;
-        return false;
-    }
-
-    qInfo() << "load" << schemeFile[d_ptr->m_schemeType] << "succeed!";
-    return true;
+    delete m_styleScheme;
 }
 
 QVariant SchemeLoader::fetchPropertyValue(const QWidget* widget,
@@ -141,7 +97,7 @@ QVariant SchemeLoader::fetchPropertyValue(const QWidget* widget,
     /// 获取没伪选择器的样式
     QVariant defaultValue = fetchPropertyValue(name, QCss::PseudoClass_Unspecified, valueType);
 
-    /// 获取当前窗口的其他状态 用于辅助增加伪状态选择匹配的准确性
+    /// 获取当前控件的其他状态 用于辅助增加伪状态选择匹配的准确性
     quint64 styleOptionPseudoClass = convertStyleOption2PseudoClass(widget, opt);
     quint64 extendPresudoClass = styleOptionPseudoClass | specialPseudlClasss;
 
@@ -214,7 +170,7 @@ QVariant SchemeLoader::fetchPropertyValue(SchemeLoader::SchemePropertyName prope
                                           quint64 pseudoClass,
                                           SchemeLoader::SchemeValueType valueType)
 {
-    QReadLocker readLocker(&d_ptr->m_rwLock);
+    QReadLocker readLocker(&m_rwLock);
     QVariant var = searchCacheEntry(propertyName, pseudoClass);
     if (var.isValid())
     {
@@ -230,7 +186,7 @@ QVariant SchemeLoader::fetchPropertyValue(SchemeLoader::SchemePropertyName prope
     const QString type = selectors.at(0);
     const QString property = selectors.at(1);
 
-    auto values = d_func()->m_styleScheme->nameIndex.values(type);
+    auto values = m_styleScheme->nameIndex.values(type);
     for (const StyleRule& rule : values)
     {
         if (!FuzzyMatch(rule.selectors, pseudoClass))
@@ -271,14 +227,14 @@ QVariant SchemeLoader::fetchPropertyValue(SchemeLoader::SchemePropertyName prope
                 continue;
             }
             readLocker.unlock();
-            QWriteLocker writeLocker(&d_ptr->m_rwLock);
+            QWriteLocker writeLocker(&m_rwLock);
             insertCacheEntry(propertyName, pseudoClass, propertyValue);
             return propertyValue;
         }
     }
 
     readLocker.unlock();
-    QWriteLocker writeLocker(&d_ptr->m_rwLock);
+    QWriteLocker writeLocker(&m_rwLock);
     insertCacheEntry(propertyName, pseudoClass, QVariant());
     return QVariant();
 }
@@ -286,9 +242,9 @@ QVariant SchemeLoader::fetchPropertyValue(SchemeLoader::SchemePropertyName prope
 void SchemeLoader::dump()
 {
     QMultiHash<QString, StyleRule>::iterator iter;
-    QReadLocker readLocker(&d_ptr->m_rwLock);
-    for (iter = d_func()->m_styleScheme->nameIndex.begin();
-         iter != d_func()->m_styleScheme->nameIndex.end();
+    QReadLocker readLocker(&m_rwLock);
+    for (iter = m_styleScheme->nameIndex.begin();
+         iter != m_styleScheme->nameIndex.end();
          iter++)
     {
         qInfo("//=== %s ====/", iter.key().toStdString().c_str());
@@ -309,6 +265,26 @@ void SchemeLoader::dump()
     }
 }
 
+bool SchemeLoader::load(const QString& schemeFile)
+{
+    QWriteLocker writeLocker(&m_rwLock);
+
+    //clean cache
+    m_isValid = false;
+    m_styleSchemeCache.clear();
+
+    QCss::Parser parser(schemeFile, true);
+    if (!parser.parse(m_styleScheme))
+    {
+        qWarning() << "parse style scheme failed!" << parser.errorSymbol().text;
+        return false;
+    }
+
+    m_isValid = true;
+    qInfo() << "load" << schemeFile << "succeed!";
+    return true;
+}
+
 QString SchemeLoader::pseudoClass2String(quint64 pseudoClass)
 {
     QStringList pseudoClassList;
@@ -326,7 +302,7 @@ QString SchemeLoader::pseudoClass2String(quint64 pseudoClass)
 
 bool SchemeLoader::isValid()
 {
-    return d_func()->m_isValid;
+    return m_isValid;
 }
 
 #define PALETTE_COLOR(palette, colorGroup, colorRole, pseudoClass)                                      \
@@ -387,18 +363,6 @@ QColor SchemeLoader::getColor(SchemeLoader::SchemePropertyName propertyName, qui
         return var.value<QColor>();
     }
     return QColor();
-}
-
-QColor SchemeLoader::getColor(QString propertyName,quint64 pseudoClass)
-{
-    static const QMetaEnum schemePropertyMetaEnum = QMetaEnum::fromType<SchemePropertyName>();
-    bool  convertOk = false;
-    SchemePropertyName propertyEnum = static_cast<SchemePropertyName>(schemePropertyMetaEnum.keyToValue(propertyName.toStdString().c_str(),&convertOk));
-    if( !convertOk )
-    {
-        return QColor();
-    }
-    return getColor(propertyEnum,pseudoClass);
 }
 
 QString SchemeLoader::getUrl(const QWidget* widget, const QStyleOption* opt, SchemeLoader::SchemePropertyName name, quint64 specialPseudoClass)
@@ -534,9 +498,9 @@ void SchemeLoader::insertCacheEntry(SchemeLoader::SchemePropertyName propertyNam
 
     QString key = QString("%1:%2").arg(selectorString).arg(pseudoStatus);
 
-    if (d_func()->m_styleSchemeCache.find(key) == d_func()->m_styleSchemeCache.end())
+    if (m_styleSchemeCache.find(key) == m_styleSchemeCache.end())
     {
-        d_func()->m_styleSchemeCache.insert(key, var);
+        m_styleSchemeCache.insert(key, var);
     }
 }
 
@@ -550,25 +514,10 @@ QVariant SchemeLoader::searchCacheEntry(SchemeLoader::SchemePropertyName propert
     QString key = QString("%1:%2").arg(selectorString).arg(pseudoStatus);
 
     QVariant var;
-    auto iter = d_func()->m_styleSchemeCache.find(key);
-    if (iter != d_func()->m_styleSchemeCache.end())
+    auto iter = m_styleSchemeCache.find(key);
+    if (iter != m_styleSchemeCache.end())
     {
         var = iter.value();
     }
     return var;
-}
-
-void SchemeLoader::handleGtkThemeChanged(const QString& gtkTheme)
-{
-    if( gtkTheme.compare("kiran") == 0 )
-    {
-        d_ptr->m_schemeType = SCHEME_Light;
-        d_ptr->m_isValid = load();
-    }
-    else if( gtkTheme.compare("kiran-dark") == 0 )
-    {
-        d_ptr->m_schemeType = SCHEME_DARK;
-        d_ptr->m_isValid = load();
-    }
-    qDebug() << __FUNCTION__ << "gtk theme load:" << gtkTheme;
 }

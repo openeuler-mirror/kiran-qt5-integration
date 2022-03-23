@@ -13,18 +13,19 @@
  */
 
 #include "draw-scroll-bar-helper.h"
+#include "../../../style-helper/src/scheme-loader.h"
 #include "draw-common-helper.h"
 #include "metrics.h"
 #include "render-helper.h"
-#include "scheme-loader.h"
 
+#include <kiran-palette.h>
 #include <QAbstractScrollArea>
+#include <QDebug>
 #include <QPainter>
+#include <QScrollBar>
 #include <QStyle>
 #include <QStyleOptionComplex>
 #include <QWidget>
-#include <QScrollBar>
-#include <QDebug>
 
 using namespace Kiran::Style;
 
@@ -185,11 +186,7 @@ bool Kiran::Style::scrollBarSubControlRect(const QStyle *style,
     return true;
 }
 
-bool Kiran::Style::drawCCScrollBar(const QStyle *style,
-                                   const QStyleOptionComplex *option,
-                                   QPainter *painter,
-                                   const QWidget *widget,
-                                   SchemeLoader *scheme)
+bool Kiran::Style::drawCCScrollBar(const QStyle *style, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget)
 {
     const auto scrollbarOption = qstyleoption_cast<const QStyleOptionSlider *>(option);
     if (!scrollbarOption)
@@ -203,12 +200,18 @@ bool Kiran::Style::drawCCScrollBar(const QStyle *style,
     if( option->subControls & QStyle::SC_ScrollBarGroove )
     {
         auto grooveRect = style->subControlRect(QStyle::CC_ScrollBar,option,QStyle::SC_ScrollBarGroove,widget);
-        QColor grooveColor = scheme->getColor(widget,option,SchemeLoader::ScrollBar_GrooveColor);
-        painter->save();
-        painter->setPen(Qt::NoPen);
-        painter->setBrush(grooveColor);
-        painter->drawRect(grooveRect);
-        painter->restore();
+//不绘制滑动槽
+#if 0
+        if( mouseOver )
+        {
+            QColor grooveColor = KiranPalette::instance()->color(widget,option,KiranPalette::Window,KiranPalette::Background);
+            painter->save();
+            painter->setPen(Qt::NoPen);
+            painter->setBrush(grooveColor);
+            painter->drawRect(grooveRect);
+            painter->restore();
+        }
+#endif
     }
 
     if (scrollbarOption->subControls & QStyle::SC_ScrollBarSlider)
@@ -230,11 +233,7 @@ bool Kiran::Style::drawControlScrollBarGroove(const QStyle *style, const QStyleO
     return false;
 }
 
-bool Kiran::Style::drawControlScrollBarSlider(const QStyle *style,
-                                              const QStyleOption *option,
-                                              QPainter *painter,
-                                              const QWidget *widget,
-                                              Kiran::Style::SchemeLoader *scheme)
+bool Kiran::Style::drawControlScrollBarSlider(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
 {
     const QStyleOptionSlider *sliderOption(qstyleoption_cast<const QStyleOptionSlider *>(option));
     if (!sliderOption)
@@ -286,7 +285,7 @@ bool Kiran::Style::drawControlScrollBarSlider(const QStyle *style,
         tempOption.state |= QStyle::State_Sunken;
     }
 
-    auto handleColor = scheme->getColor(widget,option,SchemeLoader::ScrollBar_HandleColor);
+    auto handleColor = KiranPalette::instance()->color(widget,option,KiranPalette::Bare,KiranPalette::Background);
     painter->setRenderHint(QPainter::Antialiasing,true);
     QPainterPath painterPath = RenderHelper::roundedPath(handleRect,AllCorners,2);
     painter->fillPath(painterPath,handleColor);

@@ -58,7 +58,6 @@ BackgroundNormal=Default::BackgroundNormal
 ForegroundNormal=Default::ForegroundNormal
 BorderNormal=Default::Border
 
-
 [Colors:Selection]
 BackgroundNormal=Default::Selection
 ForegroundNormal=Default::ForegroundNormal
@@ -68,7 +67,6 @@ BackgroundNormal=Default::BackgroundNormal
 ForegroundNormal=Default::ForegroundNormal
 BorderNormal=Default::Border
 BorderFocus=Default::Selection
-
 
 [WM]
 BackgroundNormal=Default::BackgroundNormal

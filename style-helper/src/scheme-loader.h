@@ -19,6 +19,8 @@
 #include <QObject>
 #include <QVariant>
 #include <QUrl>
+#include <QReadWriteLock>
+#include "kiran-palette-define.h"
 
 class QPalette;
 class QWidget;
@@ -89,66 +91,55 @@ class SchemeLoaderPrivate;
 class SchemeLoader : public QObject
 {
     Q_OBJECT
-    Q_DECLARE_PRIVATE(SchemeLoader)
 public:
-    enum SchemeType
-    {
-        SCHEME_Light,
-        SCHEME_DARK,
-        SCHEME_LAST
-    };
-    Q_ENUM(SchemeType)
-
+    //WARNING:枚举值切勿随意更改
+    //该枚举与KiranPalette之中的WidgetType,WidgetColorRule，FlagColorRule相关联
     enum SchemePropertyName
     {
-        // === palette === //
-        Palette_Window,
-        Palette_WindowText,
-        Palette_Base,
-        Palette_Text,
-        Palette_Button,
-        Palette_ButtonText,
-        Palette_Highlight,
-        Palette_HighlightedText,
-        Palette_ToolTipBase,
-        Palette_ToolTipText,
+        // === Palette === //
+        Palette_Window             = 0x00000000,
+        Palette_WindowText         = 0x00000001,
+        Palette_Base               = 0x00000002,
+        Palette_Text               = 0x00000003,
+        Palette_Button             = 0x00000004,
+        Palette_ButtonText         = 0x00000005,
+        Palette_Highlight          = 0x00000006,
+        Palette_HighlightedText    = 0x00000007,
+        Palette_ToolTipBase        = 0x00000008,
+        Palette_ToolTipText        = 0x00000009,
 
-        // === window === ///
-        Window_BorderColor,
-        Window_BackgroundColor,
+        // === Flag === ///
+        Flag_Warning               = 0x00000010,
+        Flag_Error                 = 0x00000011,
+        Flag_Success               = 0x00000012,
 
-        // === widget === ///
-        Widget_BorderColor,
-        Widget_BackgroundColor,
-        Widget_ForegroundColor,
+        // === Window === ///
+        Window_Background          = 0x00000020,
+        Window_Foreground          = 0x00000021,
+        Window_Border              = 0x00000022,
 
-        // === button === //
-        Button_BorderColor,
-        Button_BackgroundColor,
+        // === Bare === ///
+        Bare_Background            = 0x00000030,
+        Bare_Foreground            = 0x00000031,
 
-        // === radio button === //
-        RadioButton_IndicatorIcon,
+        // === Widget === ///
+        Widget_Background          = 0x00000040,
+        Widget_Foreground          = 0x00000041,
+        Widget_Border              = 0x00000042,
 
-        // === checkbox button === //
-        CheckBox_IndicatorIcon,
+        // === View === ///
+        View_Background            = 0x00000050,
+        View_Foreground            = 0x00000051,
+        View_Border                = 0x00000052,
 
-        // === line edit === //
-        LineEdit_BorderColor,
-        LineEdit_BackgroundColor,
+        // === Selection === ///
+        Selection_Background       = 0x00000060,
+        Selection_Foreground       = 0x00000061,
 
-        // === line edit === //
-        ItemView_BorderColor,
-        ItemView_BackgroundColor,
-        ItemView_ArrowColor,
-        ItemView_BranchLineColor,
-
-        // === scrollbar === //
-        ScrollBar_HandleColor,
-        ScrollBar_GrooveColor,
-
-        // === scrollbar === //
-        ProgressBar_GrooveColor,
-        ProgressBar_ContentsColor
+        // === TitleBar === ///
+        TitleBar_Background        = 0x00000070,
+        TitleBar_Foreground        = 0x00000071,
+        TitleBar_Border            = 0x00000072
     };
     Q_ENUM(SchemePropertyName)
 
@@ -160,16 +151,15 @@ private:
         SCHEME_VALUE_URL,
         SCHEME_VALUE_REAL
     };
-private:
-    explicit SchemeLoader(QObject* parent = nullptr);
 
 public:
-    static SchemeLoader* instance();
+    explicit SchemeLoader(QObject* parent = nullptr);
     ~SchemeLoader() override;
 
     bool isValid();
     void dump();
 
+    bool load(const QString& schemeFile);
     void polish(QPalette* palette);
 
     // color
@@ -180,9 +170,6 @@ public:
 
     QColor getColor(SchemePropertyName propertyName,
                     quint64 pseudoClass);
-
-    QColor getColor(QString propertyName,quint64 pseudoClass);
-
     // url
     QString getUrl(const QWidget* widget,
                 const QStyleOption* opt,
@@ -193,8 +180,6 @@ public:
                 quint64 pseudoClass);
 
 private:
-    bool load();
-
     QVariant fetchPropertyValue(const QWidget* widget,
                                 const QStyleOption* opt,
                                 SchemePropertyName name,
@@ -227,11 +212,11 @@ private:
     QVariant searchCacheEntry(SchemePropertyName propertyName,
                               quint64 pseudoStatus);
 
-private slots:
-    void handleGtkThemeChanged(const QString& gtkTheme);
-
 private:
-    SchemeLoaderPrivate* d_ptr;
+    bool m_isValid = false;
+    QCss::StyleSheet* m_styleScheme;
+    QReadWriteLock m_rwLock;
+    QMap<QString, QVariant> m_styleSchemeCache;
 };
 }  // namespace Style
 }  // namespace Kiran

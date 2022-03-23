@@ -23,9 +23,9 @@ namespace Kiran
 namespace Style
 {
 class SchemeLoader;
-bool drawControlHeaderSection(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget, SchemeLoader* scheme);
-bool drawControlHeaderLabel(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget, SchemeLoader* scheme);
-bool drawControlHeaderEmptyArea(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget, SchemeLoader* scheme);
+bool drawControlHeaderSection(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget);
+bool drawControlHeaderLabel(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget);
+bool drawControlHeaderEmptyArea(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget);
 }
 }
 

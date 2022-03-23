@@ -13,12 +13,13 @@
  */
 
 #include "draw-spin-box-helper.h"
+#include "../../../style-helper/src/scheme-loader.h"
 #include "define.h"
 #include "draw-common-helper.h"
 #include "metrics.h"
 #include "render-helper.h"
-#include "scheme-loader.h"
 
+#include <kiran-palette.h>
 #include <QDebug>
 #include <QPainter>
 #include <QRect>
@@ -119,12 +120,7 @@ bool Kiran::Style::spinBoxSubControlRect(const QStyle *style,
     return true;
 }
 
-void renderSpinBoxArrow(const QStyle *style,
-                        const QStyle::SubControl &subControl,
-                        const QStyleOptionSpinBox *option,
-                        QPainter *painter,
-                        const QWidget *widget,
-                        SchemeLoader *scheme)
+void renderSpinBoxArrow(const QStyle *style, const QStyle::SubControl &subControl, const QStyleOptionSpinBox *option, QPainter *painter, const QWidget *widget)
 {
     const QStyle::State &state(option->state);
 
@@ -161,9 +157,9 @@ void renderSpinBoxArrow(const QStyle *style,
         }
     }
 
-    auto borderColor = scheme->getColor(widget, &tempOption, SchemeLoader::Button_BorderColor);
-    auto backgroundColor = scheme->getColor(widget, &tempOption, SchemeLoader::Button_BackgroundColor);
-    auto signColor = scheme->getColor(widget, &tempOption, SchemeLoader::Widget_ForegroundColor);
+    auto borderColor = KiranPalette::instance()->color(widget,&tempOption,KiranPalette::Widget,KiranPalette::Border);
+    auto backgroundColor = KiranPalette::instance()->color(widget,&tempOption,KiranPalette::Widget,KiranPalette::Background);
+    auto signColor = KiranPalette::instance()->color(widget,&tempOption,KiranPalette::Widget,KiranPalette::Foreground);
 
     //绘制按钮与输入区域之间的分割线
     if (subControl == QStyle::SC_SpinBoxDown)
@@ -198,11 +194,7 @@ void renderSpinBoxArrow(const QStyle *style,
         painter->drawLine(r.center() - QPointF(0, 5), r.center() + QPointF(0, 5));
 }
 
-bool Kiran::Style::drawCCSpinBox(const QStyle *style,
-                                 const QStyleOptionComplex *option,
-                                 QPainter *painter,
-                                 const QWidget *widget,
-                                 Kiran::Style::SchemeLoader *scheme)
+bool Kiran::Style::drawCCSpinBox(const QStyle *style, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget)
 {
     const auto spinBoxOption(qstyleoption_cast<const QStyleOptionSpinBox *>(option));
     if (!spinBoxOption) return true;
@@ -233,8 +225,8 @@ bool Kiran::Style::drawCCSpinBox(const QStyle *style,
     QPainterPath catPath = RenderHelper::roundedPath(RenderHelper::insideMargin(option->rect, 1), AllCorners, 4);
     PainterSaver painterSaver(painter);
     painter->setClipPath(catPath);
-    if (option->subControls & QStyle::SC_SpinBoxUp) renderSpinBoxArrow(style, QStyle::SC_SpinBoxUp, spinBoxOption, painter, widget, scheme);
-    if (option->subControls & QStyle::SC_SpinBoxDown) renderSpinBoxArrow(style, QStyle::SC_SpinBoxDown, spinBoxOption, painter, widget, scheme);
+    if (option->subControls & QStyle::SC_SpinBoxUp) renderSpinBoxArrow(style, QStyle::SC_SpinBoxUp, spinBoxOption, painter, widget);
+    if (option->subControls & QStyle::SC_SpinBoxDown) renderSpinBoxArrow(style, QStyle::SC_SpinBoxDown, spinBoxOption, painter, widget);
 
     return true;
 }

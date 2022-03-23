@@ -12,16 +12,14 @@
  * Author:     liuxinhao <liuxinhao@kylinos.com.cn>
  */
 #include "draw-menu-helper.h"
-#include "scheme-loader.h"
+#include "kiran-palette.h"
 
 #include <QPainter>
 #include <QStyle>
 #include <QStyleOption>
 #include <QWidget>
 
-bool Kiran::Style::drawControlMenuBarItem(const QStyle* style, const QStyleOption* option,
-                                          QPainter* painter, const QWidget* widget,
-                                          SchemeLoader* scheme)
+bool Kiran::Style::drawControlMenuBarItem(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget)
 {
     auto menuItemOption = qstyleoption_cast<const QStyleOptionMenuItem*>(option);
     const QStyle::State& state = option->state;
@@ -31,7 +29,7 @@ bool Kiran::Style::drawControlMenuBarItem(const QStyle* style, const QStyleOptio
 
     if(mouseOver && sunken)
     {
-        QColor background = scheme->getColor(widget,option,SchemeLoader::Window_BackgroundColor);
+        QColor background = KiranPalette::instance()->color(widget,option,KiranPalette::Widget,KiranPalette::Background);
         painter->setRenderHints(QPainter::Antialiasing);
         painter->setPen(Qt::NoPen);
         painter->setBrush(background);
@@ -57,7 +55,7 @@ bool Kiran::Style::drawControlMenuBarItem(const QStyle* style, const QStyleOptio
         {
             QStyleOptionMenuItem itemOption = *menuItemOption;
 
-            QColor background = scheme->getColor(widget,&itemOption,SchemeLoader::Button_BackgroundColor);
+            QColor background = KiranPalette::instance()->color(widget,option,KiranPalette::Widget,KiranPalette::Background);
             painter->fillRect(option->rect,background);
 
             style->drawItemText(painter,itemOption.rect,alignment,itemOption.palette,enabled,itemOption.text,QPalette::ButtonText);
@@ -66,11 +64,9 @@ bool Kiran::Style::drawControlMenuBarItem(const QStyle* style, const QStyleOptio
     return true;
 }
 
-bool Kiran::Style::drawControlMenuBarEmptyArea(const QStyle* style, const QStyleOption* option,
-                                               QPainter* painter, const QWidget* widget,
-                                               SchemeLoader* scheme)
+bool Kiran::Style::drawControlMenuBarEmptyArea(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget)
 {
-    QColor backgroundColor = scheme->getColor(widget,option,SchemeLoader::Widget_BackgroundColor);
-    painter->fillRect(option->rect,backgroundColor);
+    QColor background = KiranPalette::instance()->color(widget,option,KiranPalette::Widget,KiranPalette::Background);
+    painter->fillRect(option->rect,background);
     return true;
 }

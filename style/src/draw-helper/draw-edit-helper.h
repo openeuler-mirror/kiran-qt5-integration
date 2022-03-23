@@ -23,7 +23,7 @@ namespace Kiran
 namespace Style
 {
 class SchemeLoader;
-bool drawPEFrameLineEdit(const QStyle* style,const QStyleOption *option, QPainter *painter, const QWidget *widget,SchemeLoader* scheme);
+bool drawPEFrameLineEdit(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget);
 }
 }
 

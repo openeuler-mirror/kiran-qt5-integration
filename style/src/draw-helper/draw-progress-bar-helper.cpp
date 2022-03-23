@@ -13,11 +13,12 @@
  */
 
 #include "draw-progress-bar-helper.h"
+#include "../../../style-helper/src/scheme-loader.h"
 #include "draw-common-helper.h"
 #include "metrics.h"
 #include "render-helper.h"
-#include "scheme-loader.h"
 
+#include <kiran-palette.h>
 #include <QDebug>
 #include <QPainter>
 #include <QString>
@@ -139,11 +140,7 @@ QRect Kiran::Style::progressBarElementRect(const QStyle *style,
     return rect;
 }
 
-bool Kiran::Style::drawControlProgressBar(const QStyle *style,
-                                          const QStyleOption *option,
-                                          QPainter *painter,
-                                          const QWidget *widget,
-                                          Kiran::Style::SchemeLoader *scheme)
+bool Kiran::Style::drawControlProgressBar(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
 {
     const auto progressBarOption(qstyleoption_cast<const QStyleOptionProgressBar *>(option));
     if (!progressBarOption) return true;
@@ -172,41 +169,33 @@ bool Kiran::Style::drawControlProgressBar(const QStyle *style,
     return true;
 }
 
-bool Kiran::Style::drawControlProgressBarGroove(const QStyle *style,
-                                                const QStyleOption *option,
-                                                QPainter *painter,
-                                                const QWidget *widget,
-                                                Kiran::Style::SchemeLoader *scheme)
+bool Kiran::Style::drawControlProgressBarGroove(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
 {
     const auto progressBarOption(qstyleoption_cast<const QStyleOptionProgressBar *>(option));
     if (!progressBarOption) return true;
 
-    auto grooveColor = scheme->getColor(widget,option,SchemeLoader::ProgressBar_GrooveColor);
-
+    auto grooveColor = KiranPalette::instance()->color(widget,option,KiranPalette::Bare,KiranPalette::Background);
     RenderHelper::renderFrame(painter,option->rect,1,4,grooveColor);
     return true;
 }
 
-bool Kiran::Style::drawControlProgressBarContents(const QStyle *style,
-                                                  const QStyleOption *option,
-                                                  QPainter *painter,
-                                                  const QWidget *widget,
-                                                  Kiran::Style::SchemeLoader *scheme)
+bool Kiran::Style::drawControlProgressBarContents(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
 {
     const auto progressBarOption(qstyleoption_cast<const QStyleOptionProgressBar *>(option));
     if (!progressBarOption) return true;
 
-    auto contentsColor = scheme->getColor(widget,option,SchemeLoader::ProgressBar_ContentsColor);
+    QStyleOption optionTemp( *option );
+    if( optionTemp.state & QStyle::State_Enabled )
+    {
+        optionTemp.state |= QStyle::State_On;
+    }
+    auto contentsColor = KiranPalette::instance()->color(widget,&optionTemp,KiranPalette::Bare,KiranPalette::Foreground);
 
     RenderHelper::renderFrame(painter,option->rect,1,4,contentsColor);
     return true;
 }
 
-bool Kiran::Style::drawControlProgressBarLabel(const QStyle *style,
-                                               const QStyleOption *option,
-                                               QPainter *painter,
-                                               const QWidget *widget,
-                                               Kiran::Style::SchemeLoader *scheme)
+bool Kiran::Style::drawControlProgressBarLabel(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
 {
     const auto progressBarOption( qstyleoption_cast<const QStyleOptionProgressBar*>( option ) );
     if( !progressBarOption ) return true;

@@ -30,7 +30,7 @@ namespace Style
 class SchemeLoader;
 QSize spinBoxSizeFromContents(const QStyle *style, const QStyleOption *option, const QSize &contentSize, const QWidget *widget);
 bool spinBoxSubControlRect(const QStyle* style, const QStyleOptionComplex* option, QStyle::SubControl subControl, const QWidget* widget, QRect& controlRect);
-bool drawCCSpinBox(const QStyle* style, const QStyleOptionComplex* option, QPainter *painter, const QWidget *widget,SchemeLoader* scheme);
+bool drawCCSpinBox(const QStyle* style, const QStyleOptionComplex* option, QPainter* painter, const QWidget* widget);
 
 }
 }

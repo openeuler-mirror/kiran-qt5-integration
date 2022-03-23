@@ -12,13 +12,13 @@
  * Author:     liuxinhao <liuxinhao@kylinos.com.cn>
  */
 #include "draw-item-view-helper.h"
-#include "scheme-loader.h"
+#include "kiran-palette.h"
 
 #include <QStyleOption>
 #include <QIcon>
 #include <QPainter>
 
-bool Kiran::Style::drawControlHeaderSection(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget, Kiran::Style::SchemeLoader *scheme)
+bool Kiran::Style::drawControlHeaderSection(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
 {
     const QRect &rect(option->rect);
     const QPalette &palette(option->palette);
@@ -38,7 +38,9 @@ bool Kiran::Style::drawControlHeaderSection(const QStyle *style, const QStyleOpt
 
     // outline
     painter->setBrush(Qt::NoBrush);
-    QColor outlineColor = scheme->getColor(widget,option,SchemeLoader::ItemView_BranchLineColor);
+    QColor outlineColor = KiranPalette::instance()->color(enabled?KiranPalette::Normal:KiranPalette::Disabled,
+                                                          KiranPalette::Widget,
+                                                          KiranPalette::Border);
     painter->setPen(outlineColor);
     if (isCorner) {
         if (reverseLayout) {
@@ -76,7 +78,7 @@ bool Kiran::Style::drawControlHeaderSection(const QStyle *style, const QStyleOpt
     return true;
 }
 
-bool Kiran::Style::drawControlHeaderLabel(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget, Kiran::Style::SchemeLoader *scheme)
+bool Kiran::Style::drawControlHeaderLabel(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
 {
     if (const QStyleOptionHeader *header = qstyleoption_cast<const QStyleOptionHeader *>(option)) {
         QRect rect = header->rect;
@@ -102,7 +104,7 @@ bool Kiran::Style::drawControlHeaderLabel(const QStyle *style, const QStyleOptio
     return true;
 }
 
-bool Kiran::Style::drawControlHeaderEmptyArea(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget, Kiran::Style::SchemeLoader *scheme)
+bool Kiran::Style::drawControlHeaderEmptyArea(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
 {
     // use the same background as in drawHeaderPrimitive
     const QRect &rect(option->rect);
@@ -118,8 +120,9 @@ bool Kiran::Style::drawControlHeaderEmptyArea(const QStyle *style, const QStyleO
     painter->drawRect(rect);
 
     // outline
+    auto outlineColor = KiranPalette::instance()->color(widget,option,KiranPalette::Widget,KiranPalette::Border);
     painter->setBrush(Qt::NoBrush);
-    painter->setPen(scheme->getColor(widget,option,SchemeLoader::ItemView_BranchLineColor));
+    painter->setPen(outlineColor);
 
     if (horizontal) {
         painter->drawLine(rect.bottomLeft(), rect.bottomRight());

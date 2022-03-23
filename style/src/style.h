@@ -31,7 +31,6 @@ namespace Kiran
 {
 namespace Style
 {
-class SchemeLoader;
 class Style : public ParentStyle
 {
 public:
@@ -52,9 +51,6 @@ public:
     void polish(QWidget* widget) override;
     void polish(QApplication* app) override;
     void polish(QPalette& pal) override;
-
-private:
-    SchemeLoader* m_schemeLoader = nullptr;
 };
 }  // namespace Style
 }  // namespace Kiran

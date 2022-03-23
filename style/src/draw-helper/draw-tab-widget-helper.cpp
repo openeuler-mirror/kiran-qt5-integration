@@ -12,10 +12,10 @@
  * Author:     liuxinhao <liuxinhao@kylinos.com.cn>
  */
 #include "draw-tab-widget-helper.h"
+#include "kiran-palette.h"
 #include "draw-common-helper.h"
 #include "metrics.h"
 #include "render-helper.h"
-#include "scheme-loader.h"
 
 #include <QColor>
 #include <QStyleOption>
@@ -129,25 +129,25 @@ QSize Kiran::Style::tabBarTabSizeFromContents(const QStyle* style, const QStyleO
     return size;
 }
 
-bool Kiran::Style::drawPEFrameTabWidget(const QStyle* style,const QStyleOption* option,QPainter* painter,const QWidget* widget,SchemeLoader* scheme)
+bool Kiran::Style::drawPEFrameTabWidget(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget)
 {
-    QColor backgroundColor = scheme->getColor(widget, option, SchemeLoader::Window_BackgroundColor);
-    QColor borderColor = scheme->getColor(widget, option, SchemeLoader::Window_BorderColor);
-    RenderHelper::renderFrame(painter, option->rect,1, 0, backgroundColor, borderColor);
+    auto background = KiranPalette::instance()->color(widget,option,KiranPalette::Window,KiranPalette::Background);
+    auto border = KiranPalette::instance()->color(widget,option,KiranPalette::Window,KiranPalette::Border);
+    RenderHelper::renderFrame(painter, option->rect,1, 0, background, border);
     return true;
 }
 
-bool Kiran::Style::drawPEFrameTabBarBase(const QStyle* style,const QStyleOption* option,QPainter* painter,const QWidget* widget,Kiran::Style::SchemeLoader* scheme)
+bool Kiran::Style::drawPEFrameTabBarBase(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget)
 {
     return true;
 }
 
-bool Kiran::Style::drawControlTabBarTabLabel(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget, Kiran::Style::SchemeLoader* scheme)
+bool Kiran::Style::drawControlTabBarTabLabel(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget)
 {
     return false;
 }
 
-bool Kiran::Style::drawControlTabBarTabShape(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget, Kiran::Style::SchemeLoader* scheme)
+bool Kiran::Style::drawControlTabBarTabShape(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget)
 {
     const auto tabOption(qstyleoption_cast<const QStyleOptionTab *>(option));
     if (!tabOption) return true;
@@ -208,13 +208,18 @@ bool Kiran::Style::drawControlTabBarTabShape(const QStyle* style, const QStyleOp
         break;
     }
 
-    quint64 specialPseudoClass = PseudoClass_Unspecified;
-    if (selected)
+//    quint64 specialPseudoClass = PseudoClass_Unspecified;
+//    if (selected)
+//    {
+//        specialPseudoClass = PseudoClass_Pressed;
+//    }
+//    QColor backgroundColor = scheme->getColor(widget, option, SchemeLoader::Button_BackgroundColor, specialPseudoClass);
+    QStyleOption tempOption(*option);
+    if( selected )
     {
-        specialPseudoClass = PseudoClass_Pressed;
+        tempOption.state |= QStyle::State_Sunken;
     }
-
-    QColor backgroundColor = scheme->getColor(widget, option, SchemeLoader::Button_BackgroundColor, specialPseudoClass);
+    QColor backgroundColor = KiranPalette::instance()->color(widget,&tempOption,KiranPalette::Widget,KiranPalette::Background);
     RenderHelper::renderTabBarTab(painter, option->rect, corners,4, backgroundColor );
 
     return true;
