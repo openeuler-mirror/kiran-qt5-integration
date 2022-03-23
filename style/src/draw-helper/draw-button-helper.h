@@ -35,14 +35,14 @@ QSize toolButtonSizeFromContents(const QStyle* style,const QStyleOption* option,
 bool toolButtonSubControlRect(const QStyle* style, const QStyleOptionComplex* opt, QStyle::SubControl sc, const QWidget* widget, QRect& controlRect);
 
 //drawPrimitive
-bool drawPEPanelButtonCommand(const QStyle* style,const QStyleOption *option, QPainter *painter, const QWidget *widget,SchemeLoader* scheme);
-bool drawPEPanelButtonTool(const QStyle* style,const QStyleOption *option, QPainter *painter, const QWidget *widget,SchemeLoader* scheme);
+bool drawPEPanelButtonCommand(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget);
+bool drawPEPanelButtonTool(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget);
 
 //drawControl
-bool drawControlToolButtonLabel(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget, Kiran::Style::SchemeLoader *scheme);
+bool drawControlToolButtonLabel(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget);
 
 //drawComplexControl
-bool drawCCToolButton(const QStyle* style, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget,SchemeLoader* scheme);
+bool drawCCToolButton(const QStyle* style, const QStyleOptionComplex* option, QPainter* painter, const QWidget* widget);
 }  // namespace Style
 }  // namespace Kiran
 

@@ -12,11 +12,11 @@
  * Author:     liuxinhao <liuxinhao@kylinos.com.cn>
  */
 #include "draw-button-helper.h"
+#include "kiran-palette.h"
 #include "define.h"
 #include "draw-common-helper.h"
 #include "metrics.h"
 #include "render-helper.h"
-#include "scheme-loader.h"
 
 #include <QAbstractButton>
 #include <QDebug>
@@ -27,7 +27,7 @@
 
 using namespace Kiran::Style;
 
-//根据按钮内容获取按钮尺寸
+//根据按钮内容计算按钮尺寸
 QSize Kiran::Style::pushButtonSizeFromContents(const QStyle* style,
                                                const QStyleOption* option,
                                                const QSize& contentSize,
@@ -42,16 +42,19 @@ QSize Kiran::Style::pushButtonSizeFromContents(const QStyle* style,
     const bool flat(buttonOption->features & QStyleOptionButton::Flat);
     bool hasIcon(!buttonOption->icon.isNull());
 
-    if (!(hasText || hasIcon))  //没有文本以及图标，采用自定义按钮作为内容大小的起点
+    if (!(hasText || hasIcon))
     {
+        //没有文本以及图标，采用自定义按钮作为内容大小的起点
         size = contentSize;
     }
     else
-    {  //不管Qt在内容大小如何计算，完全根据按钮选项重新计算按钮大小,保证渲染阶段的一致性
+    {
+        //不管Qt在内容大小如何计算，完全根据按钮选项重新计算按钮大小,保证渲染阶段的一致性
         hasIcon &= (RenderHelper::showIconsOnPushButtons() || flat || !hasText);
 
         //文本大小
-        if (hasText) size = buttonOption->fontMetrics.size(Qt::TextShowMnemonic, buttonOption->text);
+        if (hasText)
+            size = buttonOption->fontMetrics.size(Qt::TextShowMnemonic, buttonOption->text);
 
         //图标大小
         if (hasIcon)
@@ -179,11 +182,7 @@ bool Kiran::Style::toolButtonSubControlRect(const QStyle* style,
     return true;
 }
 
-bool Kiran::Style::drawPEPanelButtonCommand(const QStyle* style,
-                                            const QStyleOption* option,
-                                            QPainter* painter,
-                                            const QWidget* widget,
-                                            Kiran::Style::SchemeLoader* scheme)
+bool Kiran::Style::drawPEPanelButtonCommand(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget)
 {
     const auto buttonOption(qstyleoption_cast<const QStyleOptionButton*>(option));
     if (!buttonOption)
@@ -199,33 +198,23 @@ bool Kiran::Style::drawPEPanelButtonCommand(const QStyle* style,
     bool sunken(state & (QStyle::State_On | QStyle::State_Sunken));
     bool flat(buttonOption->features & QStyleOptionButton::Flat);
 
+    auto background = KiranPalette::instance()->color(widget,option,KiranPalette::Widget,KiranPalette::Background);
+    //按钮不绘制聚焦边框,只考虑启用和禁用状态
+    auto border = KiranPalette::instance()->color(enabled?KiranPalette::Normal:KiranPalette::Disabled,KiranPalette::Widget,KiranPalette::Border);
+
     if (flat)
     {
-        QColor background, border;
-        background = scheme->getColor(widget, option, SchemeLoader::Button_BackgroundColor);
-        border = scheme->getColor(widget, option, SchemeLoader::Button_BorderColor);
         if (!sunken)
         {
             background = Qt::transparent;
         }
-        RenderHelper::renderFrame(painter, option->rect,1, 4, background, border);
-    }
-    else
-    {
-        QColor background, border;
-        background = scheme->getColor(widget, option, SchemeLoader::Button_BackgroundColor);
-        border = scheme->getColor(widget, option, SchemeLoader::Button_BorderColor);
-        RenderHelper::renderFrame(painter, option->rect,1, 4, background, border);
     }
 
+    RenderHelper::renderFrame(painter, option->rect,1, 4, background, border);
     return true;
 }
 
-bool Kiran::Style::drawPEPanelButtonTool(const QStyle* style,
-                                         const QStyleOption* option,
-                                         QPainter* painter,
-                                         const QWidget* widget,
-                                         Kiran::Style::SchemeLoader* scheme)
+bool Kiran::Style::drawPEPanelButtonTool(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget)
 {
     const QPalette& palette(option->palette);
     QRect rect(option->rect);
@@ -252,29 +241,20 @@ bool Kiran::Style::drawPEPanelButtonTool(const QStyle* style,
             rect = QStyle::visualRect(option->direction, option->rect, rect);
         }
 
-        // render
-        QColor background = scheme->getColor(widget, option, SchemeLoader::Button_BackgroundColor);
-        QColor border = scheme->getColor(widget, option, SchemeLoader::Button_BorderColor);
+        auto background = KiranPalette::instance()->color(widget,option,KiranPalette::Widget,KiranPalette::Background);
+        //按钮不绘制聚焦边框,只考虑启用和禁用状态
+        auto border = KiranPalette::instance()->color(enabled?KiranPalette::Normal:KiranPalette::Disabled,KiranPalette::Widget,KiranPalette::Border);
         RenderHelper::renderFrame(painter, rect,1, 4, background, border);
     }
     else
     {
-        QColor background = scheme->getColor(widget, option, SchemeLoader::Window_BackgroundColor);
-        if( !sunken )
-        {
-            background = Qt::transparent;
-        }
-        RenderHelper::renderFrame(painter, rect,1, 4, background);
+        RenderHelper::renderFrame(painter, rect,1, 4, Qt::transparent);
     }
 
     return true;
 }
 
-bool Kiran::Style::drawControlToolButtonLabel(const QStyle* style,
-                                              const QStyleOption* option,
-                                              QPainter* painter,
-                                              const QWidget* widget,
-                                              Kiran::Style::SchemeLoader* scheme)
+bool Kiran::Style::drawControlToolButtonLabel(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget)
 {
     const auto toolButtonOption(qstyleoption_cast<const QStyleOptionToolButton*>(option));
     if (!toolButtonOption)
@@ -402,11 +382,7 @@ bool Kiran::Style::drawControlToolButtonLabel(const QStyle* style,
     return true;
 }
 
-bool Kiran::Style::drawCCToolButton(const QStyle* style,
-                                    const QStyleOptionComplex* option,
-                                    QPainter* painter,
-                                    const QWidget* widget,
-                                    SchemeLoader* scheme)
+bool Kiran::Style::drawCCToolButton(const QStyle* style, const QStyleOptionComplex* option, QPainter* painter, const QWidget* widget)
 {
     const auto* toolButtonOption(qstyleoption_cast<const QStyleOptionToolButton*>(option));
     if (!toolButtonOption) return true;
@@ -424,13 +400,11 @@ bool Kiran::Style::drawCCToolButton(const QStyle* style,
 
     if (isMenuTitle)
     {
-        // copy option to adust state, and set font as not-bold
         QStyleOptionToolButton copy(*toolButtonOption);
         copy.font.setBold(false);
         copy.state = QStyle::State_Enabled;
 
-        // render
-        QColor separatorColor = scheme->getColor(widget, option, SchemeLoader::Widget_BorderColor);
+        auto separatorColor = KiranPalette::instance()->color(widget,option,KiranPalette::Widget,KiranPalette::Border);
         RenderHelper::renderMenuTitle(style, painter, &copy, widget, separatorColor);
         return true;
     }
@@ -466,11 +440,12 @@ bool Kiran::Style::drawCCToolButton(const QStyle* style,
         {
             QRect rect(option->rect);
 
-            QColor background = scheme->getColor(widget,option,SchemeLoader::Button_BackgroundColor);
-            QColor outline = scheme->getColor(widget,option,SchemeLoader::Button_BorderColor);
+            auto background = KiranPalette::instance()->color(widget,option,KiranPalette::Widget,KiranPalette::Background);
+            auto border = KiranPalette::instance()->color(widget,option,KiranPalette::Widget,KiranPalette::Border);
 
             painter->setPen(background);
             painter->setBrush(background);
+
             switch (toolButtonOption->arrowType)
             {
             case Qt::UpArrow:
@@ -487,7 +462,7 @@ bool Kiran::Style::drawCCToolButton(const QStyle* style,
                 break;
             }
 
-            painter->setPen(outline);
+            painter->setPen(border);
             switch (toolButtonOption->arrowType)
             {
             case Qt::DownArrow:

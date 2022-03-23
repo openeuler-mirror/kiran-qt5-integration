@@ -12,9 +12,9 @@
  * Author:     liuxinhao <liuxinhao@kylinos.com.cn>
  */
 #include "draw-edit-helper.h"
+#include "kiran-palette.h"
 #include "draw-common-helper.h"
 #include "render-helper.h"
-#include "scheme-loader.h"
 
 #include <QColor>
 #include <QPainter>
@@ -22,16 +22,12 @@
 #include <QStyleOption>
 #include <QComboBox>
 
-bool Kiran::Style::drawPEFrameLineEdit(const QStyle *style,
-                                       const QStyleOption *option,
-                                       QPainter *painter,
-                                       const QWidget *widget,
-                                       Kiran::Style::SchemeLoader *scheme)
+bool Kiran::Style::drawPEFrameLineEdit(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget)
 {
     const auto &rect = option->rect;
 
-    QColor background = scheme->getColor(widget, option, SchemeLoader::LineEdit_BackgroundColor);
-    QColor border = scheme->getColor(widget, option, SchemeLoader::LineEdit_BorderColor);
+    auto background = KiranPalette::instance()->color(widget,option,KiranPalette::View,KiranPalette::Background);
+    auto border = KiranPalette::instance()->color(widget,option,KiranPalette::View,KiranPalette::Border);
 
     //控件高度不足够绘制边框
     if (rect.height() < 2 + option->fontMetrics.height())

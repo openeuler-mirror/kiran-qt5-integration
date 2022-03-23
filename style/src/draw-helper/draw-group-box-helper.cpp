@@ -121,7 +121,7 @@ bool Kiran::Style::groupBoxSubControlRect(const QStyle *style, const QStyleOptio
 }
 
 //copy from QCommonStyle
-bool Kiran::Style::drawCCGroupBox(const QStyle *style, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget, Kiran::Style::SchemeLoader *scheme)
+bool Kiran::Style::drawCCGroupBox(const QStyle *style, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget)
 {
     const auto *groupBox = qstyleoption_cast<const QStyleOptionGroupBox *>(option);
     if (!groupBox)

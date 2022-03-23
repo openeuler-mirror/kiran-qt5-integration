@@ -12,9 +12,9 @@
  * Author:     liuxinhao <liuxinhao@kylinos.com.cn>
  */
 #include "style.h"
+#include "../../style-helper/src/scheme-loader.h"
 #include "metrics.h"
 #include "render-helper.h"
-#include "scheme-loader.h"
 
 #include <QAbstractItemView>
 #include <QApplication>
@@ -22,6 +22,7 @@
 #include <QFormLayout>
 #include <QPainter>
 
+#include <kiran-palette.h>
 #include <QCheckBox>
 #include <QComboBox>
 #include <QDial>
@@ -65,8 +66,7 @@ QDebug operator<<(QDebug dbg, const QColor &color)
 #endif
 
 Style::Style()
-    : ParentStyle(),
-      m_schemeLoader(SchemeLoader::instance())
+    : ParentStyle()
 {
 }
 
@@ -155,7 +155,7 @@ int Style::styleHint(QStyle::StyleHint hint, const QStyleOption *option, const Q
         return 204;
     //Table里网格线的颜色
     case SH_Table_GridLineColor:
-        return m_schemeLoader->getColor(widget, option, SchemeLoader::ItemView_BranchLineColor).rgb();
+        return KiranPalette::instance()->color(KiranPalette::Normal,KiranPalette::Widget,KiranPalette::Border).rgb();
     default:
         return ParentStyle::styleHint(hint, option, widget, returnData);
     }
@@ -317,7 +317,7 @@ int Style::pixelMetric(QStyle::PixelMetric metric, const QStyleOption *option, c
 
 void Style::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
-    bool (*func)(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget, SchemeLoader *scheme);
+    bool (*func)(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget);
     func = nullptr;
 
     // clang-format off
@@ -362,7 +362,7 @@ void Style::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOption *
     // clang-format on
 
     PainterSaver painterSaver(painter);
-    if (!(func && (*func)(this, option, painter, widget, m_schemeLoader)))
+    if (!(func && (*func)(this, option, painter, widget)))
     {
         ParentStyle::drawPrimitive(element, option, painter, widget);
     }
@@ -373,14 +373,14 @@ void Style::drawComplexControl(QStyle::ComplexControl control,
                                QPainter *painter,
                                const QWidget *widget) const
 {
-    bool (*func)(const QStyle *style, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget, SchemeLoader *scheme);
+    bool (*func)(const QStyle *style, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget);
     func = nullptr;
 
     // clang-format off
     switch (control)
     {
     case QStyle::CC_ToolButton: func = &drawCCToolButton; break;
-    case QStyle::CC_ComboBox: func = &drawCCComboBox; break;
+//    case QStyle::CC_ComboBox: func = &drawCCComboBox; break;
     case QStyle::CC_ScrollBar: func = &drawCCScrollBar; break;
     case QStyle::CC_SpinBox: func = &drawCCSpinBox; break;
     case QStyle::CC_GroupBox: func = &drawCCGroupBox; break;
@@ -390,7 +390,7 @@ void Style::drawComplexControl(QStyle::ComplexControl control,
     // clang-format on
 
     painter->save();
-    if (!(func && (*func)(this, option, painter, widget, m_schemeLoader)))
+    if (!(func && (*func)(this, option, painter, widget)))
     {
         ParentStyle::drawComplexControl(control, option, painter, widget);
     }
@@ -514,7 +514,7 @@ QSize Style::sizeFromContents(QStyle::ContentsType type, const QStyleOption *opt
 
 void Style::drawControl(QStyle::ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
-    bool (*func)(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget, SchemeLoader *scheme);
+    bool (*func)(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget);
     func = nullptr;
 
     //不绘制的控件元素集合
@@ -549,7 +549,7 @@ void Style::drawControl(QStyle::ControlElement element, const QStyleOption *opti
     // clang-format on
 
     painter->save();
-    if (!(func && (*func)(this, option, painter, widget, m_schemeLoader)))
+    if (!(func && (*func)(this, option, painter, widget)))
     {
         if( emptyControlSet.find(element) == emptyControlSet.end() )
         {
@@ -603,12 +603,12 @@ void Style::polish(QApplication *app)
     ParentStyle::polish(app);
 
     QPalette palette;
-    m_schemeLoader->polish(&palette);
+    KiranPalette::instance()->polishPalette(&palette);
     QApplication::setPalette(palette);
 }
 
 void Style::polish(QPalette &palette)
 {
     ParentStyle::polish(palette);
-    m_schemeLoader->polish(&palette);
+    KiranPalette::instance()->polishPalette(&palette);
 }

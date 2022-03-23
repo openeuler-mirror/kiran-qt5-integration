@@ -30,10 +30,10 @@ class SchemeLoader;
 QSize progressBarSizeFromContents(const QStyle *style, const QStyleOption *option, const QSize &contentSize, const QWidget *widget);
 QRect progressBarElementRect(const QStyle* style, QStyle::SubElement subElement, const QStyleOption* option, const QWidget* widget);
 
-bool drawControlProgressBar(const QStyle *style,const QStyleOption *option,QPainter *painter,const QWidget *widget,SchemeLoader *scheme);
-bool drawControlProgressBarGroove(const QStyle *style,const QStyleOption *option,QPainter *painter,const QWidget *widget,SchemeLoader *scheme);
-bool drawControlProgressBarContents(const QStyle *style,const QStyleOption *option,QPainter *painter,const QWidget *widget,SchemeLoader *scheme);
-bool drawControlProgressBarLabel(const QStyle *style,const QStyleOption *option,QPainter *painter,const QWidget *widget,SchemeLoader *scheme);
+bool drawControlProgressBar(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget);
+bool drawControlProgressBarGroove(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget);
+bool drawControlProgressBarContents(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget);
+bool drawControlProgressBarLabel(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget);
 }
 }
 

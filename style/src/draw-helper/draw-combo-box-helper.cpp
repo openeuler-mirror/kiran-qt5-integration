@@ -12,10 +12,10 @@
  * Author:     liuxinhao <liuxinhao@kylinos.com.cn>
  */
 #include "draw-combo-box-helper.h"
+#include "kiran-palette.h"
 #include "draw-common-helper.h"
 #include "metrics.h"
 #include "render-helper.h"
-#include "scheme-loader.h"
 
 #include <QComboBox>
 #include <QDebug>
@@ -95,11 +95,7 @@ bool Kiran::Style::comboBoxSubControlRect(const QStyle *style, const QStyleOptio
     return true;
 }
 
-bool Kiran::Style::drawCCComboBox(const QStyle *style,
-                                  const QStyleOptionComplex *option,
-                                  QPainter *painter,
-                                  const QWidget *widget,
-                                  SchemeLoader *scheme)
+bool Kiran::Style::drawCCComboBox(const QStyle *style, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget)
 {
     const auto comboBoxOption(qstyleoption_cast<const QStyleOptionComboBox *>(option));
     if (!comboBoxOption)
@@ -185,8 +181,10 @@ bool Kiran::Style::drawCCComboBox(const QStyle *style,
                 //箭头
                 arrowRect.adjust(1.5, 1.5, -1.5, -1.5);
                 QPainterPath indicatorPainterPath = RenderHelper::roundedPath(arrowRect, CornersRight, 4);
-                QColor background = scheme->getColor(widget, &arrowIndicatorOption, SchemeLoader::Button_BackgroundColor);
-                QColor border = scheme->getColor(widget, &arrowIndicatorOption, SchemeLoader::Button_BorderColor);
+
+                arrowIndicatorOption.state &= ~QStyle::State_On;
+                QColor background = KiranPalette::instance()->color(widget,&arrowIndicatorOption,KiranPalette::Widget,KiranPalette::Background);
+                QColor border = KiranPalette::instance()->color(enabled?KiranPalette::Normal:KiranPalette::Disabled,KiranPalette::Widget,KiranPalette::Border);
 
                 QPen pen = painter->pen();
                 painter->setRenderHints(QPainter::Antialiasing);
@@ -208,14 +206,14 @@ bool Kiran::Style::drawCCComboBox(const QStyle *style,
                 auto background = option->palette.color(QPalette::Base);
                 if(sunken)
                 {
-                    background = scheme->getColor(widget, &arrowIndicatorOption, SchemeLoader::Button_BackgroundColor);
+                    background = KiranPalette::instance()->color(widget,&arrowIndicatorOption,KiranPalette::Widget,KiranPalette::Background);
                 }
                 RenderHelper::renderFrame(painter,option->rect,1,0,background);
             }
             else
             {
-                QColor backgroundColor = scheme->getColor(widget, option, SchemeLoader::Button_BackgroundColor);
-                QColor borderColor = scheme->getColor(widget, option, SchemeLoader::Button_BorderColor);
+                QColor backgroundColor = KiranPalette::instance()->color(widget,option,KiranPalette::Widget,KiranPalette::Background);
+                QColor borderColor = KiranPalette::instance()->color(enabled?KiranPalette::Normal:KiranPalette::Disabled,KiranPalette::Widget,KiranPalette::Border);
                 RenderHelper::renderFrame(painter, option->rect, 1, 4, backgroundColor, borderColor);
             }
         }
@@ -225,14 +223,14 @@ bool Kiran::Style::drawCCComboBox(const QStyle *style,
     if (option->subControls & QStyle::SC_ComboBoxArrow)
     {
         auto arrowRect(style->subControlRect(QStyle::CC_ComboBox, option, QStyle::SC_ComboBoxArrow, widget));
-        QColor arrowColor = scheme->getColor(widget, &arrowIndicatorOption, SchemeLoader::Widget_ForegroundColor);
+        QColor arrowColor = KiranPalette::instance()->color(widget,&arrowIndicatorOption,KiranPalette::Widget,KiranPalette::Foreground);
         RenderHelper::renderArrow(painter, arrowRect, Arrow_Down, arrowColor);
     }
 
     return true;
 }
 
-bool Kiran::Style::drawControlComboBoxLabel(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget, SchemeLoader *scheme)
+bool Kiran::Style::drawControlComboBoxLabel(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
 {
     const auto comboBoxOption(qstyleoption_cast<const QStyleOptionComboBox *>(option));
     if (!comboBoxOption) return false;

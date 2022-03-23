@@ -41,6 +41,9 @@ int mnemonicsTextFlags();
 
 bool showIconsOnPushButtons();
 
+//是否绘制树分支
+bool drawTreeBranches();
+
 //判断是否绘制对象为QtQuick控件
 bool isQtQuickControl(const QStyleOption *option, const QWidget *widget);
 
@@ -83,7 +86,7 @@ void renderMenuTitle(const QStyle* style,QPainter* painter,const QStyleOptionToo
 QPixmap changeSVGFillColor(const QString& svgFile,const QColor& fillColor,const QSize& size);
 
 //绘制箭头
-void renderArrow(QPainter* painter, const QRect& rect, ArrowOrientation orientation, const QColor& color);
+void renderArrow(QPainter* painter, const QRect& rect, ArrowOrientation orientation, const QColor& color,const QSize& arrowSize=QSize());
 
 //绘制TabBar Tab
 void renderTabBarTab(QPainter* painter, const QRect& rect, Corners corners, int radius, const QColor& background, const QColor& border = QColor());

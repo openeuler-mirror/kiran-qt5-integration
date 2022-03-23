@@ -114,8 +114,15 @@ $titlebar_border_insensitive: #{"" + internal_insensitive(internal_titlebar(bord
 $titlebar_border_backdrop: #{"" + internal_backdrop(internal_titlebar(border))};
 $titlebar_border_backdrop_insensitive: #{"" + internal_insensitive(internal_backdrop(internal_titlebar(border)))};
 
+// === Flag ===
+Flag
+{
+    Warning:  $default_warning;
+    Error:    $default_error;
+    Success:  $default_success;
+}
 
-// === palette ===
+// === QPalette-兼容QPalette ===
 Palette:active {
   Window: $window_background_normal;
   WindowText: $window_foreground_normal;
@@ -167,229 +174,132 @@ Palette:disabled {
   ToolTipText: $window_foreground_insensitive;
 }
 
-// === kiran palette ===
-KiranPalette:active
+// === Window ===
+Window
 {
-
+  Background: $window_background_normal;
+  Foreground: $window_foreground_normal;
+  Border: $window_border_normal;
 }
 
-KiranPalette
+Window:disabled
 {
-
+  Background: $window_background_insensitive;
+  Foreground: $window_foreground_insensitive;
+  Border: $window_border_insensitive;
 }
 
-KiranPalette:disabled
+// === Bare ===
+Bare
 {
+  Background: $bare_background_normal;
+  Foreground: $bare_foreground_normal;
+}
 
+Bare:hover
+{
+  Background: $bare_background_hover;
+  Foreground: $bare_foreground_hover;
+}
+
+Bare:active
+{
+  Background: $bare_background_active;
+  Foreground: $bare_foreground_active;
+}
+
+Bare:checked,
+Bare:pressed
+{
+  Background: $bare_background_checked;
+  Foreground: $bare_foreground_checked;
+}
+
+Bare:disabled
+{
+  Background: $bare_background_insensitive;
+  Foreground: $bare_foreground_insensitive;
 }
 
 // === widget ===
-Widget {
-  BorderColor: $widget_border_normal;
-  BackgroundColor: $widget_background_normal;
-  ForegroundColor: $widget_foreground_normal;
-}
-
-Widget:hover{
-  BorderColor: $widget_border_hover;
-  BackgroundColor: $widget_background_hover;
-  ForegroundColor: $widget_foreground_hover;
-}
-
-Widget:focus{
-  BorderColor: $widget_border_focus;
-  BackgroundColor: $widget_background_normal;
-  ForegroundColor: $widget_foreground_normal;
-}
-
-Widget:disabled{
-  ForegroundColor: $widget_foreground_insensitive;
-}
-
-// === window ===
-Window{
-  BorderColor: $window_border_normal;
-  BackgroundColor: $window_background_normal;
-}
-
-Window:disabled {
-  BorderColor: $window_border_insensitive;
-  BackgroundColor: $window_background_insensitive;
-}
-
-// === button ===
-Button {
-  BorderColor: $widget_border_normal;
-  BackgroundColor: $widget_background_normal;
-}
-
-Button:disabled {
-  BorderColor: $widget_border_insensitive;
-  BackgroundColor: $widget_background_insensitive;
-}
-
-//Button:window-inactive {
-//  BorderColor: $widget_border_backdrop;
-//}
-
-//Button:disabled:window-inactive {
-//  BorderColor: $widget_border_backdrop_insensitive;
-//}
-
-Button:hover {
-  BackgroundColor: $widget_background_hover;
-}
-
-Button:pressed {
-  BackgroundColor: $widget_background_active;
-}
-
-// === radio button ===
-RadioButton{
-  IndicatorIcon:url(":/style-helper/images/radio-unchecked-normal.svg");
-}
-
-RadioButton:hover{
-  IndicatorIcon: url(":/style-helper/images/radio-unchecked-hover.svg");
-}
-
-RadioButton:pressed{
-  IndicatorIcon: url(":/style-helper/images/radio-unchecked-active.svg");
-}
-
-RadioButton:disabled{
-  IndicatorIcon: url(":/style-helper/images/radio-unchecked-disabled.svg");
-}
-
-RadioButton:checked{
-  IndicatorIcon:url(":/style-helper/images/radio-checked-normal.svg");
-}
-
-RadioButton:checked:hover{
-  IndicatorIcon:url(":/style-helper/images/radio-checked-hover.svg");
-}
-
-RadioButton:checked:pressed{
-  IndicatorIcon:url(":/style-helper/images/radio-checked-active.svg");
-}
-
-RadioButton:checked:disabled{
-  IndicatorIcon:url(":/style-helper/images/radio-checked-disabled.svg");
-}
-
-// === checkbox button ===
-CheckBox{
-  IndicatorIcon:url(":/style-helper/images/check-unchecked-normal.svg");
-}
-
-CheckBox:hover{
-  IndicatorIcon: url(":/style-helper/images/check-unchecked-hover.svg");
-}
-
-CheckBox:pressed{
-  IndicatorIcon: url(":/style-helper/images/check-unchecked-active.svg");
-}
-
-CheckBox:disabled{
-  IndicatorIcon: url(":/style-helper/images/check-unchecked-disabled.svg");
-}
-
-CheckBox:indeterminate{
-  IndicatorIcon:url(":/style-helper/images/check-indeterminate-normal.svg");
-}
-
-CheckBox:indeterminate:hover{
-  IndicatorIcon:url(":/style-helper/images/check-indeterminate-hover.svg");
-}
-
-CheckBox:indeterminate:pressed{
-  IndicatorIcon:url(":/style-helper/images/check-indeterminate-active.svg");
-}
-
-CheckBox:indeterminate:disabled{
-  IndicatorIcon:url(":/style-helper/images/check-indeterminate-disabled.svg");
-}
-
-CheckBox:checked{
-  IndicatorIcon:url(":/style-helper/images/check-checked-normal.svg");
-}
-
-CheckBox:checked:hover{
-  IndicatorIcon:url(":/style-helper/images/check-checked-hover.svg");
-}
-
-CheckBox:checked:pressed{
-  IndicatorIcon:url(":/style-helper/images/check-checked-active.svg");
-}
-
-CheckBox:checked:disabled{
-  IndicatorIcon:url(":/style-helper/images/check-checked-disabled.svg");
-}
-
-// === lineedit ===
-LineEdit
+Widget
 {
-  BorderColor: $view_border_normal;
-  BackgroundColor: $view_background_normal;
+  Background: $widget_background_normal;
+  Foreground: $widget_foreground_normal;
+  Border: $widget_border_normal;
 }
 
-LineEdit:focus
+Widget:hover
 {
-  BorderColor: $view_border_focus;
+  Background: $widget_background_hover;
+  Foreground: $widget_foreground_hover;
+  //Border: $widget_border_hover;
 }
 
-LineEdit:disabled
+Widget:pressed
 {
-  BorderColor: $view_border_insensitive;
-  BackgroundColor: $view_background_insensitive;
+  Background: $widget_background_active;
+  Foreground: $widget_foreground_active;
+  Border: $widget_border_focus;
 }
 
-// === item view ===
-ItemView
+Widget:checked
 {
-  BorderColor: $widget_border_normal;
-  BackgroundColor: $widget_background_normal;
-  ArrowColor: $widget_foreground_normal;
-  BranchLineColor: $widget_border_normal;
+  Background: $widget_background_checked;
+  Foreground: $widget_foreground_checked;
 }
 
-ItemView:disabled
+Widget:disabled
 {
-  BorderColor:$widget_border_insensitive;
-  BackgroundColor:$widget_background_insensitive;
-  ArrowColor: $widget_foreground_insensitive;
-  BranchLineColor: $widget_border_insensitive;
+  Background: $widget_background_insensitive;
+  Foreground: $widget_foreground_insensitive;
+  Border: $widget_border_insensitive;
 }
 
-// === scrollbar ===
-ScrollBar
+// === view ===
+View
 {
-  HandleColor:$bare_background_normal;
-  GrooveColor: transparent;
+  Background: $view_background_normal;
+  Foreground: $view_foreground_normal;
+  Border: $view_border_normal;
 }
 
-ScrollBar:hover
+View:focus
 {
-  HandleColor:$bare_background_hover;
-  GrooveColor:$widget_background_normal;
+  Border: $view_border_focus;
 }
 
-ScrollBar:pressed
+View:disabled
 {
-  HandleColor:$bare_background_checked;
-  GrooveColor:$widget_background_normal;
+  Background: $view_background_insensitive;
+  Foreground: $view_foreground_insensitive;
+  Border: $view_border_insensitive;
 }
 
-
-// === scrollbar ===
-ProgressBar
+// === selection ===
+Selection
 {
-  GrooveColor:   $bare_background_normal;
-  ContentsColor: $selection_background_normal;
+  Background: $selection_background_normal;
+  Foreground: $selection_foreground_normal;
 }
 
-ProgressBar:disabled
+Selection:disabled
 {
-  GrooveColor:   $bare_background_insensitive;
-  ContentsColor: $selection_background_insensitive;
+  Background: $selection_background_insensitive;
+  Foreground: $selection_foreground_insensitive;
+}
+
+// === title bar ===
+TitleBar
+{
+  Background: $titlebar_background_normal;
+  Foreground: $titlebar_foreground_normal;
+  Border: $titlebar_border_normal;
+}
+
+TitleBar:disabled
+{
+  Background: $titlebar_background_insensitive;
+  Foreground: $titlebar_foreground_insensitive;
+  Border: $titlebar_border_insensitive;
 }

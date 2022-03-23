@@ -31,11 +31,11 @@ namespace Style
 {
 class SchemeLoader;
 
-bool drawPEFrame(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget, SchemeLoader* scheme);
-bool drawPEFrameFocusRect(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget, SchemeLoader* scheme);
-bool drawPEFrameGroupBox(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget, SchemeLoader* scheme);
+bool drawPEFrame(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget);
+bool drawPEFrameFocusRect(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget);
+bool drawPEFrameGroupBox(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget);
 
-bool drawControlShapedFrame(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget, SchemeLoader* scheme);
+bool drawControlShapedFrame(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget);
 
 QSize defaultSizeFromContents(const QStyleOption* option, const QSize& contentSize, const QWidget* widget);
 }  // namespace Style

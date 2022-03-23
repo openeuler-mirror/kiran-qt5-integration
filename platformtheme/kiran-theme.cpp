@@ -27,7 +27,6 @@
 
 #include <QStyle>
 #include <QApplication>
-#include <QDebug>
 #include <QIcon>
 #include <QPixmap>
 #include <QVariant>

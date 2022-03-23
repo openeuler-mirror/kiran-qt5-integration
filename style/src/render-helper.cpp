@@ -46,6 +46,11 @@ bool RenderHelper::showIconsOnPushButtons()
     return true;
 }
 
+bool RenderHelper::drawTreeBranches()
+{
+    return false;
+}
+
 bool RenderHelper::isQtQuickControl(const QStyleOption *option, const QWidget *widget)
 {
     return (widget == nullptr) && option && option->styleObject && option->styleObject->inherits("QQuickItem");
@@ -289,22 +294,25 @@ QPixmap RenderHelper::changeSVGFillColor(const QString &svgFile, const QColor &f
     //渲染到Pixmap之中
     QPixmap tempPixmap(size);
     tempPixmap.fill(Qt::transparent);
-    QPainter tempPainter(&tempPixmap);
+
+    QPainter tempPainter;
+    tempPainter.begin(&tempPixmap);
     tempPainter.setRenderHint(QPainter::Antialiasing);
     tempPainter.setRenderHint(QPainter::SmoothPixmapTransform);
     tinyDoc->draw(&tempPainter);
+    tempPainter.end();
 
     return tempPixmap;
 }
 
-void RenderHelper::renderArrow(QPainter *painter, const QRect &rect, ArrowOrientation orientation, const QColor &color)
+void RenderHelper::renderArrow(QPainter *painter, const QRect &rect, ArrowOrientation orientation, const QColor &color,const QSize& arrowSize)
 {
     QString svgFile = QString(":/style-helper/images/arrow.svg");
     PainterSaver painterSave(painter);
     painter->setRenderHint(QPainter::Antialiasing);
 
     //修改箭头默认颜色
-    QPixmap tempPixmap = changeSVGFillColor(svgFile,color,QSize(16,16));
+    QPixmap tempPixmap = changeSVGFillColor(svgFile,color,arrowSize.isEmpty()?QSize(16,16):arrowSize);
 
     //旋转图片
     int rotateAngle = 0;

@@ -11,20 +11,35 @@
  *
  * Author:     liuxinhao <liuxinhao@kylinos.com.cn>
  */
-#ifndef KIRAN_QT5_PLATFORMTHEME_STYLE_SRC_DRAW_HELPER_DRAW_EDIT_HELPER_H_
-#define KIRAN_QT5_PLATFORMTHEME_STYLE_SRC_DRAW_HELPER_DRAW_EDIT_HELPER_H_
+#ifndef KIRAN_QT5_PLATFORMTHEME_TEST_QT_WIDGET_FACTOR_H_
+#define KIRAN_QT5_PLATFORMTHEME_TEST_QT_WIDGET_FACTOR_H_
 
-class QStyle;
-class QStyleOption;
-class QPainter;
-class QWidget;
-namespace Kiran
-{
-namespace Style
-{
-class SchemeLoader;
-bool drawPEFrameLineEdit(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget);
-}
-}
+#include <QWidget>
+#include <QTabWidget>
 
-#endif  //KIRAN_QT5_PLATFORMTHEME_STYLE_SRC_DRAW_HELPER_DRAW_EDIT_HELPER_H_
+QT_BEGIN_NAMESPACE
+namespace Ui
+{
+class QtWidgetFactor;
+}
+QT_END_NAMESPACE
+
+class QtWidgetFactor : public QWidget
+{
+    Q_OBJECT
+
+public:
+    explicit QtWidgetFactor(QWidget *parent = nullptr);
+    ~QtWidgetFactor() override;
+
+    void initStyleSwitch();
+    void initDisableSwitch();
+    void initMenu();
+    void initToolBar();
+    void initTabBar();
+
+private:
+    Ui::QtWidgetFactor *ui;
+};
+
+#endif  //KIRAN_QT5_PLATFORMTHEME_TEST_QT_WIDGET_FACTOR_H_
