@@ -1,8 +1,6 @@
 #pragma once
 
-namespace Kiran
-{
-namespace Style
+namespace KiranStyle
 {
 enum PaletteType
 {
@@ -10,5 +8,4 @@ enum PaletteType
     PALETTE_DARK,
     PALETTE_LAST
 };
-}
 }

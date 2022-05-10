@@ -115,11 +115,10 @@ $titlebar_border_backdrop: #{"" + internal_backdrop(internal_titlebar(border))};
 $titlebar_border_backdrop_insensitive: #{"" + internal_insensitive(internal_backdrop(internal_titlebar(border)))};
 
 // === Flag ===
-Flag
-{
-    Warning:  $default_warning;
-    Error:    $default_error;
-    Success:  $default_success;
+Flag {
+  Warning: $default_warning;
+  Error: $default_error;
+  Success: $default_success;
 }
 
 // === QPalette-兼容QPalette ===
@@ -140,6 +139,7 @@ Palette:active {
   ToolTipText: $window_foreground_normal;
 }
 
+//QPalette inacitve窗口的调色盘，暂时未使用
 Palette {
   Window: $window_background_backdrop;
   WindowText: $window_foreground_backdrop;
@@ -175,130 +175,111 @@ Palette:disabled {
 }
 
 // === Window ===
-Window
-{
+Window {
   Background: $window_background_normal;
   Foreground: $window_foreground_normal;
   Border: $window_border_normal;
 }
 
-Window:disabled
-{
+Window:disabled {
   Background: $window_background_insensitive;
   Foreground: $window_foreground_insensitive;
   Border: $window_border_insensitive;
 }
 
 // === Bare ===
-Bare
-{
+Bare {
   Background: $bare_background_normal;
   Foreground: $bare_foreground_normal;
 }
 
-Bare:hover
-{
-  Background: $bare_background_hover;
-  Foreground: $bare_foreground_hover;
-}
-
-Bare:active
-{
+Bare:pressed {
   Background: $bare_background_active;
   Foreground: $bare_foreground_active;
 }
 
-Bare:checked,
-Bare:pressed
-{
+Bare:hover {
+  Background: $bare_background_hover;
+  Foreground: $bare_foreground_hover;
+}
+
+Bare:checked {
   Background: $bare_background_checked;
   Foreground: $bare_foreground_checked;
 }
 
-Bare:disabled
-{
+Bare:disabled {
   Background: $bare_background_insensitive;
   Foreground: $bare_foreground_insensitive;
 }
 
 // === widget ===
-Widget
-{
+Widget {
   Background: $widget_background_normal;
   Foreground: $widget_foreground_normal;
   Border: $widget_border_normal;
 }
 
-Widget:hover
-{
+Widget:hover {
   Background: $widget_background_hover;
   Foreground: $widget_foreground_hover;
   //Border: $widget_border_hover;
 }
 
-Widget:pressed
-{
+Widget:pressed {
   Background: $widget_background_active;
   Foreground: $widget_foreground_active;
   Border: $widget_border_focus;
 }
 
-Widget:checked
-{
+Widget:checked,
+Widget:selected {
   Background: $widget_background_checked;
   Foreground: $widget_foreground_checked;
 }
 
-Widget:disabled
-{
+Widget:disabled {
   Background: $widget_background_insensitive;
   Foreground: $widget_foreground_insensitive;
   Border: $widget_border_insensitive;
 }
 
 // === view ===
-View
-{
+View {
   Background: $view_background_normal;
   Foreground: $view_foreground_normal;
   Border: $view_border_normal;
 }
 
-View:focus
-{
+View:focus {
   Border: $view_border_focus;
 }
 
-View:disabled
-{
+View:disabled {
   Background: $view_background_insensitive;
   Foreground: $view_foreground_insensitive;
   Border: $view_border_insensitive;
 }
 
 // === selection ===
-Selection
-{
+Selection {
   Background: $selection_background_normal;
   Foreground: $selection_foreground_normal;
 }
 
-Selection:disabled
-{
+Selection:disabled {
   Background: $selection_background_insensitive;
   Foreground: $selection_foreground_insensitive;
 }
 
 // === title bar ===
-TitleBar
-{
+TitleBar {
   Background: $titlebar_background_normal;
   Foreground: $titlebar_foreground_normal;
   Border: $titlebar_border_normal;
 }
 
-TitleBar:disabled
-{
+TitleBar:disabled {
   Background: $titlebar_background_insensitive;
   Foreground: $titlebar_foreground_insensitive;
   Border: $titlebar_border_insensitive;

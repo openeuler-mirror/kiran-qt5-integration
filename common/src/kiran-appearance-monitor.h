@@ -11,8 +11,7 @@
  *
  * Author:     liuxinhao <liuxinhao@kylinos.com.cn>
  */
-#ifndef KIRAN_QT5_PLATFORMTHEME_PLATFORMTHEME_KIRAN_APPEARANCE_MONITOR_H_
-#define KIRAN_QT5_PLATFORMTHEME_PLATFORMTHEME_KIRAN_APPEARANCE_MONITOR_H_
+#pragma once
 
 #include <QObject>
 #include <QFont>
@@ -63,5 +62,3 @@ private:
     KiranDisplayProxy* m_displayIface;
     KiranAppearanceProxy* m_appearanceIface;
 };
-
-#endif  //KIRAN_QT5_PLATFORMTHEME_PLATFORMTHEME_KIRAN_APPEARANCE_MONITOR_H_

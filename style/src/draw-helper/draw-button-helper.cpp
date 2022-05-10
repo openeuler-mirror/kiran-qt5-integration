@@ -17,6 +17,7 @@
 #include "draw-common-helper.h"
 #include "metrics.h"
 #include "render-helper.h"
+#include "kiran-style-property.h"
 
 #include <QAbstractButton>
 #include <QDebug>
@@ -24,6 +25,8 @@
 #include <QStyleOption>
 #include <QToolButton>
 #include <QWidget>
+#include <QPushButton>
+#include <QColor>
 
 using namespace Kiran::Style;
 
@@ -198,9 +201,43 @@ bool Kiran::Style::drawPEPanelButtonCommand(const QStyle* style, const QStyleOpt
     bool sunken(state & (QStyle::State_On | QStyle::State_Sunken));
     bool flat(buttonOption->features & QStyleOptionButton::Flat);
 
-    auto background = KiranPalette::instance()->color(widget,option,KiranPalette::Widget,KiranPalette::Background);
-    //按钮不绘制聚焦边框,只考虑启用和禁用状态
-    auto border = KiranPalette::instance()->color(enabled?KiranPalette::Normal:KiranPalette::Disabled,KiranPalette::Widget,KiranPalette::Border);
+    QColor background,border;
+    if( qobject_cast<const QPushButton*>(widget) && PropertyHelper::getButtonType(qobject_cast<const QPushButton*>(widget))!=BUTTON_Normal )
+    {
+        ButtonType type = PropertyHelper::getButtonType(qobject_cast<const QPushButton*>(widget));
+        static QMap<ButtonType,QColor> sunkenColors = { {BUTTON_Default,QColor("#1568ad")},{BUTTON_Warning,QColor("#9d2c2c")} };
+        static QMap<ButtonType,QColor> hoverColors = { {BUTTON_Default,QColor("#79c3ff")},{BUTTON_Warning,QColor("#ff7878")} };
+        static QMap<ButtonType,QColor> normalColors = { {BUTTON_Default,QColor("#43a3f2")},{BUTTON_Warning,QColor("#fa4949")} };
+        if( !enabled )
+        {
+            background = QColor(255,255,255,13);
+        }
+        else if( sunken )
+        {
+            background = sunkenColors[type];
+        }
+        else if( mouseOver )
+        {
+            background = hoverColors[type];
+        }
+        else
+        {
+            background = normalColors[type];
+        }
+    }
+    else
+    {
+        //将checkable按钮,checked状态调整为匹配pressed
+        QStyleOption optionTemp(*option);
+        if( option->state & QStyle::State_On )
+        {
+            optionTemp.state &= ~QStyle::State_On;
+            optionTemp.state |= QStyle::State_Sunken;
+        }
+
+        background = KiranPalette::instance()->color(widget,&optionTemp,KiranPalette::Widget,KiranPalette::Background);
+        border = KiranPalette::instance()->color(enabled?KiranPalette::Normal:KiranPalette::Disabled,KiranPalette::Widget,KiranPalette::Border);
+    }
 
     if (flat)
     {
@@ -462,6 +499,8 @@ bool Kiran::Style::drawCCToolButton(const QStyle* style, const QStyleOptionCompl
                 break;
             }
 
+#if 0
+            //位于QTabBar之上的QToolButton不绘制边框
             painter->setPen(border);
             switch (toolButtonOption->arrowType)
             {
@@ -485,7 +524,7 @@ bool Kiran::Style::drawCCToolButton(const QStyle* style, const QStyleOptionCompl
                 painter->drawLine(rect.bottomLeft(), rect.bottomRight());
                 break;
             }
-
+#endif
         }
         else if (sunken && hasPopupMenu && !(toolButtonOption->activeSubControls & QStyle::SC_ToolButton))
         {

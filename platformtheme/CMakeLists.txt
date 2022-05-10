@@ -26,6 +26,7 @@ target_include_directories(${TARGET_NAME} PUBLIC
 
 target_link_libraries(${TARGET_NAME}
         common
+        kiran-style-helper
         Qt5::Widgets
         Qt5::Gui
         Qt5::DBus

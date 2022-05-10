@@ -17,9 +17,10 @@ target_include_directories(${TARGET_NAME} PRIVATE
         src/)
 
 target_link_libraries(${TARGET_NAME}
-        kiranstyle-helper
+        kiran-style-helper
         Qt5::Widgets
         Qt5::DBus
         Qt5::Svg)
 
+#kiran style 插件
 install(TARGETS ${TARGET_NAME} DESTINATION ${QT5_STYLE_INSTALL_DIR})

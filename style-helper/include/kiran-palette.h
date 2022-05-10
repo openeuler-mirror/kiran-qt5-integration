@@ -1,6 +1,6 @@
 #pragma once
 
-#include <kiran-palette-define.h>
+#include <kiran-style-global.h>
 #include <QObject>
 
 class KiranPalettePrivate;
@@ -19,6 +19,7 @@ private:
     explicit KiranPalette(QObject* parent = nullptr);
 
 public:
+    //扩展状态类型，尽量避免使用传入QStyleOption进行匹配
     enum ColorState
     {
         Normal,   //普通状态
@@ -28,6 +29,8 @@ public:
         Disabled  //禁用状态
     };
     Q_ENUM(ColorState);
+    Q_DECLARE_FLAGS(ColorStateFlags, ColorState)
+    Q_FLAG(ColorStateFlags)
 
     //WARNING:WidgetType,WidgetColorRule，FlagColorRule枚举值切勿随意更改
     //该枚举与SchemeLoader::SchemePropertyName相关联
@@ -83,14 +86,14 @@ public:
      * 获取当前主题调色盘类型
      * \return 调色盘类型
      */
-    Kiran::Style::PaletteType paletteType();
+    KiranStyle::PaletteType paletteType();
 
     /**
      * 应用程序指定主题调色盘类型
      * Warning:　指定主题调色盘后，不会根据系统主题变更更改主题调色盘
      * \param type　调色盘类型
      */
-    void setDesignatedPaletteType(Kiran::Style::PaletteType type);
+    void setDesignatedPaletteType(KiranStyle::PaletteType type);
 
     /**
      * 根据控件类型，控件状态，颜色类型取出颜色表之中预定的颜色
@@ -99,7 +102,7 @@ public:
      * \param rule  控件颜色类型，例如:背景，前景，边框
      * \return 颜色表之中预定义的颜色
      */
-    QColor color(ColorState state, WidgetType type, WidgetColorRule rule);
+    QColor color(ColorStateFlags state, WidgetType type, WidgetColorRule rule);
 
     /**
      * 根据控件状态，标志颜色类型取出颜色表之中预定的颜色
@@ -125,6 +128,7 @@ public:
      */
     QColor color(const QWidget* widget, const QStyleOption* option, WidgetType type, WidgetColorRule rule, ColorState specialState = Normal);
 
+    void dump();
 private:
     KiranPalettePrivate* d_ptr;
 };

@@ -166,14 +166,15 @@ int Style::pixelMetric(QStyle::PixelMetric metric, const QStyleOption *option, c
     switch (metric)
     {
     case PM_DefaultFrameWidth:
-        return 1;
+        return 6;
     case PM_SpinBoxFrameWidth:
-        return 1;
+        return 2;
     case PM_ToolBarFrameWidth:
         return 6;
     case PM_ToolTipLabelFrameWidth:
         return 3;
-
+    case PM_ComboBoxFrameWidth:
+        return 3;
     case PM_FocusFrameVMargin:
     case PM_FocusFrameHMargin:
         return 2;
@@ -380,7 +381,7 @@ void Style::drawComplexControl(QStyle::ComplexControl control,
     switch (control)
     {
     case QStyle::CC_ToolButton: func = &drawCCToolButton; break;
-//    case QStyle::CC_ComboBox: func = &drawCCComboBox; break;
+    case QStyle::CC_ComboBox: func = &drawCCComboBox; break;
     case QStyle::CC_ScrollBar: func = &drawCCScrollBar; break;
     case QStyle::CC_SpinBox: func = &drawCCSpinBox; break;
     case QStyle::CC_GroupBox: func = &drawCCGroupBox; break;
@@ -455,7 +456,6 @@ QRect Style::subControlRect(QStyle::ComplexControl cc, const QStyleOptionComplex
 
 QSize Style::sizeFromContents(QStyle::ContentsType type, const QStyleOption *option, const QSize &contentSize, const QWidget *widget) const
 {
-
     switch (type)
     {
     case CT_PushButton:
@@ -595,6 +595,11 @@ void Style::polish(QWidget *widget)
 //        qInfo() << "scroll area:" << scrollArea->geometry();
     }
 
+    if( QAbstractItemView *itemView = qobject_cast<QAbstractItemView*>( widget ) ) {
+        // enable mouse over effects in itemviews' viewport
+        itemView->viewport()->setAttribute(Qt::WA_Hover);
+    }
+
     ParentStyle::polish(widget);
 }
 
@@ -609,6 +614,62 @@ void Style::polish(QApplication *app)
 
 void Style::polish(QPalette &palette)
 {
-    ParentStyle::polish(palette);
+//    ParentStyle::polish(palette);
     KiranPalette::instance()->polishPalette(&palette);
+}
+
+QPixmap Style::standardPixmap(QStyle::StandardPixmap standardPixmap, const QStyleOption *opt, const QWidget *widget) const
+{
+    switch (standardPixmap)
+    {
+    case SP_ArrowRight:
+    {
+        QPalette palette = widget?widget->palette():qApp->palette();
+        QPalette::ColorRole colorRole = widget?widget->foregroundRole():QPalette::ButtonText;
+        QPixmap arrowPixmap(16,16);
+        arrowPixmap.fill(Qt::transparent);
+        QPainter painter(&arrowPixmap);
+        RenderHelper::renderArrow(&painter,arrowPixmap.rect(),Kiran::Style::Arrow_Right,palette.color(colorRole),arrowPixmap.size());
+        return arrowPixmap;
+    }
+    default:
+        break;
+    }
+    return ParentStyle::standardPixmap(standardPixmap, opt, widget);
+}
+
+QIcon Style::standardIcon(QStyle::StandardPixmap standardIcon, const QStyleOption *option, const QWidget *widget) const
+{
+    static const QMap<QStyle::StandardPixmap,QString> titleBarIconMap = {
+        {SP_TitleBarMinButton,":/style-helper/images/window-minimum-symbolic.svg"},
+        {SP_TitleBarMaxButton,":/style-helper/images/window-maximum-symbolic.svg"},
+        {SP_TitleBarCloseButton,":/style-helper/images/window-close-symbolic.svg"},
+        {SP_TitleBarNormalButton,":/style-helper/images/window-unmaximum-symbolic.svg"},
+
+    };
+    switch (standardIcon)
+    {
+    case SP_TitleBarMinButton:
+    case SP_TitleBarMaxButton:
+    case SP_TitleBarCloseButton:
+    case SP_TitleBarNormalButton:
+    {
+        QSize defaultTitleBarIconSize(16,16);
+
+        QIcon res;
+        auto iter = titleBarIconMap.find(standardIcon);
+        QString iconPath = iter.value();
+        QPalette palette = qApp->palette();
+
+        QPixmap normal = RenderHelper::changeSVGFillColor(iconPath,palette.color(QPalette::Normal,QPalette::Foreground),defaultTitleBarIconSize);
+        res.addPixmap(normal,QIcon::Normal);
+
+        QPixmap disable = RenderHelper::changeSVGFillColor(iconPath,palette.color(QPalette::Disabled,QPalette::Foreground),defaultTitleBarIconSize);
+        res.addPixmap(normal,QIcon::Disabled);
+        return res;
+    }
+    default:
+        break;
+    }
+    return ParentStyle::standardIcon(standardIcon, option, widget);
 }

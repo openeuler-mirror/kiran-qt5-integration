@@ -1,4 +1,7 @@
-set(TARGET_NAME "kiranstyle-helper")
+set(TARGET_NAME "kiran-style-helper")
+
+set(KIRAN_STYLE_HELPER_VERSION 2.3.0)
+set(KIRAN_STYLE_HELPER_SO_VERSION 2)
 
 # light theme
 set(KIRAN_LIGHT_COLORS ${CMAKE_CURRENT_BINARY_DIR}/kiran-light/kiran-light-colors.css)
@@ -43,6 +46,10 @@ add_library(${TARGET_NAME} SHARED
         ${KIRAN_DARK_COLORS}
         ${KIRAN_LIGHT_COLORS})
 
+set_target_properties(${TARGET_NAME} PROPERTIES
+        VERSION ${KIRAN_STYLE_HELPER_VERSION}
+        SOVERSION ${KIRAN_STYLE_HELPER_SO_VERSION})
+
 target_include_directories(${TARGET_NAME} PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src
         ${CMAKE_CURRENT_BINARY_DIR}
@@ -57,4 +64,12 @@ target_link_libraries(${TARGET_NAME}
         Qt5::Gui
         Qt5::Widgets)
 
-install(TARGETS ${TARGET_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/)
+set(KIRAN_STYLE_HELPER_LIB_DIR ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR})
+install(TARGETS ${TARGET_NAME} DESTINATION ${KIRAN_STYLE_HELPER_LIB_DIR})
+
+set(KIRAN_STYLE_HELPER_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}/kiran-style)
+install(FILES ${INCLUDE} DESTINATION ${KIRAN_STYLE_HELPER_INCLUDE_DIR})
+
+configure_file(kiran-style-helper.pc.in kiran-style-helper.pc @ONLY)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/kiran-style-helper.pc
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/pkgconfig/)

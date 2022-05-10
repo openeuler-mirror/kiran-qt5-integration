@@ -47,7 +47,7 @@ QSize Kiran::Style::comboBoxSizeFromContents(const QStyle *style, const QStyleOp
     // 确保有足够的高度绘制下拉按钮指示器
     size.setHeight(qMax(size.height(), int(Metrics::MenuButton_IndicatorWidth)));
 
-    size = RenderHelper::expandSize(size, Metrics::ComboBox_MarginWidth, Metrics::ComboBox_MarginHeight);
+//    size = RenderHelper::expandSize(size, Metrics::ComboBox_MarginWidth, Metrics::ComboBox_MarginHeight);
 
     //确保至少有最小大小
     size.setHeight(qMax(size.height(), int(Metrics::ComboBox_MinHeight)));
@@ -126,6 +126,10 @@ bool Kiran::Style::drawCCComboBox(const QStyle *style, const QStyleOptionComplex
     const bool empty(comboBox && !comboBox->count());
 
     QStyleOption arrowIndicatorOption(*option);
+    arrowIndicatorOption.state &= ~QStyle::State_Selected;
+    arrowIndicatorOption.state &= ~QStyle::State_Open;
+    arrowIndicatorOption.state &= ~QStyle::State_On;
+
     if (editable)
     {
         if (windowActive && arrowActive && enabled && (state & QStyle::State_MouseOver))
@@ -212,7 +216,11 @@ bool Kiran::Style::drawCCComboBox(const QStyle *style, const QStyleOptionComplex
             }
             else
             {
-                QColor backgroundColor = KiranPalette::instance()->color(widget,option,KiranPalette::Widget,KiranPalette::Background);
+                QStyleOptionComboBox tempOption(*comboBoxOption);
+                tempOption.state &= ~QStyle::State_Selected;
+                tempOption.state &= ~QStyle::State_Open;
+                tempOption.state &= ~QStyle::State_On;
+                QColor backgroundColor = KiranPalette::instance()->color(widget,&tempOption,KiranPalette::Widget,KiranPalette::Background);
                 QColor borderColor = KiranPalette::instance()->color(enabled?KiranPalette::Normal:KiranPalette::Disabled,KiranPalette::Widget,KiranPalette::Border);
                 RenderHelper::renderFrame(painter, option->rect, 1, 4, backgroundColor, borderColor);
             }

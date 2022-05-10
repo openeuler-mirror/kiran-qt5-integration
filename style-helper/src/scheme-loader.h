@@ -20,7 +20,7 @@
 #include <QVariant>
 #include <QUrl>
 #include <QReadWriteLock>
-#include "kiran-palette-define.h"
+#include "kiran-style-global.h"
 
 class QPalette;
 class QWidget;
@@ -158,6 +158,10 @@ public:
 
     bool isValid();
     void dump();
+    /// 将伪类转成字符串
+    /// \param qseudoClass　伪类
+    /// \return 字符串描述
+    static QString pseudoClass2String(quint64 pseudoClass);
 
     bool load(const QString& schemeFile);
     void polish(QPalette* palette);
@@ -189,11 +193,6 @@ private:
     QVariant fetchPropertyValue(SchemePropertyName propertyName,
                                 quint64 pseudoClass,
                                 SchemeValueType valueType);
-
-    /// 将伪类转成字符串
-    /// \param qseudoClass　伪类
-    /// \return 字符串描述
-    QString pseudoClass2String(quint64 pseudoClass);
 
     /// 转换QStyleOption成伪状态选择器
     /// \param widget       控件,特别控件需要添加伪状态

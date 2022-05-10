@@ -193,6 +193,7 @@ QVariant SchemeLoader::fetchPropertyValue(SchemeLoader::SchemePropertyName prope
         {
             continue;
         }
+
         for (const Declaration& declartion : rule.declarations)
         {
             if (declartion.d->property != property)
@@ -203,8 +204,14 @@ QVariant SchemeLoader::fetchPropertyValue(SchemeLoader::SchemePropertyName prope
             switch (valueType)
             {
             case SCHEME_VALUE_COLOR:
+            {
                 propertyValue = declartion.colorValue();
+#if 0
+                QString pseudoClassStr = pseudoClass2String(pseudoClass);
+                qInfo() << "fuzzy match selector:" << type << pseudoClassStr << property << declartion.colorValue();
+#endif
                 break;
+            }
             case SCHEME_VALUE_INT:
             {
                 int i = 0;
@@ -316,7 +323,8 @@ void SchemeLoader::polish(QPalette* palette)
     static const QVector< QPair<QPalette::ColorGroup,quint64> > states = {
         {QPalette::Active,QCss::PseudoClass_Active},
         {QPalette::Disabled,QCss::PseudoClass_Disabled},
-        {QPalette::Inactive,QCss::PseudoClass_Unspecified}
+//        {QPalette::Inactive,QCss::PseudoClass_Unspecified} //不给inactive单独做状态
+        {QPalette::Inactive,QCss::PseudoClass_Active}
     };
     // clang-format on
 
@@ -387,8 +395,9 @@ QString SchemeLoader::getUrl(SchemeLoader::SchemePropertyName name, quint64 pseu
 
 
 ///　模糊匹配,优先完全匹配,再着判断待匹配伪状态包含选择器的伪状态
-/// \param selectors    选择器
-/// \param pseudoClass  待匹配的伪状态
+/// \param selectors            选择器
+/// \param pseudoClass          待匹配的伪状态
+/// \param fuzzyMatchSelector   模糊匹配到的选择器
 /// \return 是否匹配
 bool FuzzyMatch(const QVector<QCss::Selector>& selectors,
                 quint64 pseudoClass)

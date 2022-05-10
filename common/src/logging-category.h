@@ -11,12 +11,8 @@
  *
  * Author:     liuxinhao <liuxinhao@kylinos.com.cn>
  */
-
-#ifndef KIRAN_QT5_INTEGRATION_COMMON_SRC_LOGGING_CATEGORY_H_
-#define KIRAN_QT5_INTEGRATION_COMMON_SRC_LOGGING_CATEGORY_H_
+#pragma once
 
 #include <QLoggingCategory>
 
 Q_DECLARE_LOGGING_CATEGORY(kiranPlatformThemeCommon)
-
-#endif  //KIRAN_QT5_INTEGRATION_COMMON_SRC_LOGGING_CATEGORY_H_

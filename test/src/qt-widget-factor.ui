@@ -85,7 +85,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>7</number>
+      <number>5</number>
      </property>
      <property name="usesScrollButtons">
       <bool>true</bool>
@@ -1066,8 +1066,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>1120</width>
-            <height>705</height>
+            <width>1118</width>
+            <height>704</height>
            </rect>
           </property>
           <attribute name="label">
@@ -1084,8 +1084,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>1104</width>
-                <height>689</height>
+                <width>1098</width>
+                <height>684</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -1115,8 +1115,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>96</width>
-            <height>26</height>
+            <width>98</width>
+            <height>28</height>
            </rect>
           </property>
           <attribute name="label">
@@ -1140,8 +1140,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>96</width>
-            <height>26</height>
+            <width>98</width>
+            <height>28</height>
            </rect>
           </property>
           <attribute name="label">
@@ -1158,8 +1158,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>208</width>
-            <height>78</height>
+            <width>214</width>
+            <height>86</height>
            </rect>
           </property>
           <attribute name="label">
@@ -1176,8 +1176,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>118</width>
-            <height>66</height>
+            <width>98</width>
+            <height>57</height>
            </rect>
           </property>
           <attribute name="label">
@@ -1212,28 +1212,28 @@
           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Cantarell'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;湘夫人&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;帝子降兮北渚，目眇眇兮愁予；&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;袅袅兮秋风，洞庭波兮木叶下；&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;登白薠兮骋望，与佳期兮夕张；&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;鸟何萃兮苹中，罾何为兮木上？&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;沅有茝兮醴有兰，思公子兮未敢言；&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;荒忽兮远望，观流水兮潺湲；&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;麋何食兮庭中，蛟何为兮水裔；&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;朝驰余马兮江皋，夕济兮西澨；&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;闻佳人兮召余，将腾驾兮偕逝；&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;筑室兮水中，葺之兮荷盖；&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;荪壁兮紫坛，播芳椒兮成堂；&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;桂栋兮兰橑，辛夷楣兮药房；&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;罔薜荔兮为帷，擗蕙櫋兮既张；&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;白玉兮为镇，疏石兰兮为芳；&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;芷葺兮荷屋，缭之兮杜衡；&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;合百草兮实庭，建芳馨兮庑门；&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;九嶷缤兮并迎，灵之来兮如云；&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;捐余袂兮江中，遗余褋兮醴浦；&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;搴汀洲兮杜若，将以遗兮远者；&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;时不可兮骤得，聊逍遥兮容与！&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Noto Sans CJK SC'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;湘夫人&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;帝子降兮北渚，目眇眇兮愁予；&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;袅袅兮秋风，洞庭波兮木叶下；&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;登白薠兮骋望，与佳期兮夕张；&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;鸟何萃兮苹中，罾何为兮木上？&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;沅有茝兮醴有兰，思公子兮未敢言；&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;荒忽兮远望，观流水兮潺湲；&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;麋何食兮庭中，蛟何为兮水裔；&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;朝驰余马兮江皋，夕济兮西澨；&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;闻佳人兮召余，将腾驾兮偕逝；&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;筑室兮水中，葺之兮荷盖；&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;荪壁兮紫坛，播芳椒兮成堂；&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;桂栋兮兰橑，辛夷楣兮药房；&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;罔薜荔兮为帷，擗蕙櫋兮既张；&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;白玉兮为镇，疏石兰兮为芳；&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;芷葺兮荷屋，缭之兮杜衡；&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;合百草兮实庭，建芳馨兮庑门；&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;九嶷缤兮并迎，灵之来兮如云；&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;捐余袂兮江中，遗余褋兮醴浦；&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;搴汀洲兮杜若，将以遗兮远者；&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;时不可兮骤得，聊逍遥兮容与！&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
         </widget>
        </item>
@@ -1850,22 +1850,22 @@ p, li { white-space: pre-wrap; }
           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Cantarell'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;大司命&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;广开兮天门，纷吾乘兮玄云；&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;令飘风兮先驱，使涷雨兮洒尘；&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;君回翔兮以下，逾空桑兮从女；&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;纷总总兮九州，何寿夭兮在予；&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;高飞兮安翔，乘清气兮御阴阳；&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;吾与君兮齐速，导帝之兮九坑；&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;灵衣兮被被，玉佩兮陆离；&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;一阴兮一阳，众莫知兮余所为；&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;折疏麻兮瑶华，将以遗兮离居；&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;老冉冉兮既极，不寖近兮愈疏；&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;乘龙兮辚辚，高驰兮冲天；&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;结桂枝兮延伫，羌愈思兮愁人；&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;愁人兮奈何，愿若今兮无亏；&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;固人命兮有当，孰离合兮可为？&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Noto Sans CJK SC'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;大司命&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;广开兮天门，纷吾乘兮玄云；&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;令飘风兮先驱，使涷雨兮洒尘；&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;君回翔兮以下，逾空桑兮从女；&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;纷总总兮九州，何寿夭兮在予；&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;高飞兮安翔，乘清气兮御阴阳；&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;吾与君兮齐速，导帝之兮九坑；&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;灵衣兮被被，玉佩兮陆离；&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;一阴兮一阳，众莫知兮余所为；&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;折疏麻兮瑶华，将以遗兮离居；&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;老冉冉兮既极，不寖近兮愈疏；&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;乘龙兮辚辚，高驰兮冲天；&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;结桂枝兮延伫，羌愈思兮愁人；&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;愁人兮奈何，愿若今兮无亏；&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;固人命兮有当，孰离合兮可为？&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
         </widget>
        </item>
@@ -1875,8 +1875,18 @@ p, li { white-space: pre-wrap; }
       <attribute name="title">
        <string>Display Widgets</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_7" rowstretch="1,39,0">
-       <item row="0" column="1">
+      <layout class="QGridLayout" name="gridLayout_7" rowstretch="1,0,0">
+       <item row="1" column="0" rowspan="2">
+        <widget class="QOpenGLWidget" name="openGLWidget">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
         <widget class="QLabel" name="label_27">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
@@ -1886,44 +1896,6 @@ p, li { white-space: pre-wrap; }
          </property>
          <property name="text">
           <string>QOpenGLWidget</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_26">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>WebEngineView</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0" rowspan="2">
-        <widget class="QWebEngineView" name="webEngineView">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="url">
-          <url>
-           <string>about:blank</string>
-          </url>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1" rowspan="2">
-        <widget class="QOpenGLWidget" name="openGLWidget">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
          </property>
         </widget>
        </item>
@@ -1940,58 +1912,58 @@ p, li { white-space: pre-wrap; }
           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;title&gt;Qt Network 5.9&lt;/title&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Cantarell'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Noto Sans CJK SC'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;table border=&quot;0&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;&quot; cellspacing=&quot;2&quot; cellpadding=&quot;0&quot;&gt;
 &lt;tr&gt;
 &lt;td&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;qtdocheader&quot;&gt;&lt;/a&gt;&lt;a href=&quot;../qtdoc/supported-platforms-and-configurations.html#qt-5-9&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2a76c6;&quot;&gt;Q&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; text-decoration: underline; color:#2a76c6;&quot;&gt;t 5.9&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;qtdocheader&quot;&gt;&lt;/a&gt;&lt;a href=&quot;../qtdoc/supported-platforms-and-configurations.html#qt-5-9&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt; text-decoration: underline; color:#2a76c6;&quot;&gt;Q&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt; text-decoration: underline; color:#2a76c6;&quot;&gt;t 5.9&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
 &lt;td&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Qt Network&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;Qt Network&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;table border=&quot;0&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;&quot; cellspacing=&quot;2&quot; cellpadding=&quot;0&quot;&gt;
 &lt;tr&gt;
 &lt;td width=&quot;100%&quot;&gt;
-&lt;p align=&quot;right&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;buildversion&quot;&gt;&lt;/a&gt;Qt 5.9.0 Reference Documentation&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;p style=&quot; margin-top:14px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;toc&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-size:large; font-weight:600;&quot;&gt;C&lt;/span&gt;&lt;span style=&quot; font-size:large; font-weight:600;&quot;&gt;ontents&lt;/span&gt;&lt;/p&gt;
-&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;#getting-started&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2a76c6;&quot;&gt;Getting Started&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;#articles-and-guides&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2a76c6;&quot;&gt;Articles and Guides&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;#api-reference&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2a76c6;&quot;&gt;API Reference&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;li style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;#licenses-and-attributions&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2a76c6;&quot;&gt;Licenses and Attributions&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
-&lt;p style=&quot; margin-top:18px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;sidebar-content&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-size:xx-large; font-weight:600;&quot;&gt;Q&lt;/span&gt;&lt;span style=&quot; font-size:xx-large; font-weight:600;&quot;&gt;t Network&lt;/span&gt; &lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;details&quot;&gt;&lt;/a&gt;Qt Network provides a set of APIs for programming applications that use TCP/IP. Operations such as requests, cookies, and sending data over HTTP are handled by various C++ classes.&lt;a name=&quot;getting-started&quot;&gt;&lt;/a&gt; &lt;/p&gt;
-&lt;p style=&quot; margin-top:16px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;getting-started&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-size:x-large; font-weight:600;&quot;&gt;G&lt;/span&gt;&lt;span style=&quot; font-size:x-large; font-weight:600;&quot;&gt;etting Started&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;To use Qt Network classes,add this directive into the C++ files:&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Monospace';&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Monospace';&quot;&gt;  #include &amp;lt;QtNetwork&amp;gt;&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Monospace';&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;To link against the Qt Network module, add this line to the project file:&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Monospace';&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Monospace';&quot;&gt;  QT += network&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;articles-and-guides&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Monospace';&quot;&gt; &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:16px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;articles-and-guides&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-size:x-large; font-weight:600;&quot;&gt;A&lt;/span&gt;&lt;span style=&quot; font-size:x-large; font-weight:600;&quot;&gt;rticles and Guides&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;These articles contain information about Qt Network setup and about applications with networking capabilities.&lt;/p&gt;
-&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;qtnetwork-programming.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2a76c6;&quot;&gt;Network Programming with Qt&lt;/span&gt;&lt;/a&gt; - Programming applications with networking capabilities&lt;/li&gt;
-&lt;li style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;bearer-management.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2a76c6;&quot;&gt;Bearer Management&lt;/span&gt;&lt;/a&gt; - An API to control the system's connectivity state&lt;/li&gt;
-&lt;li style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;ssl.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2a76c6;&quot;&gt;Secure Sockets Layer (SSL) Classes&lt;/span&gt;&lt;/a&gt; - Classes for secure communication over network sockets&lt;a name=&quot;api-reference&quot;&gt;&lt;/a&gt; &lt;/li&gt;&lt;/ul&gt;
-&lt;p style=&quot; margin-top:16px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;api-reference&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-size:x-large; font-weight:600;&quot;&gt;A&lt;/span&gt;&lt;span style=&quot; font-size:x-large; font-weight:600;&quot;&gt;PI Reference&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;These are links to the API reference materials.&lt;/p&gt;
-&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;qtnetwork-module.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2a76c6;&quot;&gt;C++ Classes&lt;/span&gt;&lt;/a&gt;&lt;a name=&quot;licenses-and-attributions&quot;&gt;&lt;/a&gt; &lt;/li&gt;&lt;/ul&gt;
-&lt;p style=&quot; margin-top:16px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;licenses-and-attributions&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-size:x-large; font-weight:600;&quot;&gt;L&lt;/span&gt;&lt;span style=&quot; font-size:x-large; font-weight:600;&quot;&gt;icenses and Attributions&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Qt Network is available under commercial licenses from &lt;a href=&quot;http://www.qt.io/about-us/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2a76c6;&quot;&gt;The Qt Company&lt;/span&gt;&lt;/a&gt;. In addition, it is available under the &lt;a href=&quot;http://www.gnu.org/licenses/lgpl-3.0.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2a76c6;&quot;&gt;GNU Lesser General Public License, version 3&lt;/span&gt;&lt;/a&gt;, or the &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2a76c6;&quot;&gt;GNU General Public License, version 2&lt;/span&gt;&lt;/a&gt;. See &lt;a href=&quot;../qtdoc/licensing.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2a76c6;&quot;&gt;Qt Licensing&lt;/span&gt;&lt;/a&gt; for further details.&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Qt Network can use the &lt;a href=&quot;https://www.openssl.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2a76c6;&quot;&gt;OpenSSL Toolkit&lt;/span&gt;&lt;/a&gt; as a backend. The library is then linked against OpenSSL in a way that requires compliance with the &lt;a href=&quot;https://www.openssl.org/source/license.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2a76c6;&quot;&gt;OpenSSL License&lt;/span&gt;&lt;/a&gt;. To allow linking OpenSSL with Qt Network under the GPL, following exceptions to the GPL do apply:&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Monospace';&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Monospace';&quot;&gt;  In addition, as a special exception, the copyright holders listed above give&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Monospace';&quot;&gt;  permission to link the code of its release of Qt with the OpenSSL project's&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Monospace';&quot;&gt;  &amp;quot;OpenSSL&amp;quot; library (or modified versions of the &amp;quot;OpenSSL&amp;quot; library that use the&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Monospace';&quot;&gt;  same license as the original version), and distribute the linked executables.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Monospace';&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Monospace';&quot;&gt;  You must comply with the GNU General Public License version 2 in all&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Monospace';&quot;&gt;  respects for all of the code used other than the &amp;quot;OpenSSL&amp;quot; code.  If you&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Monospace';&quot;&gt;  modify this file, you may extend this exception to your version of the file,&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Monospace';&quot;&gt;  but you are not obligated to do so.  If you do not wish to do so, delete&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Monospace';&quot;&gt;  this exception statement from your version of this file.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Monospace';&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Also note shipping OpenSSL might cause &lt;a href=&quot;ssl.html#import-and-export-restrictions&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2a76c6;&quot;&gt;Import and Export Restrictions&lt;/span&gt;&lt;/a&gt; to apply. &lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;© 2017 The Qt Company Ltd. Documentation contributions included herein are the copyrights of their respective owners.&lt;br /&gt;The documentation provided herein is licensed under the terms of the &lt;a href=&quot;http://www.gnu.org/licenses/fdl.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2a76c6;&quot;&gt;GNU Free Documentation License version 1.3&lt;/span&gt;&lt;/a&gt; as published by the Free Software Foundation.&lt;br /&gt;Qt and respective logos are trademarks of The Qt Company Ltd. in Finland and/or other countries worldwide. All other trademarks are property of their respective owners. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p align=&quot;right&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;buildversion&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;Q&lt;/span&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;t 5.9.0 Reference Documentation&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;p style=&quot; margin-top:14px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;toc&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt; font-weight:600;&quot;&gt;C&lt;/span&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt; font-weight:600;&quot;&gt;ontents&lt;/span&gt;&lt;/p&gt;
+&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; font-family:'Cantarell'; font-size:11pt;&quot; style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;#getting-started&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2a76c6;&quot;&gt;Getting Started&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li style=&quot; font-family:'Cantarell'; font-size:11pt;&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;#articles-and-guides&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2a76c6;&quot;&gt;Articles and Guides&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li style=&quot; font-family:'Cantarell'; font-size:11pt;&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;#api-reference&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2a76c6;&quot;&gt;API Reference&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li style=&quot; font-family:'Cantarell'; font-size:11pt;&quot; style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;#licenses-and-attributions&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2a76c6;&quot;&gt;Licenses and Attributions&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+&lt;p style=&quot; margin-top:18px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;sidebar-content&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt; font-weight:600;&quot;&gt;Q&lt;/span&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt; font-weight:600;&quot;&gt;t Network&lt;/span&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;details&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;Q&lt;/span&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;t Network provides a set of APIs for programming applications that use TCP/IP. Operations such as requests, cookies, and sending data over HTTP are handled by various C++ classes.&lt;/span&gt;&lt;a name=&quot;getting-started&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:16px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;getting-started&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt; font-weight:600;&quot;&gt;G&lt;/span&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt; font-weight:600;&quot;&gt;etting Started&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;To use Qt Network classes,add this directive into the C++ files:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Monospace'; font-size:11pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Monospace'; font-size:11pt;&quot;&gt;  #include &amp;lt;QtNetwork&amp;gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Monospace'; font-size:11pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;To link against the Qt Network module, add this line to the project file:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Monospace'; font-size:11pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Monospace'; font-size:11pt;&quot;&gt;  QT += network&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;articles-and-guides&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Monospace'; font-size:11pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:16px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;articles-and-guides&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt; font-weight:600;&quot;&gt;A&lt;/span&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt; font-weight:600;&quot;&gt;rticles and Guides&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;These articles contain information about Qt Network setup and about applications with networking capabilities.&lt;/span&gt;&lt;/p&gt;
+&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; font-family:'Cantarell'; font-size:11pt;&quot; style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;qtnetwork-programming.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2a76c6;&quot;&gt;Network Programming with Qt&lt;/span&gt;&lt;/a&gt; - Programming applications with networking capabilities&lt;/li&gt;
+&lt;li style=&quot; font-family:'Cantarell'; font-size:11pt;&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;bearer-management.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2a76c6;&quot;&gt;Bearer Management&lt;/span&gt;&lt;/a&gt; - An API to control the system's connectivity state&lt;/li&gt;
+&lt;li style=&quot; font-family:'Cantarell'; font-size:11pt;&quot; style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;ssl.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2a76c6;&quot;&gt;Secure Sockets Layer (SSL) Classes&lt;/span&gt;&lt;/a&gt; - Classes for secure communication over network sockets&lt;a name=&quot;api-reference&quot;&gt;&lt;/a&gt; &lt;/li&gt;&lt;/ul&gt;
+&lt;p style=&quot; margin-top:16px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;api-reference&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt; font-weight:600;&quot;&gt;A&lt;/span&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt; font-weight:600;&quot;&gt;PI Reference&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;These are links to the API reference materials.&lt;/span&gt;&lt;/p&gt;
+&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; font-family:'Cantarell'; font-size:11pt;&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;qtnetwork-module.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2a76c6;&quot;&gt;C++ Classes&lt;/span&gt;&lt;/a&gt;&lt;a name=&quot;licenses-and-attributions&quot;&gt;&lt;/a&gt; &lt;/li&gt;&lt;/ul&gt;
+&lt;p style=&quot; margin-top:16px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;licenses-and-attributions&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt; font-weight:600;&quot;&gt;L&lt;/span&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt; font-weight:600;&quot;&gt;icenses and Attributions&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;Qt Network is available under commercial licenses from &lt;/span&gt;&lt;a href=&quot;http://www.qt.io/about-us/&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt; text-decoration: underline; color:#2a76c6;&quot;&gt;The Qt Company&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;. In addition, it is available under the &lt;/span&gt;&lt;a href=&quot;http://www.gnu.org/licenses/lgpl-3.0.html&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt; text-decoration: underline; color:#2a76c6;&quot;&gt;GNU Lesser General Public License, version 3&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;, or the &lt;/span&gt;&lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.html&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt; text-decoration: underline; color:#2a76c6;&quot;&gt;GNU General Public License, version 2&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;. See &lt;/span&gt;&lt;a href=&quot;../qtdoc/licensing.html&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt; text-decoration: underline; color:#2a76c6;&quot;&gt;Qt Licensing&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt; for further details.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;Qt Network can use the &lt;/span&gt;&lt;a href=&quot;https://www.openssl.org/&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt; text-decoration: underline; color:#2a76c6;&quot;&gt;OpenSSL Toolkit&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt; as a backend. The library is then linked against OpenSSL in a way that requires compliance with the &lt;/span&gt;&lt;a href=&quot;https://www.openssl.org/source/license.html&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt; text-decoration: underline; color:#2a76c6;&quot;&gt;OpenSSL License&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;. To allow linking OpenSSL with Qt Network under the GPL, following exceptions to the GPL do apply:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Monospace'; font-size:11pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Monospace'; font-size:11pt;&quot;&gt;  In addition, as a special exception, the copyright holders listed above give&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Monospace'; font-size:11pt;&quot;&gt;  permission to link the code of its release of Qt with the OpenSSL project's&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Monospace'; font-size:11pt;&quot;&gt;  &amp;quot;OpenSSL&amp;quot; library (or modified versions of the &amp;quot;OpenSSL&amp;quot; library that use the&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Monospace'; font-size:11pt;&quot;&gt;  same license as the original version), and distribute the linked executables.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Monospace'; font-size:11pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Monospace'; font-size:11pt;&quot;&gt;  You must comply with the GNU General Public License version 2 in all&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Monospace'; font-size:11pt;&quot;&gt;  respects for all of the code used other than the &amp;quot;OpenSSL&amp;quot; code.  If you&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Monospace'; font-size:11pt;&quot;&gt;  modify this file, you may extend this exception to your version of the file,&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Monospace'; font-size:11pt;&quot;&gt;  but you are not obligated to do so.  If you do not wish to do so, delete&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Monospace'; font-size:11pt;&quot;&gt;  this exception statement from your version of this file.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Monospace'; font-size:11pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;Also note shipping OpenSSL might cause &lt;/span&gt;&lt;a href=&quot;ssl.html#import-and-export-restrictions&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt; text-decoration: underline; color:#2a76c6;&quot;&gt;Import and Export Restrictions&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt; to apply. &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt;© 2017 The Qt Company Ltd. Documentation contributions included herein are the copyrights of their respective owners.&lt;br /&gt;The documentation provided herein is licensed under the terms of the &lt;/span&gt;&lt;a href=&quot;http://www.gnu.org/licenses/fdl.html&quot;&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt; text-decoration: underline; color:#2a76c6;&quot;&gt;GNU Free Documentation License version 1.3&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Cantarell'; font-size:11pt;&quot;&gt; as published by the Free Software Foundation.&lt;br /&gt;Qt and respective logos are trademarks of The Qt Company Ltd. in Finland and/or other countries worldwide. All other trademarks are property of their respective owners. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
         </widget>
        </item>
@@ -2141,13 +2113,6 @@ p, li { white-space: pre-wrap; }
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>QWebEngineView</class>
-   <extends>QWidget</extends>
-   <header location="global">QtWebEngineWidgets/QWebEngineView</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
  <buttongroups>

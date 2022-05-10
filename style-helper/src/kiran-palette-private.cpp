@@ -5,7 +5,7 @@ KiranPalettePrivate::KiranPalettePrivate(QObject* parent, KiranPalette* ptr)
     : QObject(parent),
       q_ptr(ptr),
       m_customSpecialType(false),
-      m_type(Kiran::Style::PALETTE_DARK),
+      m_type(KiranStyle::PALETTE_DARK),
       m_schemeLoader(new Kiran::Style::SchemeLoader)
 {
     //监听Kiran桌面主题变化信号
@@ -28,23 +28,23 @@ void KiranPalettePrivate::handleGtkThemeChanged(const QString& gtkTheme)
     }
     else
     {
-        Kiran::Style::PaletteType type;
+        KiranStyle::PaletteType type;
         if( gtkTheme.compare("kiran") == 0 )
         {
-            type = Kiran::Style::PALETTE_LIGHT;
+            type = KiranStyle::PALETTE_LIGHT;
         }
         else
         {
-            type = Kiran::Style::PALETTE_DARK;
+            type = KiranStyle::PALETTE_DARK;
         }
         updatePaletteType(type,false);
     }
 }
 
-QString KiranPalettePrivate::getSchemeFile(Kiran::Style::PaletteType type)
+QString KiranPalettePrivate::getSchemeFile(KiranStyle::PaletteType type)
 {
     // clang-format off
-    static QString schemeFile[Kiran::Style::PALETTE_LAST] = {
+    static QString schemeFile[KiranStyle::PALETTE_LAST] = {
         QStringLiteral(":/style-helper/colors/light.css"),
         QStringLiteral(":/style-helper/colors/dark.css")
     };
@@ -52,7 +52,7 @@ QString KiranPalettePrivate::getSchemeFile(Kiran::Style::PaletteType type)
     return schemeFile[type];
 }
 
-void KiranPalettePrivate::updatePaletteType(Kiran::Style::PaletteType type, bool customSpecial)
+void KiranPalettePrivate::updatePaletteType(KiranStyle::PaletteType type, bool customSpecial)
 {
     m_customSpecialType = customSpecial;
     m_type = type;

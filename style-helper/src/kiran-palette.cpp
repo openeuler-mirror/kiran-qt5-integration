@@ -53,17 +53,17 @@ void KiranPalette::polishPalette(QPalette* palette)
     d_ptr->m_schemeLoader->polish(palette);
 }
 
-Kiran::Style::PaletteType KiranPalette::paletteType()
+KiranStyle::PaletteType KiranPalette::paletteType()
 {
     return d_ptr->m_type;
 }
 
-void KiranPalette::setDesignatedPaletteType(Kiran::Style::PaletteType type)
+void KiranPalette::setDesignatedPaletteType(KiranStyle::PaletteType type)
 {
     d_ptr->updatePaletteType(type,true);
 }
 
-QColor KiranPalette::color(ColorState state,WidgetType type,WidgetColorRule rule)
+QColor KiranPalette::color(ColorStateFlags states,WidgetType type,WidgetColorRule rule)
 {
     QColor defaultColor;
 
@@ -76,12 +76,14 @@ QColor KiranPalette::color(ColorState state,WidgetType type,WidgetColorRule rule
     }
     auto propertyEnum = static_cast<SchemeLoader::SchemePropertyName>(type+rule);
 
-    auto pseudoIter = pseudoClassMap.find(state);
-    if( pseudoIter == pseudoClassMap.end() )
+    int64_t pseudoClass = PseudoClass_Unspecified;
+    for(auto iter=pseudoClassMap.begin();iter!=pseudoClassMap.end();iter++)
     {
-        return defaultColor;
+        if( states & iter.key() )
+        {
+            pseudoClass |= iter.value();
+        }
     }
-    Kiran::Style::PseudoClassType pseudoClass = pseudoIter.value();
 
     return d_ptr->m_schemeLoader->getColor(propertyEnum,pseudoClass);
 }
@@ -135,4 +137,9 @@ QColor KiranPalette::color(const QWidget* widget,
                    << "\tspecial state:" << specialState << "-->" << pseudoClass << "\n";
     }
     return color;
+}
+
+void KiranPalette::dump()
+{
+    d_ptr->m_schemeLoader->dump();
 }
