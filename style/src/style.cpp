@@ -12,8 +12,7 @@
  * Author:     liuxinhao <liuxinhao@kylinos.com.cn>
  */
 #include "style.h"
-#include "../../style-helper/src/scheme-loader.h"
-#include "metrics.h"
+#include "scheme-loader.h"
 #include "render-helper.h"
 
 #include <QAbstractItemView>

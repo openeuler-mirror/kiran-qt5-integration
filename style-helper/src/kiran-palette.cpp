@@ -143,3 +143,8 @@ void KiranPalette::dump()
 {
     d_ptr->m_schemeLoader->dump();
 }
+
+Kiran::Style::SchemeLoader* KiranPalette::getSchemeLoader()
+{
+    return d_ptr->m_schemeLoader;
+}

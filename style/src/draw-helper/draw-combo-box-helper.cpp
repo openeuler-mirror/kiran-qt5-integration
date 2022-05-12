@@ -12,10 +12,10 @@
  * Author:     liuxinhao <liuxinhao@kylinos.com.cn>
  */
 #include "draw-combo-box-helper.h"
-#include "kiran-palette.h"
 #include "draw-common-helper.h"
 #include "metrics.h"
 #include "render-helper.h"
+#include "scheme-loader-fetcher.h"
 
 #include <QComboBox>
 #include <QDebug>
@@ -83,7 +83,6 @@ bool Kiran::Style::comboBoxSubControlRect(const QStyle *style, const QStyleOptio
         break;
     case QStyle::SC_ComboBoxEditField:
     {
-        int frameWidth(style->pixelMetric(QStyle::PM_ComboBoxFrameWidth, opt, widget));
         controlRect = QRect(rect.left(), rect.top(),rect.width() - rect.height() - 4,rect.height());
         controlRect.adjust(frameWidth, frameWidth, 0, -frameWidth);
         controlRect = QStyle::visualRect(opt->direction,opt->rect,controlRect);
@@ -110,6 +109,9 @@ bool Kiran::Style::drawCCComboBox(const QStyle *style, const QStyleOptionComplex
     bool arrowActive(comboBoxOption->activeSubControls & QStyle::SC_ComboBoxArrow);
     bool flat(!comboBoxOption->frame);
     bool sunken;
+
+    auto schemeLoader = SchemeLoaderFetcher::getSchemeLoader();
+
     if (editable)
     {
         sunken = arrowActive && enabled && ( state & (QStyle::State_On|QStyle::State_Sunken) );
@@ -125,51 +127,13 @@ bool Kiran::Style::drawCCComboBox(const QStyle *style, const QStyleOptionComplex
 
     const bool empty(comboBox && !comboBox->count());
 
-    QStyleOption arrowIndicatorOption(*option);
-    arrowIndicatorOption.state &= ~QStyle::State_Selected;
-    arrowIndicatorOption.state &= ~QStyle::State_Open;
-    arrowIndicatorOption.state &= ~QStyle::State_On;
-
-    if (editable)
-    {
-        if (windowActive && arrowActive && enabled && (state & QStyle::State_MouseOver))
-            arrowIndicatorOption.state |= QStyle::State_MouseOver;
-        else
-            arrowIndicatorOption.state &= ~QStyle::State_MouseOver;
-
-        if (enabled && (state & (QStyle::State_HasFocus | QStyle::State_Sunken)))
-            arrowIndicatorOption.state |= QStyle::State_HasFocus;
-        else
-            arrowIndicatorOption.state &= ~QStyle::State_HasFocus;
-
-        if (enabled && (state & (QStyle::State_On | QStyle::State_Sunken)))
-            arrowIndicatorOption.state |= QStyle::State_Sunken;
-        else
-            arrowIndicatorOption.state &= ~QStyle::State_Sunken;
-    }
-    else
-    {
-        if (windowActive && enabled && (state & QStyle::State_MouseOver))
-            arrowIndicatorOption.state |= QStyle::State_MouseOver;
-        else
-            arrowIndicatorOption.state &= ~QStyle::State_MouseOver;
-
-        if (enabled && (state & (QStyle::State_HasFocus | QStyle::State_Sunken)))
-            arrowIndicatorOption.state |= QStyle::State_HasFocus;
-        else
-            arrowIndicatorOption.state &= ~QStyle::State_HasFocus;
-
-        if (enabled && (state & (QStyle::State_On | QStyle::State_Sunken)))
-            arrowIndicatorOption.state |= QStyle::State_Sunken;
-        else
-            arrowIndicatorOption.state &= ~QStyle::State_Sunken;
-    }
-
+    //TODO: 当ComboBox为空时，应当特别绘制
     // frame
     if (option->subControls & QStyle::SC_ComboBoxFrame)
     {
         if (editable)
         {
+            //FIXME:下拉框编辑状态悬浮判断没有区域
             flat |= (option->rect.height() <= 2 * Metrics::Frame_FrameWidth + Metrics::MenuButton_IndicatorWidth);
             if (flat)
             {
@@ -182,13 +146,12 @@ bool Kiran::Style::drawCCComboBox(const QStyle *style, const QStyleOptionComplex
             {
                 QRectF arrowRect = style->subControlRect(QStyle::CC_ComboBox, comboBoxOption, QStyle::SC_ComboBoxArrow, widget);
 
-                //箭头
+                //ComboBox 箭头按钮
                 arrowRect.adjust(1.5, 1.5, -1.5, -1.5);
                 QPainterPath indicatorPainterPath = RenderHelper::roundedPath(arrowRect, CornersRight, 4);
 
-                arrowIndicatorOption.state &= ~QStyle::State_On;
-                QColor background = KiranPalette::instance()->color(widget,&arrowIndicatorOption,KiranPalette::Widget,KiranPalette::Background);
-                QColor border = KiranPalette::instance()->color(enabled?KiranPalette::Normal:KiranPalette::Disabled,KiranPalette::Widget,KiranPalette::Border);
+                auto background = schemeLoader->getColor(widget,option,SchemeLoader::Combo_Background);
+                auto border = schemeLoader->getColor(widget,option,SchemeLoader::Combo_Border);
 
                 QPen pen = painter->pen();
                 painter->setRenderHints(QPainter::Antialiasing);
@@ -210,18 +173,15 @@ bool Kiran::Style::drawCCComboBox(const QStyle *style, const QStyleOptionComplex
                 auto background = option->palette.color(QPalette::Base);
                 if(sunken)
                 {
-                    background = KiranPalette::instance()->color(widget,&arrowIndicatorOption,KiranPalette::Widget,KiranPalette::Background);
+                    background = schemeLoader->getColor(widget,option,SchemeLoader::Combo_Background);
                 }
                 RenderHelper::renderFrame(painter,option->rect,1,0,background);
             }
             else
             {
                 QStyleOptionComboBox tempOption(*comboBoxOption);
-                tempOption.state &= ~QStyle::State_Selected;
-                tempOption.state &= ~QStyle::State_Open;
-                tempOption.state &= ~QStyle::State_On;
-                QColor backgroundColor = KiranPalette::instance()->color(widget,&tempOption,KiranPalette::Widget,KiranPalette::Background);
-                QColor borderColor = KiranPalette::instance()->color(enabled?KiranPalette::Normal:KiranPalette::Disabled,KiranPalette::Widget,KiranPalette::Border);
+                auto backgroundColor = schemeLoader->getColor(widget,&tempOption,SchemeLoader::Combo_Background);
+                auto borderColor = schemeLoader->getColor(widget,&tempOption,SchemeLoader::Combo_Border);
                 RenderHelper::renderFrame(painter, option->rect, 1, 4, backgroundColor, borderColor);
             }
         }
@@ -231,7 +191,7 @@ bool Kiran::Style::drawCCComboBox(const QStyle *style, const QStyleOptionComplex
     if (option->subControls & QStyle::SC_ComboBoxArrow)
     {
         auto arrowRect(style->subControlRect(QStyle::CC_ComboBox, option, QStyle::SC_ComboBoxArrow, widget));
-        QColor arrowColor = KiranPalette::instance()->color(widget,&arrowIndicatorOption,KiranPalette::Widget,KiranPalette::Foreground);
+        auto arrowColor = schemeLoader->getColor(widget,option,SchemeLoader::Indicator_Arrow);
         RenderHelper::renderArrow(painter, arrowRect, Arrow_Down, arrowColor);
     }
 

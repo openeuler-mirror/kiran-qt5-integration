@@ -13,12 +13,11 @@
  */
 
 #include "draw-scroll-bar-helper.h"
-#include "../../../style-helper/src/scheme-loader.h"
 #include "draw-common-helper.h"
 #include "metrics.h"
 #include "render-helper.h"
+#include "scheme-loader-fetcher.h"
 
-#include <kiran-palette.h>
 #include <QAbstractScrollArea>
 #include <QDebug>
 #include <QPainter>
@@ -285,9 +284,11 @@ bool Kiran::Style::drawControlScrollBarSlider(const QStyle *style, const QStyleO
         tempOption.state |= QStyle::State_Sunken;
     }
 
-    auto handleColor = KiranPalette::instance()->color(widget,option,KiranPalette::Bare,KiranPalette::Background);
+    auto schemeLoader = SchemeLoaderFetcher::getSchemeLoader();
+    auto sliderColor = schemeLoader->getColor(widget,option,SchemeLoader::Scroll_Slider);
+
     painter->setRenderHint(QPainter::Antialiasing,true);
     QPainterPath painterPath = RenderHelper::roundedPath(handleRect,AllCorners,2);
-    painter->fillPath(painterPath,handleColor);
+    painter->fillPath(painterPath,sliderColor);
     return true;
 }

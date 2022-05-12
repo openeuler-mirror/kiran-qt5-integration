@@ -12,11 +12,11 @@
  * Author:     liuxinhao <liuxinhao@kylinos.com.cn>
  */
 #include "draw-item-view-helper.h"
-#include "kiran-palette.h"
+#include "scheme-loader-fetcher.h"
 
-#include <QStyleOption>
 #include <QIcon>
 #include <QPainter>
+#include <QStyleOption>
 
 bool Kiran::Style::drawControlHeaderSection(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
 {
@@ -26,8 +26,9 @@ bool Kiran::Style::drawControlHeaderSection(const QStyle *style, const QStyleOpt
     bool enabled(state & QStyle::State_Enabled);
     bool mouseOver((state & QStyle::State_Active) && enabled && (state & QStyle::State_MouseOver));
 
-    const QStyleOptionHeader *headerOption(qstyleoption_cast<const QStyleOptionHeader *>(option));
-    if (!headerOption) {
+    const auto *headerOption(qstyleoption_cast<const QStyleOptionHeader *>(option));
+    if (!headerOption)
+    {
         return true;
     }
 
@@ -36,41 +37,63 @@ bool Kiran::Style::drawControlHeaderSection(const QStyle *style, const QStyleOpt
     bool isCorner(widget && widget->inherits("QTableCornerButton"));
     bool reverseLayout(option->direction == Qt::RightToLeft);
 
+    auto schemeLoader = SchemeLoaderFetcher::getSchemeLoader();
+
     // outline
     painter->setBrush(Qt::NoBrush);
-    QColor outlineColor = KiranPalette::instance()->color(enabled?KiranPalette::Normal:KiranPalette::Disabled,
-                                                          KiranPalette::Widget,
-                                                          KiranPalette::Border);
+    auto outlineColor = schemeLoader->getColor(widget, option, SchemeLoader::ItemView_Branch);
     painter->setPen(outlineColor);
-    if (isCorner) {
-        if (reverseLayout) {
+
+    if (isCorner)
+    {
+        if (reverseLayout)
+        {
             painter->drawPoint(rect.bottomLeft());
-        } else {
+        }
+        else
+        {
             painter->drawPoint(rect.bottomRight());
         }
-    } else if (horizontal) {
+    }
+    else if (horizontal)
+    {
         painter->drawLine(rect.bottomLeft(), rect.bottomRight());
-    } else {
-        if (reverseLayout) {
+    }
+    else
+    {
+        if (reverseLayout)
+        {
             painter->drawLine(rect.topLeft(), rect.bottomLeft());
-        } else {
+        }
+        else
+        {
             painter->drawLine(rect.topRight(), rect.bottomRight());
         }
     }
 
     // separators
-    if (horizontal) {
-        if (headerOption->section != 0 || isFirst) {
-            if (reverseLayout) {
+    if (horizontal)
+    {
+        if (headerOption->section != 0 || isFirst)
+        {
+            if (reverseLayout)
+            {
                 painter->drawLine(rect.topLeft(), rect.bottomLeft() - QPoint(0, 1));
-            } else {
+            }
+            else
+            {
                 painter->drawLine(rect.topRight(), rect.bottomRight() - QPoint(0, 1));
             }
         }
-    } else {
-        if (reverseLayout) {
+    }
+    else
+    {
+        if (reverseLayout)
+        {
             painter->drawLine(rect.bottomLeft() + QPoint(1, 0), rect.bottomRight());
-        } else {
+        }
+        else
+        {
             painter->drawLine(rect.bottomLeft(), rect.bottomRight() - QPoint(1, 0));
         }
     }
@@ -80,9 +103,11 @@ bool Kiran::Style::drawControlHeaderSection(const QStyle *style, const QStyleOpt
 
 bool Kiran::Style::drawControlHeaderLabel(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
 {
-    if (const QStyleOptionHeader *header = qstyleoption_cast<const QStyleOptionHeader *>(option)) {
+    if (const QStyleOptionHeader *header = qstyleoption_cast<const QStyleOptionHeader *>(option))
+    {
         QRect rect = header->rect;
-        if (!header->icon.isNull()) {
+        if (!header->icon.isNull())
+        {
             QPixmap pixmap = header->icon.pixmap(style->pixelMetric(QStyle::PM_SmallIconSize), (header->state & QStyle::State_Enabled) ? QIcon::Normal : QIcon::Disabled);
             int pixw = pixmap.width();
 
@@ -113,6 +138,8 @@ bool Kiran::Style::drawControlHeaderEmptyArea(const QStyle *style, const QStyleO
     bool horizontal(option->state & QStyle::State_Horizontal);
     bool reverseLayout(option->direction == Qt::RightToLeft);
 
+    auto schemeLoader = SchemeLoaderFetcher::getSchemeLoader();
+
     // fill
     painter->setRenderHint(QPainter::Antialiasing, false);
     painter->setBrush(palette.color(QPalette::Base));
@@ -120,16 +147,22 @@ bool Kiran::Style::drawControlHeaderEmptyArea(const QStyle *style, const QStyleO
     painter->drawRect(rect);
 
     // outline
-    auto outlineColor = KiranPalette::instance()->color(widget,option,KiranPalette::Widget,KiranPalette::Border);
+    auto outlineColor = schemeLoader->getColor(widget,option,SchemeLoader::ItemView_Branch);
     painter->setBrush(Qt::NoBrush);
     painter->setPen(outlineColor);
 
-    if (horizontal) {
+    if (horizontal)
+    {
         painter->drawLine(rect.bottomLeft(), rect.bottomRight());
-    } else {
-        if (reverseLayout) {
+    }
+    else
+    {
+        if (reverseLayout)
+        {
             painter->drawLine(rect.topLeft(), rect.bottomLeft());
-        } else {
+        }
+        else
+        {
             painter->drawLine(rect.topRight(), rect.bottomRight());
         }
     }

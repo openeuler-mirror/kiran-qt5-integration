@@ -206,6 +206,27 @@
     }
 }
 
+@function internal_special_button($c: color) {
+    @if $c == default {
+        @return $SpecialButtonDefaultNormal;
+    }
+    @if $c == default-hover {
+        @return $SpecialButtonDefaultHover;
+    }
+    @if $c == default-active {
+        @return $SpecialButtonDefaultActive;
+    }
+    @if $c == warnning {
+        @return $SpecialButtonWarnningNormal;
+    }
+    @if $c == warnning-hover {
+        @return $SpecialButtonWarnningHover;
+    }
+    @if $c == warnning-active {
+        @return $SpecialButtonWarnningActive;
+    }
+}
+
 $border_color: mix($WindowBackgroundNormal, $WindowForegroundNormal, 75%);
 $menu_color: internal_window(background);
 

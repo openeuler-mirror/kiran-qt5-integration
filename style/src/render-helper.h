@@ -15,7 +15,7 @@
 #define KIRAN_QT5_PLATFORMTHEME_STYLE_SRC_RENDER_HELPER_H_
 
 #include <QTabBar>
-#include <define.h>
+#include "define.h"
 
 class QStyleOption;
 class QStyleOptionToolButton;

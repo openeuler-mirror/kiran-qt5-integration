@@ -94,6 +94,8 @@ class SchemeLoader : public QObject
 public:
     //WARNING:枚举值切勿随意更改
     //该枚举与KiranPalette之中的WidgetType,WidgetColorRule，FlagColorRule相关联
+
+    //clang-format off
     enum SchemePropertyName
     {
         // === Palette === //
@@ -139,8 +141,48 @@ public:
         // === TitleBar === ///
         TitleBar_Background        = 0x00000070,
         TitleBar_Foreground        = 0x00000071,
-        TitleBar_Border            = 0x00000072
+        TitleBar_Border            = 0x00000072,
+
+        /// --- 提供给KiranStyle直接使用的相关属性 --- ///
+        Frame_Background           = 0x00001000,
+        Frame_Border                           ,
+
+        Button_Background                      ,
+        Button_Border                          ,
+
+        SpecialButton_DefaultBackground        ,
+        SpecialButton_WarnningBackground       ,
+
+        Edit_Background                        ,
+        Edit_Border                            ,
+
+        Indicator_Arrow                        ,
+
+        Combo_Background                       ,
+        Combo_Border                           ,
+
+        ItemView_Branch                        ,
+
+        MenuBar_ItemBackground                 ,
+        MenuBar_EmptyAreaBackground            ,
+
+        Progress_Groove                        ,
+        Progress_Content                       ,
+
+        Scroll_Slider                          ,
+
+        Slider_Groove                          ,
+        Slider_Content                         ,
+        Slider_HandleBorder                    ,
+        Slider_HandleBackground                ,
+
+        SpinBox_Background                     ,
+        SpinBox_Border                         ,
+        SpinBox_SignColor                      ,
+
+        //TODO:定义kiranstyle私有的属性枚举
     };
+    //clang-format on
     Q_ENUM(SchemePropertyName)
 
 private:

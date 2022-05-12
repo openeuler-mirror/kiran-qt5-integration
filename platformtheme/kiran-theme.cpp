@@ -155,8 +155,8 @@ const QFont* KiranTheme::font(QPlatformTheme::Font type) const
     return QGenericUnixTheme::font(type);
 }
 
-//NOTE:也可通过删除QGuiApplication::app_font,对qapp下的所有window发送ApplicationFontChanged事件
-//但是若是设置了样式表(setStyleSheet)会抑制字体的传递。该方法可能耗资源更少
+// NOTE:也可通过删除QGuiApplication::app_font,对qapp下的所有window发送ApplicationFontChanged事件
+// 但是若是设置了样式表(setStyleSheet)会抑制字体的传递。该方法可能耗资源更少
 void KiranTheme::handleAppFontChanged()
 {
     qDebug(kiranPlatformTheme) << "application font changed:"
@@ -198,18 +198,18 @@ void KiranTheme::handleScaleFactorChanged(int factor)
     qDebug(kiranPlatformTheme) << "scale factor changed:"
                                << m_settingsMonitor->scaleFactor();
 
-    //缩放的话，同时也应该调整设置到窗口管理器的边缘阴影属性
+    // 缩放的话，同时也应该调整设置到窗口管理器的边缘阴影属性
     if (enableRealTimeScaling())
     {
-        if (factor == 0)  //自动缩放
+        if (factor == 0)  // 自动缩放
         {
-            //QPlatformScreen* screenHandle = screen->handle();
-            //qInfo() << screenHandle->name();
-            //qInfo() << "\t logical dpi:" << screenHandle->logicalDpi();
-            //qInfo() << "\t pixel density:" << screenHandle->pixelDensity();
-            //TODO:清空全局分辨率,对每个屏幕单独设置分辨率
+            // QPlatformScreen* screenHandle = screen->handle();
+            // qInfo() << screenHandle->name();
+            // qInfo() << "\t logical dpi:" << screenHandle->logicalDpi();
+            // qInfo() << "\t pixel density:" << screenHandle->pixelDensity();
+            // TODO:清空全局分辨率,对每个屏幕单独设置分辨率
         }
-        else if (factor == 1 || factor == 2)  //手动固定分辨率
+        else if (factor == 1 || factor == 2)  // 手动固定分辨率
         {
             qDebug(kiranPlatformTheme) << "update scale factor:" << factor;
             if (qFuzzyCompare(QHighDpiScaling::m_factor, factor))
@@ -217,7 +217,7 @@ void KiranTheme::handleScaleFactorChanged(int factor)
                 return;
             }
 
-            //清空屏幕的子缩放率
+            // 清空屏幕的子缩放率
             {
                 for (QScreen* screen : qGuiApp->screens())
                 {
@@ -228,7 +228,7 @@ void KiranTheme::handleScaleFactorChanged(int factor)
                 }
             }
 
-            //设置全局缩放率
+            // 设置全局缩放率
             QHighDpiScaling::setGlobalFactor(factor);
 
             {
@@ -238,7 +238,7 @@ void KiranTheme::handleScaleFactorChanged(int factor)
                 }
             }
 
-            //更新窗口大小
+            // 更新窗口大小
             {
                 for (QWindow* window : QGuiApplication::allWindows())
                 {
@@ -254,12 +254,12 @@ void KiranTheme::handleScaleFactorChanged(int factor)
                     if (!currentGeo.isValid())
                         return;
 
-                    //qInfo() << window->type();
-                    //qInfo() << "current geo:" << currentGeo;
+                    // qInfo() << window->type();
+                    // qInfo() << "current geo:" << currentGeo;
                     QRect nativeGeo = window->handle()->geometry();
                     qreal scale = QHighDpiScaling::factor(window);
                     nativeGeo.setSize(currentGeo.size() * scale);
-                    //qInfo() << "native geo:" << nativeGeo;
+                    // qInfo() << "native geo:" << nativeGeo;
 
                     window->handle()->setGeometry(nativeGeo);
                     QGuiApplication::sendEvent(window, new QEvent(QEvent::UpdateRequest));
@@ -292,13 +292,13 @@ bool KiranTheme::enableRealTimeScaling()
 
 void KiranTheme::handleScreenAdded(QScreen* screen)
 {
-    if (m_scaleFactor == 0)  //计算并自动调整该屏幕的缩放
+    if (m_scaleFactor == 0)  // 计算并自动调整该屏幕的缩放
     {
-        //TODO:根据QPlatformTheme中的pixel density设置该屏幕子分辨率
+        // TODO:根据QPlatformTheme中的pixel density设置该屏幕子分辨率
     }
     else if (m_scaleFactor == 1 || m_scaleFactor == 2)
     {
-        //TODO:应用全局分辨率至屏幕上
+        // TODO:应用全局分辨率至屏幕上
     }
 }
 
@@ -320,8 +320,8 @@ void KiranTheme::handleIconThemeChanged()
 
 void KiranTheme::handleGtkThemeChanged(const QString& gtkTheme)
 {
-    //NOTE: SchemeLoader会接收KiranAppearanceMonitor的GTK主题改变信号，重新加载配色方案
-    //此处只需等到下一个事件循环，通知QGuiApplication重新更新palette
+    // NOTE: SchemeLoader会接收KiranAppearanceMonitor的GTK主题改变信号，重新加载配色方案
+    // 此处只需等到下一个事件循环，通知QGuiApplication重新更新palette
     QTimer::singleShot(0, [this]
                        {
                            // 此事件会促使QGuiApplication重新从QPlatformTheme中获取系统级别的QPalette
@@ -347,6 +347,5 @@ void KiranTheme::handleGtkThemeChanged(const QString& gtkTheme)
 
                            // 该接口原本用于windows通知窗口主题变化时使用,现用来通知调用QGuiApplicationPrivate::notifyThemeChanged
                            QGuiApplicationPrivate::processThemeChanged(&event);
-                           emit qApp->paletteChanged(*palette(SystemPalette));
-                       });
+                           emit qApp->paletteChanged(*palette(SystemPalette)); });
 }

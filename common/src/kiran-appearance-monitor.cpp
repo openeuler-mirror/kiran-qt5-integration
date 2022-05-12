@@ -94,7 +94,7 @@ KiranAppearanceMonitor::KiranAppearanceMonitor(QObject *parent)
     }
     else
     {
-        qCritical() << "kiran session daemon appearance service isn't registered!";
+        qCritical(kiranPlatformThemeCommon) << "kiran session daemon appearance service isn't registered!";
     }
 
     connect(m_appearanceIface, &KiranAppearanceProxy::FontChanged,
@@ -113,7 +113,7 @@ KiranAppearanceMonitor::KiranAppearanceMonitor(QObject *parent)
     }
     else
     {
-        qCritical() << "kiran session daemon display service isn't registered!";
+        qCritical(kiranPlatformThemeCommon) << "kiran session daemon display service isn't registered!";
     }
 
     connect(m_displayIface, &KiranDisplayProxy::window_scaling_factorChanged,

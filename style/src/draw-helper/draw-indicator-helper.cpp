@@ -12,10 +12,10 @@
  * Author:     liuxinhao <liuxinhao@kylinos.com.cn>
  */
 #include "draw-indicator-helper.h"
-#include "kiran-palette.h"
 #include "draw-common-helper.h"
 #include "metrics.h"
 #include "render-helper.h"
+#include "scheme-loader-fetcher.h"
 
 #include <QStyle>
 #include <QStyleOption>
@@ -45,10 +45,10 @@ bool Kiran::Style::drawPEIndicatorButtonDropDown(const QStyle *style, const QSty
     const QPalette& palette( option->palette );
     const QRect& rect( option->rect );
 
-    auto backgroundColor = KiranPalette::instance()->color(widget,option,KiranPalette::Widget,KiranPalette::Background);
-    //此处只考虑启用和禁用状态边框
-    auto borderColor = KiranPalette::instance()->color(enabled?KiranPalette::Normal:KiranPalette::Disabled,KiranPalette::Widget,KiranPalette::Border);
-    auto separatorColor = KiranPalette::instance()->color(enabled?KiranPalette::Normal:KiranPalette::Disabled,KiranPalette::Widget,KiranPalette::Border);
+    auto schemeLoader = SchemeLoaderFetcher::getSchemeLoader();
+    auto backgroundColor = schemeLoader->getColor(widget,option,SchemeLoader::Button_Background);
+    auto borderColor = schemeLoader->getColor(widget,option,SchemeLoader::Button_Border);
+    auto separatorColor = borderColor;
 
     QRect frameRect( rect );
     painter->setClipRect( rect );
@@ -69,9 +69,10 @@ bool Kiran::Style::drawPEIndicatorButtonDropDown(const QStyle *style, const QSty
 
 bool drawPEIndicatorArrow(ArrowOrientation orientation, const QStyleOption *option, QPainter *painter, const QWidget *widget)
 {
-    bool enabled = (option->state & QStyle::State_Enabled);
-    auto arrowColor = KiranPalette::instance()->color(enabled?KiranPalette::Normal:KiranPalette::Disabled,KiranPalette::Widget,KiranPalette::Foreground);
-    RenderHelper::renderArrow(painter, option->rect, orientation, arrowColor);
+    auto schemeLoader = SchemeLoaderFetcher::getSchemeLoader();
+    auto arrowColor = schemeLoader->getColor(widget,option,Kiran::Style::SchemeLoader::Indicator_Arrow);
+
+    RenderHelper::renderArrow(painter,option->rect,orientation,arrowColor);
     return true;
 }
 
@@ -159,6 +160,8 @@ bool Kiran::Style::drawPEIndicatorBranch(const QStyle *style, const QStyleOption
     const QStyle::State &state(option->state);
     bool reverseLayout(option->direction == Qt::RightToLeft);
 
+    auto schemeLoader = SchemeLoaderFetcher::getSchemeLoader();
+
     //绘制扩展的箭头
     int expanderAdjust = 0;
     if (state & QStyle::State_Children) {
@@ -182,7 +185,7 @@ bool Kiran::Style::drawPEIndicatorBranch(const QStyle *style, const QStyleOption
         } else {
             orientation = Arrow_Right;
         }
-        auto arrowColor = KiranPalette::instance()->color(widget,option,KiranPalette::Widget,KiranPalette::Foreground);
+        auto arrowColor = schemeLoader->getColor(widget,option,SchemeLoader::Indicator_Arrow);
         RenderHelper::renderArrow(painter,arrowRect,orientation,arrowColor,QSize(12,12));
     }
 
@@ -192,7 +195,7 @@ bool Kiran::Style::drawPEIndicatorBranch(const QStyle *style, const QStyleOption
     }
 
     QPoint center(rect.center());
-    auto lineColor = KiranPalette::instance()->color(widget,option,KiranPalette::Widget,KiranPalette::Border);
+    auto lineColor = schemeLoader->getColor(widget,option,SchemeLoader::Frame_Border);
     painter->save();
     painter->setRenderHint(QPainter::Antialiasing, true);
     painter->translate(0.5, 0.5);
@@ -226,7 +229,8 @@ bool Kiran::Style::drawPEIndicatorToolBarSeparator(const QStyle *style, const QS
     bool enable = (state & QStyle::State_Enabled);
     bool separatorIsVertical( state & QStyle::State_Horizontal );
 
-    auto separatorColor = KiranPalette::instance()->color(enable?KiranPalette::Normal:KiranPalette::Disabled,KiranPalette::Widget,KiranPalette::Border);
+    auto schemeLoader = SchemeLoaderFetcher::getSchemeLoader();
+    auto separatorColor = schemeLoader->getColor(widget,option,SchemeLoader::Widget_Border);
     RenderHelper::renderSeparator(painter,option->rect,separatorIsVertical,separatorColor);
     return true;
 }
@@ -238,7 +242,8 @@ bool Kiran::Style::drawPEIndicatorToolBarHandle(const QStyle *style, const QStyl
     bool separatorIsVertical( state & QStyle::State_Horizontal );
     bool enabled(state & QStyle::State_Enabled);
 
-    auto separatorColor = KiranPalette::instance()->color(enabled?KiranPalette::Normal:KiranPalette::Disabled,KiranPalette::Widget,KiranPalette::Border);
+    auto schemeLoader = SchemeLoaderFetcher::getSchemeLoader();
+    auto separatorColor = schemeLoader->getColor(widget,option,SchemeLoader::Widget_Border);
     if( separatorIsVertical )
     {
         rect.setWidth( Metrics::ToolBar_HandleWidth );

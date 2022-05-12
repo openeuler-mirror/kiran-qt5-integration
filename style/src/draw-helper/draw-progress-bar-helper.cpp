@@ -13,12 +13,11 @@
  */
 
 #include "draw-progress-bar-helper.h"
-#include "../../../style-helper/src/scheme-loader.h"
 #include "draw-common-helper.h"
 #include "metrics.h"
 #include "render-helper.h"
+#include "scheme-loader-fetcher.h"
 
-#include <kiran-palette.h>
 #include <QDebug>
 #include <QPainter>
 #include <QString>
@@ -174,7 +173,9 @@ bool Kiran::Style::drawControlProgressBarGroove(const QStyle *style, const QStyl
     const auto progressBarOption(qstyleoption_cast<const QStyleOptionProgressBar *>(option));
     if (!progressBarOption) return true;
 
-    auto grooveColor = KiranPalette::instance()->color(widget,option,KiranPalette::Bare,KiranPalette::Background);
+    auto schemeLoader = SchemeLoaderFetcher::getSchemeLoader();
+    auto grooveColor = schemeLoader->getColor(widget,option,SchemeLoader::Progress_Groove);
+
     RenderHelper::renderFrame(painter,option->rect,1,4,grooveColor);
     return true;
 }
@@ -184,12 +185,8 @@ bool Kiran::Style::drawControlProgressBarContents(const QStyle *style, const QSt
     const auto progressBarOption(qstyleoption_cast<const QStyleOptionProgressBar *>(option));
     if (!progressBarOption) return true;
 
-    QStyleOption optionTemp( *option );
-    if( optionTemp.state & QStyle::State_Enabled )
-    {
-        optionTemp.state |= QStyle::State_On;
-    }
-    auto contentsColor = KiranPalette::instance()->color(widget,&optionTemp,KiranPalette::Bare,KiranPalette::Foreground);
+    auto schemeLoader = SchemeLoaderFetcher::getSchemeLoader();
+    auto contentsColor = schemeLoader->getColor(widget,option,SchemeLoader::Progress_Content);
 
     RenderHelper::renderFrame(painter,option->rect,1,4,contentsColor);
     return true;

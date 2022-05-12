@@ -13,13 +13,12 @@
  */
 
 #include "draw-spin-box-helper.h"
-#include "../../../style-helper/src/scheme-loader.h"
 #include "define.h"
 #include "draw-common-helper.h"
 #include "metrics.h"
 #include "render-helper.h"
+#include "scheme-loader-fetcher.h"
 
-#include <kiran-palette.h>
 #include <QDebug>
 #include <QPainter>
 #include <QRect>
@@ -157,9 +156,10 @@ void renderSpinBoxArrow(const QStyle *style, const QStyle::SubControl &subContro
         }
     }
 
-    auto borderColor = KiranPalette::instance()->color(widget,&tempOption,KiranPalette::Widget,KiranPalette::Border);
-    auto backgroundColor = KiranPalette::instance()->color(widget,&tempOption,KiranPalette::Widget,KiranPalette::Background);
-    auto signColor = KiranPalette::instance()->color(widget,&tempOption,KiranPalette::Widget,KiranPalette::Foreground);
+    auto schemeLoader = SchemeLoaderFetcher::getSchemeLoader();
+    auto borderColor = schemeLoader->getColor(widget,option,SchemeLoader::SpinBox_Border);
+    auto backgroundColor = schemeLoader->getColor(widget,option,SchemeLoader::SpinBox_Background);
+    auto signColor = schemeLoader->getColor(widget,option,SchemeLoader::SpinBox_SignColor);
 
     //绘制按钮与输入区域之间的分割线
     if (subControl == QStyle::SC_SpinBoxDown)

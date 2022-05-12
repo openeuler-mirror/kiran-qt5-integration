@@ -23,7 +23,7 @@ class ReadGlobals():
                 prefix_name = str()
                 for line in lines:
                     match_groups = re.search('([a-zA-Z]+)\]$', line)
-                    prefixs = ['Radius', 'Disabled', 'Inactive', 'Default', 'Widget', 'Bare', 'Window', 'Selection', 'View', 'WM']
+                    prefixs = ['Radius', 'Disabled', 'Inactive', 'Default', 'Widget', 'Bare', 'Window', 'Selection', 'View', 'WM','SpecialButton']
                     if match_groups != None and len(match_groups.groups()) == 1 and match_groups.groups()[0] in prefixs:
                         prefix_name = match_groups.groups()[0]
                         break

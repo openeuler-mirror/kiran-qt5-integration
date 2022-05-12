@@ -15,6 +15,7 @@
 #include "kiran-palette.h"
 #include "draw-common-helper.h"
 #include "render-helper.h"
+#include "scheme-loader-fetcher.h"
 
 #include <QColor>
 #include <QPainter>
@@ -26,8 +27,9 @@ bool Kiran::Style::drawPEFrameLineEdit(const QStyle* style, const QStyleOption* 
 {
     const auto &rect = option->rect;
 
-    auto background = KiranPalette::instance()->color(widget,option,KiranPalette::View,KiranPalette::Background);
-    auto border = KiranPalette::instance()->color(widget,option,KiranPalette::View,KiranPalette::Border);
+    auto schemeLoader = SchemeLoaderFetcher::getSchemeLoader();
+    auto background = schemeLoader->getColor(widget,option,SchemeLoader::Edit_Background);
+    auto border = schemeLoader->getColor(widget,option,SchemeLoader::Edit_Border);
 
     //控件高度不足够绘制边框
     if (rect.height() < 2 + option->fontMetrics.height())

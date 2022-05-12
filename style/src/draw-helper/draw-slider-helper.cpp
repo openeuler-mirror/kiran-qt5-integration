@@ -12,13 +12,12 @@
  * Author:     liuxinhao <liuxinhao@kylinos.com.cn>
  */
 #include "draw-slider-helper.h"
-#include "../../../style-helper/src/scheme-loader.h"
 #include "draw-common-helper.h"
 #include "metrics.h"
 #include "render-helper.h"
 #include "style.h"
+#include "scheme-loader-fetcher.h"
 
-#include <kiran-palette.h>
 #include <QPainter>
 #include <QProxyStyle>
 #include <QStyleOption>
@@ -98,10 +97,9 @@ bool Kiran::Style::drawCCSlider(const QStyle *style, const QStyleOptionComplex *
     if (!horizontal && sliderOption->tickPosition == QSlider::TicksLeft) tickSide = (Side)((int)tickSide | (int)SideLeft);
     if (!horizontal && sliderOption->tickPosition == QSlider::TicksRight) tickSide = (Side)((int)tickSide | (int)SideRight);
 
-
-    QColor grooveColor = KiranPalette::instance()->color(enabled?KiranPalette::Normal:KiranPalette::Disabled,KiranPalette::Bare,KiranPalette::Background);
-    QColor contentColor = KiranPalette::instance()->color(enabled?KiranPalette::Checked:KiranPalette::Disabled,KiranPalette::Bare,KiranPalette::Foreground);
-
+    auto schemeLoader = SchemeLoaderFetcher::getSchemeLoader();
+    auto grooveColor = schemeLoader->getColor(widget,option,SchemeLoader::Slider_Groove);
+    auto contentColor = schemeLoader->getColor(widget,option,SchemeLoader::Slider_Content);
     // tickmarks
     if ( sliderDrawTickMarks && (sliderOption->subControls & QStyle::SC_SliderTickmarks) )
     {
@@ -227,16 +225,8 @@ bool Kiran::Style::drawCCSlider(const QStyle *style, const QStyleOptionComplex *
         bool handleActive(sliderOption->activeSubControls & QStyle::SC_SliderHandle);
         bool sunken(state & (QStyle::State_On | QStyle::State_Sunken));
 
-        QColor handleBorder;
-        QColor handleBackground = contentColor;
-        if( sunken )
-        {
-            handleBackground = Qt::white;
-        }
-        else if( enabled )
-        {
-            handleBorder = Qt::white;
-        }
+        QColor handleBorder = schemeLoader->getColor(widget,option,SchemeLoader::Slider_HandleBorder);
+        QColor handleBackground = schemeLoader->getColor(widget,option,SchemeLoader::Slider_HandleBackground);
 
         //draw handle
         painter->setRenderHint(QPainter::Antialiasing);

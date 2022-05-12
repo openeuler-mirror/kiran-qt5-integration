@@ -13,7 +13,9 @@
  */
 #include "draw-common-helper.h"
 #include "render-helper.h"
+
 #include "kiran-palette.h"
+#include "scheme-loader-fetcher.h"
 
 #define private public
 #include <private/qsvgtinydocument_p.h>
@@ -33,8 +35,9 @@ bool Kiran::Style::drawPEFrame(const QStyle *style,
 {
     QColor border,background;
 
-    background = KiranPalette::instance()->color(widget,option,KiranPalette::Window,KiranPalette::Background);
-    border = KiranPalette::instance()->color(widget,option,KiranPalette::Window,KiranPalette::Border);
+    auto schemeLoader = SchemeLoaderFetcher::getSchemeLoader();
+    background = schemeLoader->getColor(widget,option,SchemeLoader::Frame_Background);
+    border = schemeLoader->getColor(widget,option,SchemeLoader::Frame_Border);
 
     RenderHelper::renderFrame(painter, option->rect, 1, 0, background,border );
     return true;
@@ -42,7 +45,7 @@ bool Kiran::Style::drawPEFrame(const QStyle *style,
 
 bool Kiran::Style::drawPEFrameFocusRect(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
 {
-    //TODO:聚焦虚线框 颜色?
+    //TODO:聚焦虚线框 颜色? 增加配置文件聚焦虚线框可配置
     return true;
 }
 
@@ -54,8 +57,9 @@ bool Kiran::Style::drawPEFrameGroupBox(const QStyle *style, const QStyleOption *
     // no frame for flat groupboxes
     if (frameOption->features & QStyleOptionFrame::Flat) return true;
 
-    auto background = KiranPalette::instance()->color(widget,option,KiranPalette::Window,KiranPalette::Background);
-    auto border = KiranPalette::instance()->color(widget,option,KiranPalette::Window,KiranPalette::Border);
+    auto schemeLoader = SchemeLoaderFetcher::getSchemeLoader();
+    auto background = schemeLoader->getColor(widget,option,SchemeLoader::Frame_Background);
+    auto border = schemeLoader->getColor(widget,option,SchemeLoader::Frame_Border);
 
     RenderHelper::renderFrame(painter, option->rect,1, 0, background, border);
     return true;

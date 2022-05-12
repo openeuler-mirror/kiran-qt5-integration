@@ -114,7 +114,19 @@ $titlebar_border_insensitive: #{"" + internal_insensitive(internal_titlebar(bord
 $titlebar_border_backdrop: #{"" + internal_backdrop(internal_titlebar(border))};
 $titlebar_border_backdrop_insensitive: #{"" + internal_insensitive(internal_backdrop(internal_titlebar(border)))};
 
+// flags
+$special_button_default_normal: #{"" + internal_special_button(default)};
+$special_button_default_hover: #{"" + internal_special_button(default-hover)};
+$special_button_default_active: #{"" + internal_special_button(default-active)};
+$special_button_default_insensitive: #{"" + internal_insensitive(internal_special_button(default))};
+
+$special_button_warnning_normal: #{"" + internal_special_button(warnning)};
+$special_button_warnning_hover: #{"" + internal_special_button(warnning-hover)};
+$special_button_warnning_active: #{"" + internal_special_button(warnning-active)};
+$special_button_warnning_insensitive: #{"" + internal_insensitive(internal_special_button(warnning))};
+
 // === Flag ===
+//NOTE:此处需要修改，.colors之中定义的Success为绿色，应该是错误的，而且其他类型也并未有其他状态的值
 Flag {
   Warning: $default_warning;
   Error: $default_error;
@@ -283,4 +295,225 @@ TitleBar:disabled {
   Background: $titlebar_background_insensitive;
   Foreground: $titlebar_foreground_insensitive;
   Border: $titlebar_border_insensitive;
+}
+
+
+/** --- 提供给KiranStyle直接使用的相关属性 --- **/
+Frame
+{
+  Background: $window_background_normal;
+  Border: $window_border_normal;
+}
+
+Frame:disabled
+{
+  Background: $window_background_insensitive;
+  Border: $window_border_insensitive;
+}
+
+Button
+{
+  Background: $widget_background_normal;
+  Border: $widget_border_normal;
+}
+
+Button:hover
+{
+  Background: $widget_background_hover;
+}
+
+Button:pressed
+{
+  Background: $widget_background_active;
+}
+
+Button:disabled
+{
+  Background: $widget_background_insensitive;
+  Border: $widget_border_insensitive;
+}
+
+SpecialButton
+{
+  DefaultBackground:$special_button_default_normal;
+  WarnningBackground:$special_button_warnning_normal;
+}
+
+SpecialButton:hover
+{
+  DefaultBackground:$special_button_default_hover;
+  WarnningBackground:$special_button_warnning_hover;
+}
+
+SpecialButton:pressed
+{
+  DefaultBackground:$special_button_default_active;
+  WarnningBackground:$special_button_warnning_active;
+}
+
+SpecialButton:disabled
+{
+  DefaultBackground:$special_button_default_insensitive;
+  WarnningBackground:$special_button_warnning_insensitive;
+}
+
+Edit
+{
+  Background: $view_background_normal;
+  Foreground: $view_foreground_normal;
+  Border: $view_border_normal;
+}
+
+Edit:focus
+{
+  Border: $view_border_focus;
+}
+
+Edit:disabled
+{
+  Background: $view_background_insensitive;
+  Border: $view_border_insensitive;
+}
+
+Indicator
+{
+  Arrow: $widget_foreground_normal;
+}
+
+Indicator:disabled
+{
+  Arrow: $widget_foreground_insensitive;
+}
+
+Combo
+{
+  Background: $widget_background_normal;
+  Border: $widget_border_normal;
+}
+
+Combo:hover
+{
+  Background: $widget_background_hover;
+}
+
+Combo:pressed
+{
+  Background: $widget_background_active;
+}
+
+Combo:disabled
+{
+  Background: $widget_background_insensitive;
+  Border: $widget_border_insensitive;
+}
+
+ItemView
+{
+  Branch: $widget_border_normal;
+}
+
+ItemView:disabled
+{
+  Branch: $widget_border_insensitive;
+}
+
+MenuBar
+{
+  ItemBackground: $window_background_normal;
+  EmptyAreaBackground: $window_background_normal;
+}
+
+MenuBar:hover
+{
+  ItemBackground: $widget_background_hover;
+}
+
+MenuBar:pressed
+{
+  ItemBackground: $widget_background_active;
+}
+
+MenuBar:disabled
+{
+  ItemBackground: $window_background_insensitive;
+  EmptyAreaBackground: $window_background_insensitive;
+}
+
+Progress
+{
+  Groove: $bare_background_normal;
+  Content: $bare_foreground_checked;
+}
+
+Progress:disabled
+{
+  Groove: $bare_background_insensitive;
+  Content: $bare_foreground_insensitive;
+}
+
+Scroll
+{
+  Slider: $bare_background_normal;
+}
+
+Scroll:hover
+{
+  Slider: $bare_background_hover;
+}
+
+Scroll:pressed
+{
+  Slider: $bare_background_checked;
+}
+
+Scroll:disabled
+{
+  Slider: $bare_background_insensitive;
+}
+
+Slider
+{
+  Groove: $bare_background_normal;
+  Content: $bare_foreground_checked;
+  HandleBorder: $bare_foreground_normal;
+  HandleBackground: $bare_foreground_checked;
+}
+
+Slider:pressed
+{
+  HandleBorder: $bare_foreground_normal;
+  HandleBackground: $bare_foreground_normal;
+}
+
+Slider:disabled
+{
+  Groove: $bare_background_insensitive;
+  Content: $bare_foreground_insensitive;
+  HandleBorder: $bare_foreground_insensitive;
+  HandleBackground: $bare_foreground_insensitive;
+}
+
+SpinBox
+{
+  Background: $widget_background_normal;
+  Border: $widget_border_normal;
+  SignColor: $widget_foreground_normal;
+}
+
+SpinBox:hover
+{
+  Background: $widget_background_hover;
+  Border: $widget_border_hover;
+}
+
+SpinBox:pressed
+{
+  Background: $widget_background_active;
+}
+
+SpinBox:disabled
+{
+  Background: $widget_background_insensitive;
+  Border: $widget_border_insensitive;
+  SignColor: $widget_foreground_insensitive;
 }

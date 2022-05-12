@@ -18,6 +18,7 @@
 #include "metrics.h"
 #include "render-helper.h"
 #include "kiran-style-property.h"
+#include "scheme-loader-fetcher.h"
 
 #include <QAbstractButton>
 #include <QDebug>
@@ -201,42 +202,21 @@ bool Kiran::Style::drawPEPanelButtonCommand(const QStyle* style, const QStyleOpt
     bool sunken(state & (QStyle::State_On | QStyle::State_Sunken));
     bool flat(buttonOption->features & QStyleOptionButton::Flat);
 
+    auto schemeLoader = SchemeLoaderFetcher::getSchemeLoader();
     QColor background,border;
     if( qobject_cast<const QPushButton*>(widget) && PropertyHelper::getButtonType(qobject_cast<const QPushButton*>(widget))!=BUTTON_Normal )
     {
         ButtonType type = PropertyHelper::getButtonType(qobject_cast<const QPushButton*>(widget));
-        static QMap<ButtonType,QColor> sunkenColors = { {BUTTON_Default,QColor("#1568ad")},{BUTTON_Warning,QColor("#9d2c2c")} };
-        static QMap<ButtonType,QColor> hoverColors = { {BUTTON_Default,QColor("#79c3ff")},{BUTTON_Warning,QColor("#ff7878")} };
-        static QMap<ButtonType,QColor> normalColors = { {BUTTON_Default,QColor("#43a3f2")},{BUTTON_Warning,QColor("#fa4949")} };
-        if( !enabled )
-        {
-            background = QColor(255,255,255,13);
-        }
-        else if( sunken )
-        {
-            background = sunkenColors[type];
-        }
-        else if( mouseOver )
-        {
-            background = hoverColors[type];
-        }
-        else
-        {
-            background = normalColors[type];
-        }
+        SchemeLoader::SchemePropertyName backgroundPropertyName = SchemeLoader::SpecialButton_DefaultBackground;
+        if( type == BUTTON_Warning )
+            backgroundPropertyName = SchemeLoader::SpecialButton_WarnningBackground;
+
+        background = schemeLoader->getColor(widget,option,backgroundPropertyName);
     }
     else
     {
-        //将checkable按钮,checked状态调整为匹配pressed
-        QStyleOption optionTemp(*option);
-        if( option->state & QStyle::State_On )
-        {
-            optionTemp.state &= ~QStyle::State_On;
-            optionTemp.state |= QStyle::State_Sunken;
-        }
-
-        background = KiranPalette::instance()->color(widget,&optionTemp,KiranPalette::Widget,KiranPalette::Background);
-        border = KiranPalette::instance()->color(enabled?KiranPalette::Normal:KiranPalette::Disabled,KiranPalette::Widget,KiranPalette::Border);
+        background = schemeLoader->getColor(widget,option,SchemeLoader::Button_Background);
+        border = schemeLoader->getColor(widget,option,SchemeLoader::Button_Border);
     }
 
     if (flat)
@@ -264,6 +244,7 @@ bool Kiran::Style::drawPEPanelButtonTool(const QStyle* style, const QStyleOption
     bool mouseOver((state & QStyle::State_Active) && enabled && (option->state & QStyle::State_MouseOver));
     bool hasFocus(enabled && (option->state & (QStyle::State_HasFocus | QStyle::State_Sunken)));
 
+    auto schemeLoader = SchemeLoaderFetcher::getSchemeLoader();
     if (!autoRaise || mouseOver || sunken)
     {
         // need to check widget for popup mode, because option is not set properly
@@ -278,9 +259,8 @@ bool Kiran::Style::drawPEPanelButtonTool(const QStyle* style, const QStyleOption
             rect = QStyle::visualRect(option->direction, option->rect, rect);
         }
 
-        auto background = KiranPalette::instance()->color(widget,option,KiranPalette::Widget,KiranPalette::Background);
-        //按钮不绘制聚焦边框,只考虑启用和禁用状态
-        auto border = KiranPalette::instance()->color(enabled?KiranPalette::Normal:KiranPalette::Disabled,KiranPalette::Widget,KiranPalette::Border);
+        auto background = schemeLoader->getColor(widget,option,SchemeLoader::Button_Background);
+        auto border = schemeLoader->getColor(widget,option,SchemeLoader::Button_Border);
         RenderHelper::renderFrame(painter, rect,1, 4, background, border);
     }
     else
@@ -435,14 +415,14 @@ bool Kiran::Style::drawCCToolButton(const QStyle* style, const QStyleOptionCompl
     bool inTabBar(widget && qobject_cast<const QTabBar*>(widget->parentWidget()));
     bool isMenuTitle(RenderHelper::isMenuTitle(widget));
 
+    auto schemeLoader = SchemeLoaderFetcher::getSchemeLoader();
     if (isMenuTitle)
     {
         QStyleOptionToolButton copy(*toolButtonOption);
         copy.font.setBold(false);
         copy.state = QStyle::State_Enabled;
 
-        auto separatorColor = KiranPalette::instance()->color(widget,option,KiranPalette::Widget,KiranPalette::Border);
-        RenderHelper::renderMenuTitle(style, painter, &copy, widget, separatorColor);
+        auto separatorColor = schemeLoader->getColor(widget,option,SchemeLoader::Widget_Border);
         return true;
     }
 
@@ -477,8 +457,7 @@ bool Kiran::Style::drawCCToolButton(const QStyle* style, const QStyleOptionCompl
         {
             QRect rect(option->rect);
 
-            auto background = KiranPalette::instance()->color(widget,option,KiranPalette::Widget,KiranPalette::Background);
-            auto border = KiranPalette::instance()->color(widget,option,KiranPalette::Widget,KiranPalette::Border);
+            auto background = schemeLoader->getColor(widget,option,SchemeLoader::Widget_Background);
 
             painter->setPen(background);
             painter->setBrush(background);

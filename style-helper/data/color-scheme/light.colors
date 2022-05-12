@@ -74,3 +74,11 @@ BorderFocus=Default::Selection
 BackgroundNormal=Default::BackgroundNormal
 ForegroundNormal=Default::ForegroundNormal
 BorderNormal=Default::Border
+
+[Colors:SpecialButton]
+DefaultNormal=Default::Selection
+DefaultHover=mix(Default::Selection, Default::ForegroundNormal, 0.9)
+DefaultActive=mix(Default::Selection, Default::ForegroundNormal,0.8)
+WarnningNormal=Default::Error
+WarnningHover=mix(Default::Error, Default::ForegroundNormal,0.9)
+WarnningActive=mix(Default::Error, Default::ForegroundNormal,0.8)

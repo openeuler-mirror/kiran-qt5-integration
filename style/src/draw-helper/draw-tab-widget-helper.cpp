@@ -16,6 +16,7 @@
 #include "draw-common-helper.h"
 #include "metrics.h"
 #include "render-helper.h"
+#include "scheme-loader-fetcher.h"
 
 #include <QColor>
 #include <QStyleOption>
@@ -131,8 +132,9 @@ QSize Kiran::Style::tabBarTabSizeFromContents(const QStyle* style, const QStyleO
 
 bool Kiran::Style::drawPEFrameTabWidget(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget)
 {
-    auto background = KiranPalette::instance()->color(widget,option,KiranPalette::Window,KiranPalette::Background);
-    auto border = KiranPalette::instance()->color(widget,option,KiranPalette::Window,KiranPalette::Border);
+    auto schemeLoader = SchemeLoaderFetcher::getSchemeLoader();
+    auto background = schemeLoader->getColor(widget,option,SchemeLoader::Frame_Background);
+    auto border = schemeLoader->getColor(widget,option,SchemeLoader::Frame_Border);
     RenderHelper::renderFrame(painter, option->rect,1, 0, background, border);
     return true;
 }

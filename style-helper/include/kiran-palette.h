@@ -7,69 +7,78 @@ class KiranPalettePrivate;
 class QPalette;
 class QWidget;
 class QStyleOption;
-//KiranStyle提供的更便捷的方法取出KiranStyle里相关颜色的类
 
-//TODO: 添加public接口可手动更改palette类型修改当前颜色表不根据系统走
-//TODO: 添加private接口提供给platform theme使用修改当前颜色表
-//TODO: 修改清理KiranStyle里直接通过SchemeLoader拿颜色的调用,参考kiran-gtk-theme
+namespace Kiran
+{
+namespace Style
+{
+class SchemeLoader;
+}
+}  // namespace Kiran
+
+// TODO: 添加public接口可手动更改palette类型修改当前颜色表不根据系统走
+
+// KiranStyle提供的更便捷的方法取出KiranStyle里相关颜色的类
 class KiranPalette : public QObject
 {
     Q_OBJECT
+    friend class SchemeLoaderFetcher;
+
 private:
     explicit KiranPalette(QObject* parent = nullptr);
 
 public:
-    //扩展状态类型，尽量避免使用传入QStyleOption进行匹配
+    // 扩展状态类型，尽量避免使用传入QStyleOption进行匹配
     enum ColorState
     {
-        Normal,   //普通状态
-        Active,   //激活
-        Checked,  //选中状态
-        Hover,    //悬浮状态
-        Disabled  //禁用状态
+        Normal,   // 普通状态
+        Active,   // 激活
+        Checked,  // 选中状态
+        Hover,    // 悬浮状态
+        Disabled  // 禁用状态
     };
     Q_ENUM(ColorState);
     Q_DECLARE_FLAGS(ColorStateFlags, ColorState)
     Q_FLAG(ColorStateFlags)
 
-    //WARNING:WidgetType,WidgetColorRule，FlagColorRule枚举值切勿随意更改
-    //该枚举与SchemeLoader::SchemePropertyName相关联
+    // WARNING:WidgetType,WidgetColorRule，FlagColorRule枚举值切勿随意更改
+    // 该枚举与SchemeLoader::SchemePropertyName相关联
     enum WidgetType
     {
-        //窗口类型或提示框类型
-        Window          = 0x00000020,
-        //无边框控件
-        Bare            = 0x00000030,
-        //默认控件类型
-        Widget          = 0x00000040,
-        //视图类型，含有可选中的文本
-        View            = 0x00000050,
-        //选中高亮的类型
-        Selection       = 0x00000060,
-        //标题栏
-        TitleBar        = 0x00000070
+        // 窗口类型或提示框类型
+        Window = 0x00000020,
+        // 无边框控件
+        Bare = 0x00000030,
+        // 默认控件类型
+        Widget = 0x00000040,
+        // 视图类型，含有可选中的文本
+        View = 0x00000050,
+        // 选中高亮的类型
+        Selection = 0x00000060,
+        // 标题栏
+        TitleBar = 0x00000070
     };
     Q_ENUM(WidgetType)
 
     enum WidgetColorRule
     {
-        //背景色
+        // 背景色
         Background = 0x00000000,
-        //前景色
+        // 前景色
         Foreground = 0x00000001,
-        //边框
-        Border     = 0x00000002
+        // 边框
+        Border = 0x00000002
     };
     Q_ENUM(WidgetColorRule)
 
     enum FlagColorRule
     {
-        //告警-标志色
-        Warning      = 0x00000010,
-        //错误-标志色
-        Error        = 0x00000011,
-        //成功-标志色
-        Success      = 0x00000012
+        // 告警-标志色
+        Warning = 0x00000010,
+        // 错误-标志色
+        Error = 0x00000011,
+        // 成功-标志色
+        Success = 0x00000012
     };
     Q_ENUM(FlagColorRule)
 
@@ -129,6 +138,10 @@ public:
     QColor color(const QWidget* widget, const QStyleOption* option, WidgetType type, WidgetColorRule rule, ColorState specialState = Normal);
 
     void dump();
+
+private:
+    Kiran::Style::SchemeLoader* getSchemeLoader();
+
 private:
     KiranPalettePrivate* d_ptr;
 };
