@@ -266,9 +266,13 @@ int Style::pixelMetric(QStyle::PixelMetric metric, const QStyleOption *option, c
 
     // scrollbars
     case PM_ScrollBarExtent:
-        return 12;
+        return 5;
     case PM_ScrollBarSliderMin:
         return 20;
+
+        // scrollview
+    case PM_ScrollView_ScrollBarOverlap:
+        return 1;
 
     // title bar
     case PM_TitleBarHeight:

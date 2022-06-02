@@ -145,7 +145,8 @@ Palette:active {
   ButtonText: $widget_foreground_normal;
 
   Highlight: $selection_background_normal;
-  HighlightedText: $selection_foreground_normal;
+  //HighlightedText: $selection_foreground_normal;
+  HighlightedText: #ffffff;
 
   ToolTipBase: $window_background_normal;
   ToolTipText: $window_foreground_normal;
@@ -248,6 +249,7 @@ Widget:checked,
 Widget:selected {
   Background: $widget_background_checked;
   Foreground: $widget_foreground_checked;
+  Border:  $widget_border_focus;
 }
 
 Widget:disabled {

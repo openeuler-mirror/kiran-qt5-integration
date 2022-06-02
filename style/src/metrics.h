@@ -56,9 +56,9 @@ struct Metrics
 
     // buttons
     static constexpr int Button_MinHeight = 34;
-    static constexpr int Button_MinWidth = 80;
+    static constexpr int Button_MinWidth = 60;
     static constexpr int Button_MarginHeight = 2;
-    static constexpr int Button_MarginWidth = 6;
+    static constexpr int Button_MarginWidth = 4;
     static constexpr int Button_ItemSpacing = 4;
 
     // tool buttons

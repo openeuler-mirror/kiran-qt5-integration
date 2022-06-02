@@ -83,7 +83,7 @@ QVariant KiranTheme::themeHint(QPlatformTheme::ThemeHint hint) const
                              << "/usr/share/icons"
                              << "/usr/local/share/icons";
     case StyleNames:
-        return {"kiran"};
+        return QStringList{"kiran","fusion"};
     default:
         break;
     }

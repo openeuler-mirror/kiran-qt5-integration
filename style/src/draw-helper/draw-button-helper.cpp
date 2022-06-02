@@ -83,7 +83,6 @@ QSize Kiran::Style::pushButtonSizeFromContents(const QStyle* style,
 
     //扩展按钮内边距
     size = RenderHelper::expandSize(size, Metrics::Button_MarginWidth, Metrics::Button_MarginHeight);
-
     //扩张按钮边框宽度
     size = RenderHelper::expandSize(size, Metrics::Frame_FrameWidth);
 

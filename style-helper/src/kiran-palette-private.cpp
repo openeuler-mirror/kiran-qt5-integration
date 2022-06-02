@@ -58,4 +58,6 @@ void KiranPalettePrivate::updatePaletteType(KiranStyle::PaletteType type, bool c
     m_type = type;
     QString schemeFile = getSchemeFile(type);
     m_schemeLoader->load(schemeFile);
+
+    emit q_ptr->themeChanged(type);
 }

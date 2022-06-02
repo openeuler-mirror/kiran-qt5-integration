@@ -242,7 +242,8 @@ bool Kiran::Style::drawControlScrollBarSlider(const QStyle *style, const QStyleO
 
     const QStyle::State &state(option->state);
     bool horizontal(state & QStyle::State_Horizontal);
-    const QRect &rect(horizontal ? option->rect.adjusted(-1, 4, 0, -4) : option->rect.adjusted(4, -1, -4, 0));
+    //const QRect &rect(horizontal ? option->rect.adjusted(-1, 4, 0, -4) : option->rect.adjusted(4, -1, -4, 0));
+    const QRect &rect(option->rect);
     QRect handleRect ;
 
     bool enabled(state & QStyle::State_Enabled);

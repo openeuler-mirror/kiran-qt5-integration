@@ -31,11 +31,11 @@ public:
     // 扩展状态类型，尽量避免使用传入QStyleOption进行匹配
     enum ColorState
     {
-        Normal,   // 普通状态
-        Active,   // 激活
-        Checked,  // 选中状态
-        Hover,    // 悬浮状态
-        Disabled  // 禁用状态
+        Normal = 0x00000001,    // 普通状态
+        Active = 0x00000002,   // 激活
+        Checked = 0x00000004,  // 选中状态
+        Hover = 0x00000008,    // 悬浮状态
+        Disabled = 0x00000010  // 禁用状态
     };
     Q_ENUM(ColorState);
     Q_DECLARE_FLAGS(ColorStateFlags, ColorState)
@@ -138,6 +138,9 @@ public:
     QColor color(const QWidget* widget, const QStyleOption* option, WidgetType type, WidgetColorRule rule, ColorState specialState = Normal);
 
     void dump();
+
+signals:
+    void themeChanged(KiranStyle::PaletteType paletteType);
 
 private:
     Kiran::Style::SchemeLoader* getSchemeLoader();
