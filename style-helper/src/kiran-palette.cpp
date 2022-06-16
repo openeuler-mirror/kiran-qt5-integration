@@ -148,3 +148,8 @@ Kiran::Style::SchemeLoader* KiranPalette::getSchemeLoader()
 {
     return d_ptr->m_schemeLoader;
 }
+
+bool KiranPalette::isDesignatedPaletteType()
+{
+    return d_ptr->m_customSpecialType;
+}

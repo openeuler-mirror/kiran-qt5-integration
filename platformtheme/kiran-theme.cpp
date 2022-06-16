@@ -123,7 +123,11 @@ void KiranTheme::init()
     QObject::connect(m_settingsMonitor, &KiranAppearanceMonitor::titleBarFontChanged, this, &KiranTheme::handleTitleBarFontChanged);
     QObject::connect(m_settingsMonitor, &KiranAppearanceMonitor::iconThemeChanged, this, &KiranTheme::handleIconThemeChanged);
     QObject::connect(m_settingsMonitor, &KiranAppearanceMonitor::scaleFactorChanged, this, &KiranTheme::handleScaleFactorChanged);
-    QObject::connect(m_settingsMonitor, &KiranAppearanceMonitor::gtkThemeChanged, this, &KiranTheme::handleGtkThemeChanged);
+
+    // 不从KiranAppearanceMonitor接受主题变更事件，修改为接受KiranPalette的主题变更信号，能监听到系统主题变更以及应用程序手动指定主题
+    //QObject::connect(m_settingsMonitor, &KiranAppearanceMonitor::gtkThemeChanged, this, &KiranTheme::handleThemeChanged);
+    QObject::connect(KiranPalette::instance(),&KiranPalette::themeChanged,this,&KiranTheme::handleThemeChanged);
+
     QObject::connect(qApp, &QApplication::screenAdded, this, &KiranTheme::handleScreenAdded);
 
     handleScaleFactorChanged(m_scaleFactor);
@@ -318,34 +322,36 @@ void KiranTheme::handleIconThemeChanged()
     }
 }
 
-void KiranTheme::handleGtkThemeChanged(const QString& gtkTheme)
+void KiranTheme::handleThemeChanged()
 {
     // NOTE: SchemeLoader会接收KiranAppearanceMonitor的GTK主题改变信号，重新加载配色方案
     // 此处只需等到下一个事件循环，通知QGuiApplication重新更新palette
-    QTimer::singleShot(0, [this]
-                       {
-                           // 此事件会促使QGuiApplication重新从QPlatformTheme中获取系统级别的QPalette
-                           QWindowSystemInterfacePrivate::ThemeChangeEvent event(nullptr);
+    // clang-format off
+    QTimer::singleShot(0, [this] {
+        // 此事件会促使QGuiApplication重新从QPlatformTheme中获取系统级别的QPalette
+        QWindowSystemInterfacePrivate::ThemeChangeEvent event(nullptr);
 
-                           ///NOTE:
-                           ///QGuiApplicationPrivate::processThemeChanged -> QGuiApplicationPrivate::notifyThemeChanged
-                           ///5.11.1
-                           /// QGuiApplicationPrivate::notifyThemeChanged若非特殊设置过Palette，是直接清空QGuiApplicajtionPrivate::app_pal,
-                           /// 然后重新从QPlatformTheme之中取出system palette,重新构建QGuiApplicajtionPrivate::app_pal
-                           ///5.15.2
-                           /// QGuiApplicationPrivate::app_pal初始化
-                           /// 默认初始化一个QPalette,若QAGuiApplicationPrivate::app_pal不存在，则调用qpalette.cpp之中qt_palette_from_color构造一个
-                           /// QGuiApplicationPrivate::app_pal会采用上述的QPalette作为默认值
-                           ///
-                           /// 后续调用processThemeChanged->updatePalette,都只是QGuiApplicationPrivate::app_pal从QPlatformTheme::palette(system)之中取出缺失的
-                           /// 所以QGuiApplicationPrivate::app_pal第一次初始化后，第一次主题应用能更新系统级别QPalette，但是之后主题变更应用不了
+        ///NOTE:
+        ///QGuiApplicationPrivate::processThemeChanged -> QGuiApplicationPrivate::notifyThemeChanged
+        ///5.11.1
+        /// QGuiApplicationPrivate::notifyThemeChanged若非特殊设置过Palette，是直接清空QGuiApplicajtionPrivate::app_pal,
+        /// 然后重新从QPlatformTheme之中取出system palette,重新构建QGuiApplicajtionPrivate::app_pal
+        ///5.15.2
+        /// QGuiApplicationPrivate::app_pal初始化
+        /// 默认初始化一个QPalette,若QAGuiApplicationPrivate::app_pal不存在，则调用qpalette.cpp之中qt_palette_from_color构造一个
+        /// QGuiApplicationPrivate::app_pal会采用上述的QPalette作为默认值
+        ///
+        /// 后续调用processThemeChanged->updatePalette,都只是QGuiApplicationPrivate::app_pal从QPlatformTheme::palette(system)之中取出缺失的
+        /// 所以QGuiApplicationPrivate::app_pal第一次初始化后，第一次主题应用能更新系统级别QPalette，但是之后主题变更应用不了
 
-                           ///FIXME:
-                           ///1.后续看是否有更好的方式能应用更新系统级别QPalette
-                           ///2.加入判断是否外部自定义设置Application palette，若外部自定义设置了，则应不做处理
-                           QGuiApplicationPrivate::app_pal = new QPalette(*palette(SystemPalette));
+        ///FIXME:
+        ///1.后续看是否有更好的方式能应用更新系统级别QPalette
+        ///2.加入判断是否外部自定义设置Application palette，若外部自定义设置了，则应不做处理
+        QGuiApplicationPrivate::app_pal = new QPalette(*palette(SystemPalette));
 
-                           // 该接口原本用于windows通知窗口主题变化时使用,现用来通知调用QGuiApplicationPrivate::notifyThemeChanged
-                           QGuiApplicationPrivate::processThemeChanged(&event);
-                           emit qApp->paletteChanged(*palette(SystemPalette)); });
+        // 该接口原本用于windows通知窗口主题变化时使用,现用来通知调用QGuiApplicationPrivate::notifyThemeChanged
+        QGuiApplicationPrivate::processThemeChanged(&event);
+        emit qApp->paletteChanged(*palette(SystemPalette));
+    });
+    // clang-format on
 }

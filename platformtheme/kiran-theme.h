@@ -27,6 +27,7 @@ public:
 
     //是否使用系统本地提示框
     bool usePlatformNativeDialog(DialogType type) const override;
+
     //创建本地提示框帮助类
     QPlatformDialogHelper* createPlatformDialogHelper(DialogType type) const override;
     QIconEngine* createIconEngine(const QString& iconName) const override;
@@ -48,7 +49,7 @@ private slots:
     void handleIconThemeChanged();
     void handleScaleFactorChanged(int factor);
     void handleScreenAdded(QScreen* screen);
-    void handleGtkThemeChanged(const QString& gtkTheme);
+    void handleThemeChanged();
 
 private:
     KiranAppearanceMonitor* m_settingsMonitor;

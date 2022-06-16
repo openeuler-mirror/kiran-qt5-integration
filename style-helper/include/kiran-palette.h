@@ -104,6 +104,8 @@ public:
      */
     void setDesignatedPaletteType(KiranStyle::PaletteType type);
 
+    bool isDesignatedPaletteType();
+
     /**
      * 根据控件类型，控件状态，颜色类型取出颜色表之中预定的颜色
      * \param state 颜色状态，例如:悬浮，禁用，正常等
