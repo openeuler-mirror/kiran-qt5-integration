@@ -7,9 +7,13 @@
 
 #include "scheme-loader.h"
 
+namespace Kiran
+{
 class SchemeLoaderFetcher
 {
 public:
-    static Kiran::Style::SchemeLoader* getSchemeLoader();
+    static Kiran::SchemeLoader* getSchemeLoader();
 };
+}  // namespace Kiran
+
 #endif  // KIRAN_QT5_INTEGRATION_SCHEMELOADERFETCHER_H

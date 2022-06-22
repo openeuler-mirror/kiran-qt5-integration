@@ -22,9 +22,9 @@
 #include <QPainter>
 #include <QStyleOption>
 
-using namespace Kiran::Style;
-
-QSize Kiran::Style::comboBoxSizeFromContents(const QStyle *style, const QStyleOption *option, const QSize &contentSize, const QWidget *widget)
+namespace Kiran
+{
+QSize comboBoxSizeFromContents(const QStyle *style, const QStyleOption *option, const QSize &contentSize, const QWidget *widget)
 {
     const auto comboBoxOption(qstyleoption_cast<const QStyleOptionComboBox *>(option));
     if (!comboBoxOption) return contentSize;
@@ -47,16 +47,16 @@ QSize Kiran::Style::comboBoxSizeFromContents(const QStyle *style, const QStyleOp
     // 确保有足够的高度绘制下拉按钮指示器
     size.setHeight(qMax(size.height(), int(Metrics::MenuButton_IndicatorWidth)));
 
-//    size = RenderHelper::expandSize(size, Metrics::ComboBox_MarginWidth, Metrics::ComboBox_MarginHeight);
+    //    size = RenderHelper::expandSize(size, Metrics::ComboBox_MarginWidth, Metrics::ComboBox_MarginHeight);
 
-    //确保至少有最小大小
+    // 确保至少有最小大小
     size.setHeight(qMax(size.height(), int(Metrics::ComboBox_MinHeight)));
     size.setWidth(qMax(size.width(), int(Metrics::ComboBox_MinWidth)));
 
     return size;
 }
 
-bool Kiran::Style::comboBoxSubControlRect(const QStyle *style, const QStyleOptionComplex *opt, QStyle::SubControl sc, const QWidget *widget, QRect &controlRect)
+bool comboBoxSubControlRect(const QStyle *style, const QStyleOptionComplex *opt, QStyle::SubControl sc, const QWidget *widget, QRect &controlRect)
 {
     const auto comboBoxOption(qstyleoption_cast<const QStyleOptionComboBox *>(opt));
     if (!comboBoxOption) return false;
@@ -77,15 +77,15 @@ bool Kiran::Style::comboBoxSubControlRect(const QStyle *style, const QStyleOptio
         controlRect = rect;
         break;
     case QStyle::SC_ComboBoxArrow:
-        controlRect = QRect(rect.right()-rect.height()+1,
+        controlRect = QRect(rect.right() - rect.height() + 1,
                             rect.top(),
-                            rect.height(),rect.height());
+                            rect.height(), rect.height());
         break;
     case QStyle::SC_ComboBoxEditField:
     {
-        controlRect = QRect(rect.left(), rect.top(),rect.width() - rect.height() - 4,rect.height());
+        controlRect = QRect(rect.left(), rect.top(), rect.width() - rect.height() - 4, rect.height());
         controlRect.adjust(frameWidth, frameWidth, 0, -frameWidth);
-        controlRect = QStyle::visualRect(opt->direction,opt->rect,controlRect);
+        controlRect = QStyle::visualRect(opt->direction, opt->rect, controlRect);
         break;
     }
     default:
@@ -94,7 +94,7 @@ bool Kiran::Style::comboBoxSubControlRect(const QStyle *style, const QStyleOptio
     return true;
 }
 
-bool Kiran::Style::drawCCComboBox(const QStyle *style, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget)
+bool drawCCComboBox(const QStyle *style, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget)
 {
     const auto comboBoxOption(qstyleoption_cast<const QStyleOptionComboBox *>(option));
     if (!comboBoxOption)
@@ -114,26 +114,26 @@ bool Kiran::Style::drawCCComboBox(const QStyle *style, const QStyleOptionComplex
 
     if (editable)
     {
-        sunken = arrowActive && enabled && ( state & (QStyle::State_On|QStyle::State_Sunken) );
+        sunken = arrowActive && enabled && (state & (QStyle::State_On | QStyle::State_Sunken));
     }
     else
     {
-        sunken = enabled && ( state & (QStyle::State_On|QStyle::State_Sunken) );
+        sunken = enabled && (state & (QStyle::State_On | QStyle::State_Sunken));
     }
 
     const auto comboBox = qobject_cast<const QComboBox *>(widget);
-    if( !comboBox )
+    if (!comboBox)
         return true;
 
     const bool empty(comboBox && !comboBox->count());
 
-    //TODO: 当ComboBox为空时，应当特别绘制
-    // frame
+    // TODO: 当ComboBox为空时，应当特别绘制
+    //  frame
     if (option->subControls & QStyle::SC_ComboBoxFrame)
     {
         if (editable)
         {
-            //FIXME:下拉框编辑状态悬浮判断没有区域
+            // FIXME:下拉框编辑状态悬浮判断没有区域
             flat |= (option->rect.height() <= 2 * Metrics::Frame_FrameWidth + Metrics::MenuButton_IndicatorWidth);
             if (flat)
             {
@@ -146,12 +146,12 @@ bool Kiran::Style::drawCCComboBox(const QStyle *style, const QStyleOptionComplex
             {
                 QRectF arrowRect = style->subControlRect(QStyle::CC_ComboBox, comboBoxOption, QStyle::SC_ComboBoxArrow, widget);
 
-                //ComboBox 箭头按钮
+                // ComboBox 箭头按钮
                 arrowRect.adjust(1.5, 1.5, -1.5, -1.5);
                 QPainterPath indicatorPainterPath = RenderHelper::roundedPath(arrowRect, CornersRight, 4);
 
-                auto background = schemeLoader->getColor(widget,option,SchemeLoader::Combo_Background);
-                auto border = schemeLoader->getColor(widget,option,SchemeLoader::Combo_Border);
+                auto background = schemeLoader->getColor(widget, option, SchemeLoader::Combo_Background);
+                auto border = schemeLoader->getColor(widget, option, SchemeLoader::Combo_Border);
 
                 QPen pen = painter->pen();
                 painter->setRenderHints(QPainter::Antialiasing);
@@ -159,29 +159,29 @@ bool Kiran::Style::drawCCComboBox(const QStyle *style, const QStyleOptionComplex
                 painter->setBrush(background);
                 painter->drawPath(indicatorPainterPath);
 
-                //输入框
+                // 输入框
                 QStyleOptionComplex tmpOpt(*option);
-                //让输入框长度加上一个宽度进行绘制用来去掉输入框的圆角
+                // 让输入框长度加上一个宽度进行绘制用来去掉输入框的圆角
                 tmpOpt.rect.setWidth(tmpOpt.rect.width() - arrowRect.width() + 3);
                 style->drawPrimitive(QStyle::PE_FrameLineEdit, &tmpOpt, painter, widget);
             }
         }
         else
         {
-            if(flat)
+            if (flat)
             {
                 auto background = option->palette.color(QPalette::Base);
-                if(sunken)
+                if (sunken)
                 {
-                    background = schemeLoader->getColor(widget,option,SchemeLoader::Combo_Background);
+                    background = schemeLoader->getColor(widget, option, SchemeLoader::Combo_Background);
                 }
-                RenderHelper::renderFrame(painter,option->rect,1,0,background);
+                RenderHelper::renderFrame(painter, option->rect, 1, 0, background);
             }
             else
             {
                 QStyleOptionComboBox tempOption(*comboBoxOption);
-                auto backgroundColor = schemeLoader->getColor(widget,&tempOption,SchemeLoader::Combo_Background);
-                auto borderColor = schemeLoader->getColor(widget,&tempOption,SchemeLoader::Combo_Border);
+                auto backgroundColor = schemeLoader->getColor(widget, &tempOption, SchemeLoader::Combo_Background);
+                auto borderColor = schemeLoader->getColor(widget, &tempOption, SchemeLoader::Combo_Border);
                 RenderHelper::renderFrame(painter, option->rect, 1, 4, backgroundColor, borderColor);
             }
         }
@@ -191,14 +191,14 @@ bool Kiran::Style::drawCCComboBox(const QStyle *style, const QStyleOptionComplex
     if (option->subControls & QStyle::SC_ComboBoxArrow)
     {
         auto arrowRect(style->subControlRect(QStyle::CC_ComboBox, option, QStyle::SC_ComboBoxArrow, widget));
-        auto arrowColor = schemeLoader->getColor(widget,option,SchemeLoader::Indicator_Arrow);
+        auto arrowColor = schemeLoader->getColor(widget, option, SchemeLoader::Indicator_Arrow);
         RenderHelper::renderArrow(painter, arrowRect, Arrow_Down, arrowColor);
     }
 
     return true;
 }
 
-bool Kiran::Style::drawControlComboBoxLabel(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
+bool drawControlComboBoxLabel(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
 {
     const auto comboBoxOption(qstyleoption_cast<const QStyleOptionComboBox *>(option));
     if (!comboBoxOption) return false;
@@ -227,12 +227,12 @@ bool Kiran::Style::drawControlComboBoxLabel(const QStyle *style, const QStyleOpt
 
     painter->setPen(QPen(option->palette.color(textRole), 1));
 
-    //获取文本框位置
+    // 获取文本框位置
     auto editRect = style->subControlRect(QStyle::CC_ComboBox, comboBoxOption, QStyle::SC_ComboBoxEditField, widget);
 
     painter->save();
     painter->setClipRect(editRect);
-    //绘制图标
+    // 绘制图标
     if (!comboBoxOption->currentIcon.isNull() && qobject_cast<const QComboBox *>(widget))
     {
         QIcon::Mode mode;
@@ -274,7 +274,7 @@ bool Kiran::Style::drawControlComboBoxLabel(const QStyle *style, const QStyleOpt
         }
     }
 
-    //绘制文本
+    // 绘制文本
     if (!comboBoxOption->currentText.isEmpty() && !comboBoxOption->editable)
     {
         QRect itemTextRect = editRect.adjusted(Metrics::ComboBox_FrameWidth, 0, -1, 0);
@@ -287,3 +287,4 @@ bool Kiran::Style::drawControlComboBoxLabel(const QStyle *style, const QStyleOpt
 
     return true;
 }
+}  // namespace Kiran

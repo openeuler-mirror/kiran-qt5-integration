@@ -1,6 +1,6 @@
 #pragma once
 
-namespace KiranStyle
+namespace Kiran
 {
 enum PaletteType
 {

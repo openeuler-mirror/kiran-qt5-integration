@@ -23,27 +23,24 @@ class QStyleOptionComplex;
 class QStyle;
 namespace Kiran
 {
-namespace Style
-{
 class SchemeLoader;
 
-//sizeFromContents
-QSize pushButtonSizeFromContents(const QStyle* style,const QStyleOption* option,const QSize& contentSize,const QWidget* widget);
-QSize toolButtonSizeFromContents(const QStyle* style,const QStyleOption* option,const QSize& contentSize,const QWidget* widget);
+// sizeFromContents
+QSize pushButtonSizeFromContents(const QStyle* style, const QStyleOption* option, const QSize& contentSize, const QWidget* widget);
+QSize toolButtonSizeFromContents(const QStyle* style, const QStyleOption* option, const QSize& contentSize, const QWidget* widget);
 
-//subControlRect
+// subControlRect
 bool toolButtonSubControlRect(const QStyle* style, const QStyleOptionComplex* opt, QStyle::SubControl sc, const QWidget* widget, QRect& controlRect);
 
-//drawPrimitive
+// drawPrimitive
 bool drawPEPanelButtonCommand(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget);
 bool drawPEPanelButtonTool(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget);
 
-//drawControl
+// drawControl
 bool drawControlToolButtonLabel(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget);
 
-//drawComplexControl
+// drawComplexControl
 bool drawCCToolButton(const QStyle* style, const QStyleOptionComplex* option, QPainter* painter, const QWidget* widget);
-}  // namespace Style
 }  // namespace Kiran
 
-#endif  //KIRAN_QT5_PLATFORMTHEME_STYLE_SRC_DRAW_HELPER_DRAW_BUTTON_HELPER_H_
+#endif  // KIRAN_QT5_PLATFORMTHEME_STYLE_SRC_DRAW_HELPER_DRAW_BUTTON_HELPER_H_

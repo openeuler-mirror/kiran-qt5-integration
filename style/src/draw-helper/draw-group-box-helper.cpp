@@ -17,8 +17,10 @@
 #include <QStyleOption>
 #include <QWidget>
 
-//copy from QCommonStyle
-QSize Kiran::Style::groupBoxSizeFromContents(const QStyle *style, const QStyleOption *option, const QSize &contentSize, const QWidget *widget)
+namespace Kiran
+{
+// copy from QCommonStyle
+QSize groupBoxSizeFromContents(const QStyle *style, const QStyleOption *option, const QSize &contentSize, const QWidget *widget)
 {
     if (!widget || !widget->inherits("QGroupBox"))
     {
@@ -31,11 +33,11 @@ QSize Kiran::Style::groupBoxSizeFromContents(const QStyle *style, const QStyleOp
     return size;
 }
 
-//copy from QCommonStyle
-bool Kiran::Style::groupBoxSubControlRect(const QStyle *style, const QStyleOptionComplex *opt, QStyle::SubControl sc, const QWidget *widget, QRect &controlRect)
+// copy from QCommonStyle
+bool groupBoxSubControlRect(const QStyle *style, const QStyleOptionComplex *opt, QStyle::SubControl sc, const QWidget *widget, QRect &controlRect)
 {
     const auto groupBox = qstyleoption_cast<const QStyleOptionGroupBox *>(opt);
-    if(!groupBox)
+    if (!groupBox)
         return false;
 
     switch (sc)
@@ -120,8 +122,8 @@ bool Kiran::Style::groupBoxSubControlRect(const QStyle *style, const QStyleOptio
     return true;
 }
 
-//copy from QCommonStyle
-bool Kiran::Style::drawCCGroupBox(const QStyle *style, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget)
+// copy from QCommonStyle
+bool drawCCGroupBox(const QStyle *style, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget)
 {
     const auto *groupBox = qstyleoption_cast<const QStyleOptionGroupBox *>(option);
     if (!groupBox)
@@ -196,3 +198,4 @@ bool Kiran::Style::drawCCGroupBox(const QStyle *style, const QStyleOptionComplex
 
     return true;
 }
+}  // namespace Kiran

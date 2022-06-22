@@ -4,8 +4,6 @@ class QPushButton;
 class QProgressBar;
 namespace Kiran
 {
-namespace Style
-{
 enum ButtonType
 {
     BUTTON_Normal,  /** < 普通按钮 */
@@ -23,7 +21,7 @@ enum ProgressBarTextPosition
  * KiranStyle自定义属性读写接口,可定制部分KiranStyle绘制细节,KiranStyle读出属性值进行特殊的绘制
  * 若控件当前style不为kiranstyle，则不会生效
  */
-namespace PropertyHelper
+namespace StylePropertyHelper
 {
 /**
   * @brief 获取按钮类型
@@ -56,4 +54,3 @@ void setProgressBarTextPosition(QProgressBar *progressBar, ProgressBarTextPositi
 ProgressBarTextPosition getProgressBarTextPosition(const QProgressBar *progressBar);
 }  // namespace PropertyHelper
 }  // namespace Style
-}  // namespace Kiran

@@ -15,14 +15,16 @@
 #include "draw-common-helper.h"
 #include "metrics.h"
 #include "render-helper.h"
-#include "style.h"
 #include "scheme-loader-fetcher.h"
+#include "style.h"
 
 #include <QPainter>
 #include <QProxyStyle>
 #include <QStyleOption>
 
-//TODO: 之后整合所有的绘制过程中的是否启用的开关
+namespace Kiran
+{
+// TODO: 之后整合所有的绘制过程中的是否启用的开关
 static const bool sliderDrawTickMarks = true;
 enum Side
 {
@@ -34,10 +36,10 @@ enum Side
     AllSides = SideLeft | SideTop | SideRight | SideBottom
 };
 
-QSize Kiran::Style::sliderSizeFromContents(const QStyle *style,
-                                           const QStyleOption *option,
-                                           const QSize &contentSize,
-                                           const QWidget *widget)
+QSize sliderSizeFromContents(const QStyle *style,
+                             const QStyleOption *option,
+                             const QSize &contentSize,
+                             const QWidget *widget)
 {
     // cast option and check
     const auto sliderOption(qstyleoption_cast<const QStyleOptionSlider *>(option));
@@ -74,7 +76,7 @@ QSize Kiran::Style::sliderSizeFromContents(const QStyle *style,
     return size;
 }
 
-bool Kiran::Style::drawCCSlider(const QStyle *style, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget)
+bool drawCCSlider(const QStyle *style, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget)
 {
     // cast option and check
     const auto sliderOption(qstyleoption_cast<const QStyleOptionSlider *>(option));
@@ -98,10 +100,10 @@ bool Kiran::Style::drawCCSlider(const QStyle *style, const QStyleOptionComplex *
     if (!horizontal && sliderOption->tickPosition == QSlider::TicksRight) tickSide = (Side)((int)tickSide | (int)SideRight);
 
     auto schemeLoader = SchemeLoaderFetcher::getSchemeLoader();
-    auto grooveColor = schemeLoader->getColor(widget,option,SchemeLoader::Slider_Groove);
-    auto contentColor = schemeLoader->getColor(widget,option,SchemeLoader::Slider_Content);
+    auto grooveColor = schemeLoader->getColor(widget, option, SchemeLoader::Slider_Groove);
+    auto contentColor = schemeLoader->getColor(widget, option, SchemeLoader::Slider_Content);
     // tickmarks
-    if ( sliderDrawTickMarks && (sliderOption->subControls & QStyle::SC_SliderTickmarks) )
+    if (sliderDrawTickMarks && (sliderOption->subControls & QStyle::SC_SliderTickmarks))
     {
         bool upsideDown(sliderOption->upsideDown);
         int tickPosition(sliderOption->tickPosition);
@@ -167,7 +169,7 @@ bool Kiran::Style::drawCCSlider(const QStyle *style, const QStyleOptionComplex *
 
         if (!enabled)
         {
-            RenderHelper::renderFrame(painter,grooveRect,1,0,grooveColor);
+            RenderHelper::renderFrame(painter, grooveRect, 1, 0, grooveColor);
         }
         else
         {
@@ -185,13 +187,13 @@ bool Kiran::Style::drawCCSlider(const QStyle *style, const QStyleOptionComplex *
 
                 if (upsideDown)
                 {
-                    RenderHelper::renderFrame(painter,leftRect,1,0,grooveColor);
-                    RenderHelper::renderFrame(painter,rightRect,1,0,contentColor);
+                    RenderHelper::renderFrame(painter, leftRect, 1, 0, grooveColor);
+                    RenderHelper::renderFrame(painter, rightRect, 1, 0, contentColor);
                 }
                 else
                 {
-                    RenderHelper::renderFrame(painter,leftRect,1,0,contentColor);
-                    RenderHelper::renderFrame(painter,rightRect,1,0,grooveColor);
+                    RenderHelper::renderFrame(painter, leftRect, 1, 0, contentColor);
+                    RenderHelper::renderFrame(painter, rightRect, 1, 0, grooveColor);
                 }
             }
             else
@@ -203,13 +205,13 @@ bool Kiran::Style::drawCCSlider(const QStyle *style, const QStyleOptionComplex *
 
                 if (upsideDown)
                 {
-                    RenderHelper::renderFrame(painter,topRect,1,0,grooveColor);
-                    RenderHelper::renderFrame(painter,bottomRect,1,0,contentColor);
+                    RenderHelper::renderFrame(painter, topRect, 1, 0, grooveColor);
+                    RenderHelper::renderFrame(painter, bottomRect, 1, 0, contentColor);
                 }
                 else
                 {
-                    RenderHelper::renderFrame(painter,topRect,1,0,contentColor);
-                    RenderHelper::renderFrame(painter,bottomRect,1,0,grooveColor);
+                    RenderHelper::renderFrame(painter, topRect, 1, 0, contentColor);
+                    RenderHelper::renderFrame(painter, bottomRect, 1, 0, grooveColor);
                 }
             }
         }
@@ -225,10 +227,10 @@ bool Kiran::Style::drawCCSlider(const QStyle *style, const QStyleOptionComplex *
         bool handleActive(sliderOption->activeSubControls & QStyle::SC_SliderHandle);
         bool sunken(state & (QStyle::State_On | QStyle::State_Sunken));
 
-        QColor handleBorder = schemeLoader->getColor(widget,option,SchemeLoader::Slider_HandleBorder);
-        QColor handleBackground = schemeLoader->getColor(widget,option,SchemeLoader::Slider_HandleBackground);
+        QColor handleBorder = schemeLoader->getColor(widget, option, SchemeLoader::Slider_HandleBorder);
+        QColor handleBackground = schemeLoader->getColor(widget, option, SchemeLoader::Slider_HandleBackground);
 
-        //draw handle
+        // draw handle
         painter->setRenderHint(QPainter::Antialiasing);
         handleRect.adjust(1, 1, -1, -1);
 
@@ -246,13 +248,13 @@ bool Kiran::Style::drawCCSlider(const QStyle *style, const QStyleOptionComplex *
             painter->setPen(Qt::NoPen);
         }
         painter->setBrush(handleBackground);
-        painter->drawRoundedRect(handleRect, handleRect.width()/2, handleRect.width());
+        painter->drawRoundedRect(handleRect, handleRect.width() / 2, handleRect.width());
     }
 
     return true;
 }
 
-QRect Kiran::Style::sliderElementRect(const QStyle *style, QStyle::SubElement subElement, const QStyleOption *option, const QWidget *widget)
+QRect sliderElementRect(const QStyle *style, QStyle::SubElement subElement, const QStyleOption *option, const QWidget *widget)
 {
     QRect rect(option->rect);
 
@@ -280,7 +282,7 @@ QRect Kiran::Style::sliderElementRect(const QStyle *style, QStyle::SubElement su
     return rect;
 }
 
-bool Kiran::Style::sliderSubControlRect(const QStyle *style, const QStyleOptionComplex *opt, QStyle::SubControl sc, const QWidget *widget, QRect &controlRect)
+bool sliderSubControlRect(const QStyle *style, const QStyleOptionComplex *opt, QStyle::SubControl sc, const QWidget *widget, QRect &controlRect)
 {
     // cast option and check
     const auto sliderOption(qstyleoption_cast<const QStyleOptionSlider *>(opt));
@@ -295,8 +297,8 @@ bool Kiran::Style::sliderSubControlRect(const QStyle *style, const QStyleOptionC
         bool horizontal(sliderOption->orientation == Qt::Horizontal);
 
         // get base class rect
-        //NOTE:该处直接调用父类的方法
-        QRect grooveRect = qobject_cast<const ParentStyle*>(style)->ParentStyle::subControlRect(QStyle::CC_Slider,opt,sc,widget);
+        // NOTE:该处直接调用父类的方法
+        QRect grooveRect = qobject_cast<const ParentStyle *>(style)->ParentStyle::subControlRect(QStyle::CC_Slider, opt, sc, widget);
         grooveRect = RenderHelper::insideMargin(grooveRect, style->pixelMetric(QStyle::PM_DefaultFrameWidth, opt, widget));
 
         // centering
@@ -314,3 +316,4 @@ bool Kiran::Style::sliderSubControlRect(const QStyle *style, const QStyleOptionC
 
     return true;
 }
+}  // namespace Kiran

@@ -1,37 +1,30 @@
 #pragma once
 
-#include <kiran-style-global.h>
+#include <style-global-define.h>
 #include <QObject>
 
-class KiranPalettePrivate;
 class QPalette;
 class QWidget;
 class QStyleOption;
 
 namespace Kiran
 {
-namespace Style
-{
 class SchemeLoader;
-}
-}  // namespace Kiran
-
-// TODO: 添加public接口可手动更改palette类型修改当前颜色表不根据系统走
-
+class StylePalettePrivate;
 // KiranStyle提供的更便捷的方法取出KiranStyle里相关颜色的类
-class KiranPalette : public QObject
+class StylePalette : public QObject
 {
     Q_OBJECT
     friend class SchemeLoaderFetcher;
 
 private:
-    explicit KiranPalette(QObject* parent = nullptr);
+    explicit StylePalette(QObject* parent = nullptr);
 
 public:
     // 扩展状态类型，尽量避免使用传入QStyleOption进行匹配
     enum ColorState
     {
-        Normal = 0x00000001,    // 普通状态
+        Normal = 0x00000001,   // 普通状态
         Active = 0x00000002,   // 激活
         Checked = 0x00000004,  // 选中状态
         Hover = 0x00000008,    // 悬浮状态
@@ -82,8 +75,8 @@ public:
     };
     Q_ENUM(FlagColorRule)
 
-    static KiranPalette* instance();
-    ~KiranPalette();
+    static StylePalette* instance();
+    ~StylePalette();
 
     /**
      * 将Kiran调色盘转换至Qt调色盘
@@ -95,14 +88,14 @@ public:
      * 获取当前主题调色盘类型
      * \return 调色盘类型
      */
-    KiranStyle::PaletteType paletteType();
+    Kiran::PaletteType paletteType();
 
     /**
      * 应用程序指定主题调色盘类型
      * Warning:　指定主题调色盘后，不会根据系统主题变更更改主题调色盘
      * \param type　调色盘类型
      */
-    void setDesignatedPaletteType(KiranStyle::PaletteType type);
+    void setDesignatedPaletteType(Kiran::PaletteType type);
 
     bool isDesignatedPaletteType();
 
@@ -142,11 +135,12 @@ public:
     void dump();
 
 signals:
-    void themeChanged(KiranStyle::PaletteType paletteType);
+    void themeChanged(Kiran::PaletteType paletteType);
 
 private:
-    Kiran::Style::SchemeLoader* getSchemeLoader();
+    Kiran::SchemeLoader* getSchemeLoader();
 
 private:
-    KiranPalettePrivate* d_ptr;
+    StylePalettePrivate* d_ptr;
 };
+}

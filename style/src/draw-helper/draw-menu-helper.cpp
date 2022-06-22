@@ -20,7 +20,9 @@
 #include <QStyleOption>
 #include <QWidget>
 
-bool Kiran::Style::drawControlMenuBarItem(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget)
+namespace Kiran
+{
+bool drawControlMenuBarItem(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget)
 {
     auto menuItemOption = qstyleoption_cast<const QStyleOptionMenuItem*>(option);
     const QStyle::State& state = option->state;
@@ -28,7 +30,7 @@ bool Kiran::Style::drawControlMenuBarItem(const QStyle* style, const QStyleOptio
     const bool mouseOver((option->state & QStyle::State_MouseOver) && enabled);
     const bool sunken((option->state & QStyle::State_Sunken) && enabled);
 
-    Kiran::Style::PainterSaver painterSaver(painter);
+    PainterSaver painterSaver(painter);
     auto schemeLoader = SchemeLoaderFetcher::getSchemeLoader();
 
 #if 0
@@ -68,10 +70,12 @@ bool Kiran::Style::drawControlMenuBarItem(const QStyle* style, const QStyleOptio
     return true;
 }
 
-bool Kiran::Style::drawControlMenuBarEmptyArea(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget)
+bool drawControlMenuBarEmptyArea(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget)
 {
     auto schemeLoader = SchemeLoaderFetcher::getSchemeLoader();
     QColor background = schemeLoader->getColor(widget,option,SchemeLoader::MenuBar_EmptyAreaBackground);
     painter->fillRect(option->rect,background);
     return true;
+}
+
 }

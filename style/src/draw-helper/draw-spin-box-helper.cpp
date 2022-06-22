@@ -27,12 +27,12 @@
 #include <QWidget>
 #include <QtMath>
 
-using namespace Kiran::Style;
-
-QSize Kiran::Style::spinBoxSizeFromContents(const QStyle *style,
-                                            const QStyleOption *option,
-                                            const QSize &contentSize,
-                                            const QWidget *widget)
+namespace Kiran
+{
+QSize spinBoxSizeFromContents(const QStyle *style,
+                              const QStyleOption *option,
+                              const QSize &contentSize,
+                              const QWidget *widget)
 {
     const auto spinBoxOption(qstyleoption_cast<const QStyleOptionSpinBox *>(option));
     if (!spinBoxOption) return contentSize;
@@ -52,11 +52,11 @@ QSize Kiran::Style::spinBoxSizeFromContents(const QStyle *style,
     return size;
 }
 
-bool Kiran::Style::spinBoxSubControlRect(const QStyle *style,
-                                         const QStyleOptionComplex *option,
-                                         QStyle::SubControl subControl,
-                                         const QWidget *widget,
-                                         QRect &controlRect)
+bool spinBoxSubControlRect(const QStyle *style,
+                           const QStyleOptionComplex *option,
+                           QStyle::SubControl subControl,
+                           const QWidget *widget,
+                           QRect &controlRect)
 {
     const auto spinBoxOption(qstyleoption_cast<const QStyleOptionSpinBox *>(option));
     if (!spinBoxOption) return false;
@@ -82,11 +82,11 @@ bool Kiran::Style::spinBoxSubControlRect(const QStyle *style,
     case QStyle::SC_SpinBoxDown:
         if (rect.width() > 2 * rect.height() + 24)
         {
-            controlRect = QRect(rect.right() - 2 * rect.height() + 1,rect.top(),rect.height(),rect.height() - 1);
+            controlRect = QRect(rect.right() - 2 * rect.height() + 1, rect.top(), rect.height(), rect.height() - 1);
         }
         else
         {
-            controlRect = QRect(rect.right() - 0.6 * rect.height() + 1,rect.top() + rect.height() / 2 - 2,rect.height() * 0.6,rect.height() / 2 + 2);
+            controlRect = QRect(rect.right() - 0.6 * rect.height() + 1, rect.top() + rect.height() / 2 - 2, rect.height() * 0.6, rect.height() / 2 + 2);
         }
         break;
     case QStyle::SC_SpinBoxEditField:
@@ -113,7 +113,7 @@ bool Kiran::Style::spinBoxSubControlRect(const QStyle *style,
         break;
     }
     default:
-        return  false;
+        return false;
     }
 
     return true;
@@ -142,7 +142,7 @@ void renderSpinBoxArrow(const QStyle *style, const QStyle::SubControl &subContro
         {QStyle::State_Sunken, subControlSunken},
         {QStyle::State_Enabled, enabled}};
 
-    //复制一个子控件StyleOption,更新其中的状态
+    // 复制一个子控件StyleOption,更新其中的状态
     QStyleOption tempOption(*option);
     for (auto iter = subControlFlagMap.begin(); iter != subControlFlagMap.end(); iter++)
     {
@@ -157,11 +157,11 @@ void renderSpinBoxArrow(const QStyle *style, const QStyle::SubControl &subContro
     }
 
     auto schemeLoader = SchemeLoaderFetcher::getSchemeLoader();
-    auto borderColor = schemeLoader->getColor(widget,option,SchemeLoader::SpinBox_Border);
-    auto backgroundColor = schemeLoader->getColor(widget,option,SchemeLoader::SpinBox_Background);
-    auto signColor = schemeLoader->getColor(widget,option,SchemeLoader::SpinBox_SignColor);
+    auto borderColor = schemeLoader->getColor(widget, option, SchemeLoader::SpinBox_Border);
+    auto backgroundColor = schemeLoader->getColor(widget, option, SchemeLoader::SpinBox_Background);
+    auto signColor = schemeLoader->getColor(widget, option, SchemeLoader::SpinBox_SignColor);
 
-    //绘制按钮与输入区域之间的分割线
+    // 绘制按钮与输入区域之间的分割线
     if (subControl == QStyle::SC_SpinBoxDown)
     {
         painter->setBrush(Qt::NoBrush);
@@ -178,13 +178,13 @@ void renderSpinBoxArrow(const QStyle *style, const QStyle::SubControl &subContro
         painter->drawLine(arrowRect.left(), arrowRect.top() + 2 + highlight, arrowRect.left(), arrowRect.bottom() - 1 - highlight);
     }
 
-    //绘制按钮背景色
+    // 绘制按钮背景色
     painter->setPen(Qt::NoPen);
     QColor background = backgroundColor;
     painter->setBrush(background);
-    painter->drawRect(arrowRect.adjusted(0.5,0.5,-0.5,-0.5));
+    painter->drawRect(arrowRect.adjusted(0.5, 0.5, -0.5, -0.5));
 
-    //绘制按钮之上的符号 “+”，“-”
+    // 绘制按钮之上的符号 “+”，“-”
     QPen pen(signColor, 2);
     pen.setCapStyle(Qt::FlatCap);
     QRect r = arrowRect.adjusted(1, 2, 0, 0).toRect();
@@ -194,7 +194,7 @@ void renderSpinBoxArrow(const QStyle *style, const QStyle::SubControl &subContro
         painter->drawLine(r.center() - QPointF(0, 5), r.center() + QPointF(0, 5));
 }
 
-bool Kiran::Style::drawCCSpinBox(const QStyle *style, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget)
+bool drawCCSpinBox(const QStyle *style, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget)
 {
     const auto spinBoxOption(qstyleoption_cast<const QStyleOptionSpinBox *>(option));
     if (!spinBoxOption) return true;
@@ -221,7 +221,7 @@ bool Kiran::Style::drawCCSpinBox(const QStyle *style, const QStyleOptionComplex 
         }
     }
 
-    //裁剪掉按钮露出圆角边框的区域
+    // 裁剪掉按钮露出圆角边框的区域
     QPainterPath catPath = RenderHelper::roundedPath(RenderHelper::insideMargin(option->rect, 1), AllCorners, 4);
     PainterSaver painterSaver(painter);
     painter->setClipPath(catPath);
@@ -230,3 +230,4 @@ bool Kiran::Style::drawCCSpinBox(const QStyle *style, const QStyleOptionComplex 
 
     return true;
 }
+}  // namespace Kiran

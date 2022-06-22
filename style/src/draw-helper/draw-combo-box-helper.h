@@ -23,15 +23,12 @@ class QPainter;
 
 namespace Kiran
 {
-namespace Style
-{
 class SchemeLoader;
 
 QSize comboBoxSizeFromContents(const QStyle* style, const QStyleOption* option, const QSize& contentSize, const QWidget* widget);
 bool comboBoxSubControlRect(const QStyle* style, const QStyleOptionComplex* opt, QStyle::SubControl sc, const QWidget* widget, QRect& controlRect);
 bool drawCCComboBox(const QStyle* style, const QStyleOptionComplex* option, QPainter* painter, const QWidget* widget);
 bool drawControlComboBoxLabel(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget);
-}
 }
 
 #endif  //KIRAN_QT5_PLATFORMTHEME_STYLE_SRC_DRAW_HELPER_DRAW_COMBO_BOX_HELPER_H_

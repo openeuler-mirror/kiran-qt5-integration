@@ -27,10 +27,6 @@
 #define ParentStyle QCommonStyle
 #endif
 
-namespace Kiran
-{
-namespace Style
-{
 class Style : public ParentStyle
 {
 public:
@@ -41,12 +37,12 @@ public:
     int pixelMetric(PixelMetric metric, const QStyleOption* option, const QWidget* widget) const override;
 
     void drawPrimitive(PrimitiveElement element, const QStyleOption* option, QPainter* painter, const QWidget* widget) const override;
-    void drawComplexControl(ComplexControl control,const QStyleOptionComplex* option,QPainter* painter,const QWidget* widget) const override;
-    void drawControl(ControlElement element,const QStyleOption* option,QPainter* painter,const QWidget* widget) const override;
+    void drawComplexControl(ComplexControl control, const QStyleOptionComplex* option, QPainter* painter, const QWidget* widget) const override;
+    void drawControl(ControlElement element, const QStyleOption* option, QPainter* painter, const QWidget* widget) const override;
 
     QRect subElementRect(SubElement element, const QStyleOption* option, const QWidget* widget) const override;
-    QRect subControlRect(ComplexControl cc,const QStyleOptionComplex* opt,SubControl sc,const QWidget* widget) const override;
-    QSize sizeFromContents(ContentsType type,const QStyleOption* option,const QSize& contentSize,const QWidget* widget) const override;
+    QRect subControlRect(ComplexControl cc, const QStyleOptionComplex* opt, SubControl sc, const QWidget* widget) const override;
+    QSize sizeFromContents(ContentsType type, const QStyleOption* option, const QSize& contentSize, const QWidget* widget) const override;
 
     QPixmap standardPixmap(StandardPixmap standardPixmap, const QStyleOption* opt, const QWidget* widget) const override;
     QIcon standardIcon(StandardPixmap standardIcon, const QStyleOption* option, const QWidget* widget) const override;
@@ -55,7 +51,5 @@ public:
     void polish(QApplication* app) override;
     void polish(QPalette& pal) override;
 };
-}  // namespace Style
-}  // namespace Kiran
 
-#endif  //KIRAN_QT5_PLATFORMTHEME_STYLE_KIRAN_STYLE_H_
+#endif  // KIRAN_QT5_PLATFORMTHEME_STYLE_KIRAN_STYLE_H_

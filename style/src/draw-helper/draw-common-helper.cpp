@@ -14,8 +14,8 @@
 #include "draw-common-helper.h"
 #include "render-helper.h"
 
-#include "kiran-palette.h"
 #include "scheme-loader-fetcher.h"
+#include "style-palette.h"
 
 #define private public
 #include <private/qsvgtinydocument_p.h>
@@ -26,9 +26,9 @@
 #include <QStyle>
 #include <QStyleOption>
 
-using namespace Kiran::Style;
-
-bool Kiran::Style::drawPEFrame(const QStyle *style,
+namespace Kiran
+{
+bool drawPEFrame(const QStyle *style,
                                const QStyleOption *option,
                                QPainter *painter,
                                const QWidget *widget)
@@ -43,13 +43,13 @@ bool Kiran::Style::drawPEFrame(const QStyle *style,
     return true;
 }
 
-bool Kiran::Style::drawPEFrameFocusRect(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
+bool drawPEFrameFocusRect(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
 {
     //TODO:聚焦虚线框 颜色? 增加配置文件聚焦虚线框可配置
     return true;
 }
 
-bool Kiran::Style::drawPEFrameGroupBox(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
+bool drawPEFrameGroupBox(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
 {
     const auto frameOption(qstyleoption_cast<const QStyleOptionFrame *>(option));
     if (!frameOption) return true;
@@ -65,7 +65,7 @@ bool Kiran::Style::drawPEFrameGroupBox(const QStyle *style, const QStyleOption *
     return true;
 }
 
-bool Kiran::Style::drawControlShapedFrame(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
+bool drawControlShapedFrame(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
 {
     const auto *frameOpt = qstyleoption_cast<const QStyleOptionFrame *>(option);
     if (!frameOpt)
@@ -93,7 +93,7 @@ bool Kiran::Style::drawControlShapedFrame(const QStyle *style, const QStyleOptio
         const QRect &rect(option->rect);
         bool isVertical(frameOpt->frameShape == QFrame::VLine);
 
-        QColor color = KiranPalette::instance()->color(widget,option,KiranPalette::Window,KiranPalette::Border);
+        QColor color = StylePalette::instance()->color(widget,option, StylePalette::Window, StylePalette::Border);
         RenderHelper::renderSeparator(painter, option->rect, isVertical, color);
         return true;
     }
@@ -113,7 +113,8 @@ bool Kiran::Style::drawControlShapedFrame(const QStyle *style, const QStyleOptio
     return false;
 }
 
-QSize Kiran::Style::defaultSizeFromContents(const QStyleOption* option, const QSize &contentSize, const QWidget *widget)
+QSize defaultSizeFromContents(const QStyleOption* option, const QSize &contentSize, const QWidget *widget)
 {
     return contentSize;
+}
 }

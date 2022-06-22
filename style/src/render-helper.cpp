@@ -15,17 +15,17 @@
 #include "metrics.h"
 
 #include <QMenu>
+#include <QPainter>
 #include <QStyleOption>
 #include <QWidgetAction>
-#include <QPainter>
 
 #define private public
 #include <private/qsvgtinydocument_p.h>
 #undef private
 
-using namespace Kiran::Style;
-
-PainterSaver::PainterSaver(QPainter *painter) :_painter(painter)
+namespace Kiran
+{
+PainterSaver::PainterSaver(QPainter *painter) : _painter(painter)
 {
     _painter->save();
 }
@@ -37,7 +37,7 @@ PainterSaver::~PainterSaver()
 
 int RenderHelper::mnemonicsTextFlags()
 {
-    //Qt::TextHideMnemonic Qt::TextShowMnemonic
+    // Qt::TextHideMnemonic Qt::TextShowMnemonic
     return Qt::TextHideMnemonic;
 }
 
@@ -66,7 +66,7 @@ bool RenderHelper::isMenuTitle(const QWidget *widget)
 {
     if (!widget) return false;
 
-    //FIXME:若控件后续移动，该属性不会自动更新，将会导致问题
+    // FIXME:若控件后续移动，该属性不会自动更新，将会导致问题
     QVariant property(widget->property(property_menu_title));
     if (property.isValid()) return property.toBool();
 
@@ -93,7 +93,7 @@ QRectF RenderHelper::strokedRect(const QRectF &rect, const qreal penWidth)
 
 QRect RenderHelper::insideMargin(const QRect &r, int margin)
 {
-    return insideMargin(r,margin,margin);
+    return insideMargin(r, margin, margin);
 }
 
 QRect RenderHelper::insideMargin(const QRect &r, int marginWidth, int marginHeight)
@@ -108,12 +108,12 @@ QRect RenderHelper::centerRect(const QRect &rect, int width, int height)
 
 QRect RenderHelper::centerRect(const QRect &rect, const QSize &size)
 {
-    return centerRect(rect,size.width(),size.height());
+    return centerRect(rect, size.width(), size.height());
 }
 
 QSize RenderHelper::expandSize(const QSize &size, int margin)
 {
-    return expandSize(size,margin,margin);
+    return expandSize(size, margin, margin);
 }
 
 QSize RenderHelper::expandSize(const QSize &size, int marginWidth, int marginHeight)
@@ -190,7 +190,7 @@ void RenderHelper::renderFrame(QPainter *painter, const QRect &rect, int penWidt
     if (outline.isValid())
     {
         painter->setPen(outline);
-        frameRect = strokedRect(frameRect, penWidth/2.0);
+        frameRect = strokedRect(frameRect, penWidth / 2.0);
     }
     else
     {
@@ -231,11 +231,11 @@ void RenderHelper::renderFlatFrame(QPainter *painter, const QRect &rect, int rad
         painter->setBrush(Qt::NoBrush);
 
     QPainterPath path;
-    path.setFillRule( Qt::WindingFill );
-    path.addRect( frameRect.adjusted(2 * radius, 0, 0, 0) );
-    path.addRoundedRect( frameRect.adjusted(0, 0, - 2 *radius, 0), radius, radius);
+    path.setFillRule(Qt::WindingFill);
+    path.addRect(frameRect.adjusted(2 * radius, 0, 0, 0));
+    path.addRoundedRect(frameRect.adjusted(0, 0, -2 * radius, 0), radius, radius);
 
-    painter->drawPath( path.simplified() );
+    painter->drawPath(path.simplified());
 }
 
 void RenderHelper::renderSeparator(QPainter *painter, const QRect &rect, bool vertical, const QColor &color)
@@ -259,25 +259,25 @@ void RenderHelper::renderSeparator(QPainter *painter, const QRect &rect, bool ve
 }
 
 void RenderHelper::renderMenuTitle(const QStyle *style,
-                                  QPainter *painter,
-                                  const QStyleOptionToolButton *option,
-                                  const QWidget *widget,
-                                  const QColor &separatorColor)
+                                   QPainter *painter,
+                                   const QStyleOptionToolButton *option,
+                                   const QWidget *widget,
+                                   const QColor &separatorColor)
 {
     // 底部渲染分割线
-    const QPalette& palette( option->palette );
-    auto separatorRect = QRect( option->rect.bottomLeft()-QPoint( 0, Metrics::MenuItem_MarginWidth), QSize( option->rect.width(), 1 ) );
-    renderSeparator(painter,separatorRect,false,separatorColor);
+    const QPalette &palette(option->palette);
+    auto separatorRect = QRect(option->rect.bottomLeft() - QPoint(0, Metrics::MenuItem_MarginWidth), QSize(option->rect.width(), 1));
+    renderSeparator(painter, separatorRect, false, separatorColor);
 
     // 渲染文本居中,丢弃图标
-    painter->setFont( option->font );
-    QRect contentsRect = insideMargin( option->rect, Metrics::MenuItem_MarginWidth );
-    style->drawItemText( painter, contentsRect, Qt::AlignCenter, palette, true, option->text, QPalette::WindowText );
+    painter->setFont(option->font);
+    QRect contentsRect = insideMargin(option->rect, Metrics::MenuItem_MarginWidth);
+    style->drawItemText(painter, contentsRect, Qt::AlignCenter, palette, true, option->text, QPalette::WindowText);
 }
 
 QPixmap RenderHelper::changeSVGFillColor(const QString &svgFile, const QColor &fillColor, const QSize &size)
 {
-    //调用Qt私有接口，修改所有命名节点其所有的fill属性为指定颜色
+    // 调用Qt私有接口，修改所有命名节点其所有的fill属性为指定颜色
     auto tinyDoc = QSvgTinyDocument::load(svgFile);
 
     auto namedNodes = tinyDoc->m_namedNodes;
@@ -291,7 +291,7 @@ QPixmap RenderHelper::changeSVGFillColor(const QString &svgFile, const QColor &f
         }
     }
 
-    //渲染到Pixmap之中
+    // 渲染到Pixmap之中
     QPixmap tempPixmap(size);
     tempPixmap.fill(Qt::transparent);
 
@@ -305,16 +305,16 @@ QPixmap RenderHelper::changeSVGFillColor(const QString &svgFile, const QColor &f
     return tempPixmap;
 }
 
-void RenderHelper::renderArrow(QPainter *painter, const QRect &rect, ArrowOrientation orientation, const QColor &color,const QSize& arrowSize)
+void RenderHelper::renderArrow(QPainter *painter, const QRect &rect, ArrowOrientation orientation, const QColor &color, const QSize &arrowSize)
 {
     QString svgFile = QString(":/style-helper/images/arrow.svg");
     PainterSaver painterSave(painter);
     painter->setRenderHint(QPainter::Antialiasing);
 
-    //修改箭头默认颜色
-    QPixmap tempPixmap = changeSVGFillColor(svgFile,color,arrowSize.isEmpty()?QSize(16,16):arrowSize);
+    // 修改箭头默认颜色
+    QPixmap tempPixmap = changeSVGFillColor(svgFile, color, arrowSize.isEmpty() ? QSize(16, 16) : arrowSize);
 
-    //旋转图片
+    // 旋转图片
     int rotateAngle = 0;
     switch (orientation)
     {
@@ -334,19 +334,19 @@ void RenderHelper::renderArrow(QPainter *painter, const QRect &rect, ArrowOrient
     }
     QMatrix matrix;
     matrix.rotate(rotateAngle);
-    QPixmap arrowPixmap = tempPixmap.transformed(matrix,Qt::SmoothTransformation);
+    QPixmap arrowPixmap = tempPixmap.transformed(matrix, Qt::SmoothTransformation);
 
-    //绘制图片
+    // 绘制图片
     QRect arrowRect = centerRect(rect, arrowPixmap.size());
-    painter->drawPixmap(arrowRect,arrowPixmap);
+    painter->drawPixmap(arrowRect, arrowPixmap);
 }
 
 void RenderHelper::renderTabBarTab(QPainter *painter,
-                                  const QRect &rect,
-                                  Corners corners,
-                                  int radius,
-                                  const QColor &background,
-                                  const QColor &border)
+                                   const QRect &rect,
+                                   Corners corners,
+                                   int radius,
+                                   const QColor &background,
+                                   const QColor &border)
 {
     PainterSaver painterSave(painter);
 
@@ -369,3 +369,5 @@ void RenderHelper::renderTabBarTab(QPainter *painter,
     painter->setRenderHint(QPainter::Antialiasing);
     painter->drawPath(painterPath);
 }
+
+}  // namespace Kiran

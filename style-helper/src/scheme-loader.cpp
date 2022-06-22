@@ -20,9 +20,11 @@
 #include <QStyle>
 #include <QStyleOption>
 
-using namespace Kiran::Style;
 using namespace QCss;
 
+
+namespace Kiran
+{
 static const QMap<quint64, QString> pseudoMap = {
     {QCss::PseudoClass_Unknown, "unknow"},
     {QCss::PseudoClass_Enabled, "enabled"},
@@ -75,7 +77,7 @@ static const QMap<quint64, QString> pseudoMap = {
 
 bool FuzzyMatch(const QVector<QCss::Selector>& selectors, quint64 pseudoClass);
 
-Kiran::Style::SchemeLoader::SchemeLoader(QObject* parent)
+Kiran::SchemeLoader::SchemeLoader(QObject* parent)
     : QObject(parent),
       m_isValid(false),
       m_styleScheme(new QCss::StyleSheet)
@@ -529,4 +531,5 @@ QVariant SchemeLoader::searchCacheEntry(SchemeLoader::SchemePropertyName propert
         var = iter.value();
     }
     return var;
+}
 }

@@ -21,8 +21,6 @@ class QWidget;
 
 namespace Kiran
 {
-namespace Style
-{
 class SchemeLoader;
 
 bool drawPEIndicatorButtonDropDown(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget);
@@ -39,7 +37,6 @@ bool drawPEIndicatorBranch(const QStyle *style, const QStyleOption *option, QPai
 
 bool drawPEIndicatorToolBarSeparator(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget);
 bool drawPEIndicatorToolBarHandle(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget);
-}  // namespace Style
 }  // namespace Kiran
 
-#endif  //KIRAN_QT5_PLATFORMTHEME_STYLE_SRC_DRAW_HELPER_DRAW_INDICATOR_HELPER_H_
+#endif  // KIRAN_QT5_PLATFORMTHEME_STYLE_SRC_DRAW_HELPER_DRAW_INDICATOR_HELPER_H_

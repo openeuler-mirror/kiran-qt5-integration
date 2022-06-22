@@ -27,8 +27,6 @@ class QStyleOptionToolButton;
 
 namespace Kiran
 {
-namespace Style
-{
 class SchemeLoader;
 
 bool drawPEFrame(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget);
@@ -38,7 +36,6 @@ bool drawPEFrameGroupBox(const QStyle* style, const QStyleOption* option, QPaint
 bool drawControlShapedFrame(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget);
 
 QSize defaultSizeFromContents(const QStyleOption* option, const QSize& contentSize, const QWidget* widget);
-}  // namespace Style
 }  // namespace Kiran
 
 #endif  //KIRAN_QT5_PLATFORMTHEME_STYLE_SRC_DRAW_HELPER_DRAW_COMMON_HELPER_H_

@@ -20,9 +20,10 @@
 #include <QRadioButton>
 #include <QStyleFactory>
 #include <QToolBar>
-#include "kiran-style-property.h"
+#include "style-property.h"
 #include "ui_qt-widget-factor.h"
 
+using namespace Kiran;
 QtWidgetFactor::QtWidgetFactor(QWidget* parent) : QWidget(parent), ui(new Ui::QtWidgetFactor)
 {
     ui->setupUi(this);
@@ -33,7 +34,7 @@ QtWidgetFactor::QtWidgetFactor(QWidget* parent) : QWidget(parent), ui(new Ui::Qt
     initToolBar();
     initTabBar();
 
-    Kiran::Style::PropertyHelper::setButtonType(ui->pushbutton_normal, Kiran::Style::BUTTON_Default);
+    StylePropertyHelper::setButtonType(ui->pushbutton_normal, BUTTON_Default);
 }
 
 QtWidgetFactor::~QtWidgetFactor()

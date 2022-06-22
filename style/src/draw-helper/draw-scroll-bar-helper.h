@@ -24,17 +24,14 @@ class QPainter;
 class QWidget;
 namespace Kiran
 {
-namespace Style
-{
 class SchemeLoader;
 
 bool scrollBarSubControlRect(const QStyle *style, const QStyleOptionComplex *option, QStyle::SubControl subControl, const QWidget *widget, QRect &controlRect);
 
 bool drawCCScrollBar(const QStyle *style, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget);
 
-bool drawControlScrollBarGroove(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget, Kiran::Style::SchemeLoader *scheme);
+bool drawControlScrollBarGroove(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget, Kiran::SchemeLoader *scheme);
 bool drawControlScrollBarSlider(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget);
-}
-}
+}  // namespace Kiran
 
-#endif  //KIRAN_QT5_PLATFORMTHEME_STYLE_SRC_DRAW_HELPER_DRAW_SCROLL_BAR_HELPER_H_
+#endif  // KIRAN_QT5_PLATFORMTHEME_STYLE_SRC_DRAW_HELPER_DRAW_SCROLL_BAR_HELPER_H_

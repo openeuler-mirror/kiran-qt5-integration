@@ -26,8 +26,6 @@ class QWidget;
 class QRect;
 namespace Kiran
 {
-namespace Style
-{
 class SchemeLoader;
 
 QSize tabBarTabSizeFromContents(const QStyle *style, const QStyleOption *option, const QSize &contentSize, const QWidget *widget);
@@ -38,7 +36,6 @@ bool drawPEFrameTabBarBase(const QStyle *style, const QStyleOption *option, QPai
 
 bool drawControlTabBarTabLabel(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget);
 bool drawControlTabBarTabShape(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget);
-}  // namespace Style
 }  // namespace Kiran
 
-#endif  //KIRAN_QT5_PLATFORMTHEME_STYLE_SRC_DRAW_HELPER_DRAW_TAB_WIDGET_HELPER_H_
+#endif  // KIRAN_QT5_PLATFORMTHEME_STYLE_SRC_DRAW_HELPER_DRAW_TAB_WIDGET_HELPER_H_

@@ -12,30 +12,30 @@
  * Author:     liuxinhao <liuxinhao@kylinos.com.cn>
  */
 #include "draw-button-helper.h"
-#include "kiran-palette.h"
 #include "define.h"
 #include "draw-common-helper.h"
 #include "metrics.h"
 #include "render-helper.h"
-#include "kiran-style-property.h"
 #include "scheme-loader-fetcher.h"
+#include "style-palette.h"
+#include "style-property.h"
 
 #include <QAbstractButton>
+#include <QColor>
 #include <QDebug>
 #include <QPainter>
+#include <QPushButton>
 #include <QStyleOption>
 #include <QToolButton>
 #include <QWidget>
-#include <QPushButton>
-#include <QColor>
 
-using namespace Kiran::Style;
-
-//根据按钮内容计算按钮尺寸
-QSize Kiran::Style::pushButtonSizeFromContents(const QStyle* style,
-                                               const QStyleOption* option,
-                                               const QSize& contentSize,
-                                               const QWidget* widget)
+namespace Kiran
+{
+// 根据按钮内容计算按钮尺寸
+QSize pushButtonSizeFromContents(const QStyle* style,
+                                 const QStyleOption* option,
+                                 const QSize& contentSize,
+                                 const QWidget* widget)
 {
     const auto buttonOption(qstyleoption_cast<const QStyleOptionButton*>(option));
     if (!buttonOption) return contentSize;
@@ -48,19 +48,19 @@ QSize Kiran::Style::pushButtonSizeFromContents(const QStyle* style,
 
     if (!(hasText || hasIcon))
     {
-        //没有文本以及图标，采用自定义按钮作为内容大小的起点
+        // 没有文本以及图标，采用自定义按钮作为内容大小的起点
         size = contentSize;
     }
     else
     {
-        //不管Qt在内容大小如何计算，完全根据按钮选项重新计算按钮大小,保证渲染阶段的一致性
+        // 不管Qt在内容大小如何计算，完全根据按钮选项重新计算按钮大小,保证渲染阶段的一致性
         hasIcon &= (RenderHelper::showIconsOnPushButtons() || flat || !hasText);
 
-        //文本大小
+        // 文本大小
         if (hasText)
             size = buttonOption->fontMetrics.size(Qt::TextShowMnemonic, buttonOption->text);
 
-        //图标大小
+        // 图标大小
         if (hasIcon)
         {
             QSize iconSize = buttonOption->iconSize;
@@ -73,7 +73,7 @@ QSize Kiran::Style::pushButtonSizeFromContents(const QStyle* style,
         }
     }
 
-    //菜单
+    // 菜单
     const bool hasMenu(buttonOption->features & QStyleOptionButton::HasMenu);
     if (hasMenu)
     {
@@ -81,28 +81,28 @@ QSize Kiran::Style::pushButtonSizeFromContents(const QStyle* style,
         if (hasText || hasIcon) size.rwidth() += Metrics::Button_ItemSpacing;
     }
 
-    //扩展按钮内边距
+    // 扩展按钮内边距
     size = RenderHelper::expandSize(size, Metrics::Button_MarginWidth, Metrics::Button_MarginHeight);
-    //扩张按钮边框宽度
+    // 扩张按钮边框宽度
     size = RenderHelper::expandSize(size, Metrics::Frame_FrameWidth);
 
-    //确保按钮有最小的宽度
+    // 确保按钮有最小的宽度
     if (hasText)
     {
         size.setWidth(qMax(size.width(), int(Metrics::Button_MinWidth)));
     }
 
-    //确保按钮有最小高度
+    // 确保按钮有最小高度
     size.setHeight(qMax(size.height(), int(Metrics::Button_MinHeight)));
 
     return size;
 }
 
-//根据ToolButton内容大小获取尺寸
-QSize Kiran::Style::toolButtonSizeFromContents(const QStyle* style,
-                                               const QStyleOption* option,
-                                               const QSize& contentSize,
-                                               const QWidget* widget)
+// 根据ToolButton内容大小获取尺寸
+QSize toolButtonSizeFromContents(const QStyle* style,
+                                 const QStyleOption* option,
+                                 const QSize& contentSize,
+                                 const QWidget* widget)
 {
     const auto toolButtonOption = qstyleoption_cast<const QStyleOptionToolButton*>(option);
     if (!toolButtonOption) return contentSize;
@@ -111,23 +111,23 @@ QSize Kiran::Style::toolButtonSizeFromContents(const QStyle* style,
 
     const QStyle::State& state(option->state);
 
-    //Auto Raise标志： true表示自动突出，false表示与父窗口齐平
+    // Auto Raise标志： true表示自动突出，false表示与父窗口齐平
     const bool autoRaise(state & QStyle::State_AutoRaise);
     const bool hasPopupMenu(toolButtonOption->features & QStyleOptionToolButton::MenuButtonPopup);
     const bool hasInlineIndicator(toolButtonOption->features & QStyleOptionToolButton::HasMenu && toolButtonOption->features & QStyleOptionToolButton::PopupDelay && !hasPopupMenu);
 
-    //若存在内部指示器，宽度加上一个内部指示器的宽度
+    // 若存在内部指示器，宽度加上一个内部指示器的宽度
     if (hasInlineIndicator) size.rwidth() += Metrics::ToolButton_InlineIndicatorWidth;
 
-    //总边距宽度=按钮边距宽度+Frame宽度
+    // 总边距宽度=按钮边距宽度+Frame宽度
     int marginWidth = Metrics::Button_MarginWidth + Metrics::Frame_FrameWidth;
-    //四周扩展边距宽度
+    // 四周扩展边距宽度
     size = RenderHelper::expandSize(size, marginWidth);
 
     return size;
 }
 
-bool Kiran::Style::toolButtonSubControlRect(const QStyle* style,
+bool toolButtonSubControlRect(const QStyle* style,
                                             const QStyleOptionComplex* opt,
                                             QStyle::SubControl sc,
                                             const QWidget* widget,
@@ -155,7 +155,7 @@ bool Kiran::Style::toolButtonSubControlRect(const QStyle* style,
         }
 
         QRect menuRect(rect);
-        //定位菜单按钮为ToolButton右侧
+        // 定位菜单按钮为ToolButton右侧
         menuRect.setLeft(rect.right() - menuButtonWidth + 1);
         if (hasInlineIndicator)
         {
@@ -185,7 +185,7 @@ bool Kiran::Style::toolButtonSubControlRect(const QStyle* style,
     return true;
 }
 
-bool Kiran::Style::drawPEPanelButtonCommand(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget)
+bool drawPEPanelButtonCommand(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget)
 {
     const auto buttonOption(qstyleoption_cast<const QStyleOptionButton*>(option));
     if (!buttonOption)
@@ -202,20 +202,20 @@ bool Kiran::Style::drawPEPanelButtonCommand(const QStyle* style, const QStyleOpt
     bool flat(buttonOption->features & QStyleOptionButton::Flat);
 
     auto schemeLoader = SchemeLoaderFetcher::getSchemeLoader();
-    QColor background,border;
-    if( qobject_cast<const QPushButton*>(widget) && PropertyHelper::getButtonType(qobject_cast<const QPushButton*>(widget))!=BUTTON_Normal )
+    QColor background, border;
+    if (qobject_cast<const QPushButton*>(widget) && StylePropertyHelper::getButtonType(qobject_cast<const QPushButton*>(widget)) != BUTTON_Normal)
     {
-        ButtonType type = PropertyHelper::getButtonType(qobject_cast<const QPushButton*>(widget));
+        ButtonType type = StylePropertyHelper::getButtonType(qobject_cast<const QPushButton*>(widget));
         SchemeLoader::SchemePropertyName backgroundPropertyName = SchemeLoader::SpecialButton_DefaultBackground;
-        if( type == BUTTON_Warning )
+        if (type == BUTTON_Warning)
             backgroundPropertyName = SchemeLoader::SpecialButton_WarnningBackground;
 
-        background = schemeLoader->getColor(widget,option,backgroundPropertyName);
+        background = schemeLoader->getColor(widget, option, backgroundPropertyName);
     }
     else
     {
-        background = schemeLoader->getColor(widget,option,SchemeLoader::Button_Background);
-        border = schemeLoader->getColor(widget,option,SchemeLoader::Button_Border);
+        background = schemeLoader->getColor(widget, option, SchemeLoader::Button_Background);
+        border = schemeLoader->getColor(widget, option, SchemeLoader::Button_Border);
     }
 
     if (flat)
@@ -226,11 +226,11 @@ bool Kiran::Style::drawPEPanelButtonCommand(const QStyle* style, const QStyleOpt
         }
     }
 
-    RenderHelper::renderFrame(painter, option->rect,1, 4, background, border);
+    RenderHelper::renderFrame(painter, option->rect, 1, 4, background, border);
     return true;
 }
 
-bool Kiran::Style::drawPEPanelButtonTool(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget)
+bool drawPEPanelButtonTool(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget)
 {
     const QPalette& palette(option->palette);
     QRect rect(option->rect);
@@ -258,19 +258,19 @@ bool Kiran::Style::drawPEPanelButtonTool(const QStyle* style, const QStyleOption
             rect = QStyle::visualRect(option->direction, option->rect, rect);
         }
 
-        auto background = schemeLoader->getColor(widget,option,SchemeLoader::Button_Background);
-        auto border = schemeLoader->getColor(widget,option,SchemeLoader::Button_Border);
-        RenderHelper::renderFrame(painter, rect,1, 4, background, border);
+        auto background = schemeLoader->getColor(widget, option, SchemeLoader::Button_Background);
+        auto border = schemeLoader->getColor(widget, option, SchemeLoader::Button_Border);
+        RenderHelper::renderFrame(painter, rect, 1, 4, background, border);
     }
     else
     {
-        RenderHelper::renderFrame(painter, rect,1, 4, Qt::transparent);
+        RenderHelper::renderFrame(painter, rect, 1, 4, Qt::transparent);
     }
 
     return true;
 }
 
-bool Kiran::Style::drawControlToolButtonLabel(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget)
+bool drawControlToolButtonLabel(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget)
 {
     const auto toolButtonOption(qstyleoption_cast<const QStyleOptionToolButton*>(option));
     if (!toolButtonOption)
@@ -303,16 +303,16 @@ bool Kiran::Style::drawControlToolButtonLabel(const QStyle* style, const QStyleO
     QRect iconRect;
     QRect textRect;
 
-    if (hasText && (!(hasArrow || hasIcon) || toolButtonOption->toolButtonStyle == Qt::ToolButtonTextOnly))  //只显示文字
+    if (hasText && (!(hasArrow || hasIcon) || toolButtonOption->toolButtonStyle == Qt::ToolButtonTextOnly))  // 只显示文字
     {
         textRect = contentsRect;
         textFlags |= Qt::AlignCenter;
     }
-    else if ((hasArrow || hasIcon) && (!hasText || toolButtonOption->toolButtonStyle == Qt::ToolButtonIconOnly))  //只显示图标
+    else if ((hasArrow || hasIcon) && (!hasText || toolButtonOption->toolButtonStyle == Qt::ToolButtonIconOnly))  // 只显示图标
     {
         iconRect = contentsRect;
     }
-    else if (toolButtonOption->toolButtonStyle == Qt::ToolButtonTextUnderIcon)  //文字位于图标之下
+    else if (toolButtonOption->toolButtonStyle == Qt::ToolButtonTextUnderIcon)  // 文字位于图标之下
     {
         int contentsHeight(iconSize.height() + textSize.height() + Metrics::ToolButton_ItemSpacing);
         iconRect = QRect(QPoint(contentsRect.left() + (contentsRect.width() - iconSize.width()) / 2, contentsRect.top() + (contentsRect.height() - contentsHeight) / 2), iconSize);
@@ -398,7 +398,7 @@ bool Kiran::Style::drawControlToolButtonLabel(const QStyle* style, const QStyleO
     return true;
 }
 
-bool Kiran::Style::drawCCToolButton(const QStyle* style, const QStyleOptionComplex* option, QPainter* painter, const QWidget* widget)
+bool drawCCToolButton(const QStyle* style, const QStyleOptionComplex* option, QPainter* painter, const QWidget* widget)
 {
     const auto* toolButtonOption(qstyleoption_cast<const QStyleOptionToolButton*>(option));
     if (!toolButtonOption) return true;
@@ -421,7 +421,7 @@ bool Kiran::Style::drawCCToolButton(const QStyle* style, const QStyleOptionCompl
         copy.font.setBold(false);
         copy.state = QStyle::State_Enabled;
 
-        auto separatorColor = schemeLoader->getColor(widget,option,SchemeLoader::Widget_Border);
+        auto separatorColor = schemeLoader->getColor(widget, option, SchemeLoader::Widget_Border);
         return true;
     }
 
@@ -456,7 +456,7 @@ bool Kiran::Style::drawCCToolButton(const QStyle* style, const QStyleOptionCompl
         {
             QRect rect(option->rect);
 
-            auto background = schemeLoader->getColor(widget,option,SchemeLoader::Widget_Background);
+            auto background = schemeLoader->getColor(widget, option, SchemeLoader::Widget_Background);
 
             painter->setPen(background);
             painter->setBrush(background);
@@ -566,7 +566,7 @@ bool Kiran::Style::drawCCToolButton(const QStyle* style, const QStyleOptionCompl
             int marginWidth(flat ? Metrics::ToolButton_MarginWidth : Metrics::Button_MarginWidth + Metrics::Frame_FrameWidth);
             contentsRect = RenderHelper::insideMargin(contentsRect, marginWidth, 0);
             contentsRect.setRight(contentsRect.right() - Metrics::ToolButton_InlineIndicatorWidth);
-            contentsRect = QStyle::visualRect(option->direction,option->rect, contentsRect);
+            contentsRect = QStyle::visualRect(option->direction, option->rect, contentsRect);
         }
 
         copy.rect = contentsRect;
@@ -576,3 +576,4 @@ bool Kiran::Style::drawCCToolButton(const QStyle* style, const QStyleOptionCompl
     }
     return true;
 }
+}  // namespace Kiran

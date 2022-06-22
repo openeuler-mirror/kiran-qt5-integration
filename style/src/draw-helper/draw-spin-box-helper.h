@@ -25,13 +25,9 @@ class QSize;
 class QRect;
 namespace Kiran
 {
-namespace Style
-{
 class SchemeLoader;
-QSize spinBoxSizeFromContents(const QStyle *style, const QStyleOption *option, const QSize &contentSize, const QWidget *widget);
+QSize spinBoxSizeFromContents(const QStyle* style, const QStyleOption* option, const QSize& contentSize, const QWidget* widget);
 bool spinBoxSubControlRect(const QStyle* style, const QStyleOptionComplex* option, QStyle::SubControl subControl, const QWidget* widget, QRect& controlRect);
 bool drawCCSpinBox(const QStyle* style, const QStyleOptionComplex* option, QPainter* painter, const QWidget* widget);
-
-}
-}
-#endif  //KIRAN_QT5_PLATFORMTHEME_STYLE_SRC_DRAW_HELPER_DRAW_SPIN_BOX_HELPER_H_
+}  // namespace Kiran
+#endif  // KIRAN_QT5_PLATFORMTHEME_STYLE_SRC_DRAW_HELPER_DRAW_SPIN_BOX_HELPER_H_

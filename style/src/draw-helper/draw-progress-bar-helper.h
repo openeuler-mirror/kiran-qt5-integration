@@ -24,17 +24,14 @@ class QWidget;
 
 namespace Kiran
 {
-namespace Style
-{
 class SchemeLoader;
 QSize progressBarSizeFromContents(const QStyle *style, const QStyleOption *option, const QSize &contentSize, const QWidget *widget);
-QRect progressBarElementRect(const QStyle* style, QStyle::SubElement subElement, const QStyleOption* option, const QWidget* widget);
+QRect progressBarElementRect(const QStyle *style, QStyle::SubElement subElement, const QStyleOption *option, const QWidget *widget);
 
 bool drawControlProgressBar(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget);
 bool drawControlProgressBarGroove(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget);
 bool drawControlProgressBarContents(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget);
 bool drawControlProgressBarLabel(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget);
-}
-}
+}  // namespace Kiran
 
-#endif  //KIRAN_QT5_PLATFORMTHEME_STYLE_SRC_DRAW_HELPER_DRAW_PROGRESS_BAR_HELPER_H_
+#endif  // KIRAN_QT5_PLATFORMTHEME_STYLE_SRC_DRAW_HELPER_DRAW_PROGRESS_BAR_HELPER_H_

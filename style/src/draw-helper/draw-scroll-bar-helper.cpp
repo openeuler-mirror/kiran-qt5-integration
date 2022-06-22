@@ -26,8 +26,8 @@
 #include <QStyleOptionComplex>
 #include <QWidget>
 
-using namespace Kiran::Style;
-
+namespace Kiran
+{
 enum ScrollBarButtonType
 {
     NoButton,
@@ -91,11 +91,11 @@ QRect scrollBarInternalSubControlRect(const QStyleOptionComplex *option,
     }
 }
 
-bool Kiran::Style::scrollBarSubControlRect(const QStyle *style,
-                                           const QStyleOptionComplex *option,
-                                           QStyle::SubControl subControl,
-                                           const QWidget *widget,
-                                           QRect &controlRect)
+bool scrollBarSubControlRect(const QStyle *style,
+                             const QStyleOptionComplex *option,
+                             QStyle::SubControl subControl,
+                             const QWidget *widget,
+                             QRect &controlRect)
 {
     const auto sliderOption(qstyleoption_cast<const QStyleOptionSlider *>(option));
     if (!sliderOption)
@@ -147,11 +147,11 @@ bool Kiran::Style::scrollBarSubControlRect(const QStyle *style,
 
         if (horizontal)
         {
-            controlRect = QStyle::visualRect(option->direction,option->rect,QRect(groove.left() + pos, groove.top(), sliderSize, groove.height()));
+            controlRect = QStyle::visualRect(option->direction, option->rect, QRect(groove.left() + pos, groove.top(), sliderSize, groove.height()));
         }
         else
         {
-            controlRect = QStyle::visualRect(option->direction,option->rect,QRect(groove.left(), groove.top() + pos, groove.width(), sliderSize));
+            controlRect = QStyle::visualRect(option->direction, option->rect, QRect(groove.left(), groove.top() + pos, groove.width(), sliderSize));
         }
         break;
     }
@@ -175,7 +175,7 @@ bool Kiran::Style::scrollBarSubControlRect(const QStyle *style,
         }
 
         // define rect
-        controlRect = QStyle::visualRect(option->direction,option->rect,QRect(topLeftCorner, botRightCorner));
+        controlRect = QStyle::visualRect(option->direction, option->rect, QRect(topLeftCorner, botRightCorner));
         break;
     }
     default:
@@ -185,7 +185,7 @@ bool Kiran::Style::scrollBarSubControlRect(const QStyle *style,
     return true;
 }
 
-bool Kiran::Style::drawCCScrollBar(const QStyle *style, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget)
+bool drawCCScrollBar(const QStyle *style, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget)
 {
     const auto scrollbarOption = qstyleoption_cast<const QStyleOptionSlider *>(option);
     if (!scrollbarOption)
@@ -193,13 +193,13 @@ bool Kiran::Style::drawCCScrollBar(const QStyle *style, const QStyleOptionComple
         return true;
     }
 
-    bool enabled( option->state & QStyle::State_Enabled );
-    bool mouseOver( (option->state & QStyle::State_Active) && option->state & QStyle::State_MouseOver );
+    bool enabled(option->state & QStyle::State_Enabled);
+    bool mouseOver((option->state & QStyle::State_Active) && option->state & QStyle::State_MouseOver);
 
-    if( option->subControls & QStyle::SC_ScrollBarGroove )
+    if (option->subControls & QStyle::SC_ScrollBarGroove)
     {
-        auto grooveRect = style->subControlRect(QStyle::CC_ScrollBar,option,QStyle::SC_ScrollBarGroove,widget);
-//不绘制滑动槽
+        auto grooveRect = style->subControlRect(QStyle::CC_ScrollBar, option, QStyle::SC_ScrollBarGroove, widget);
+// 不绘制滑动槽
 #if 0
         if( mouseOver )
         {
@@ -227,12 +227,12 @@ bool Kiran::Style::drawCCScrollBar(const QStyle *style, const QStyleOptionComple
     return true;
 }
 
-bool Kiran::Style::drawControlScrollBarGroove(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget, Kiran::Style::SchemeLoader *scheme)
+bool drawControlScrollBarGroove(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget, Kiran::SchemeLoader *scheme)
 {
     return false;
 }
 
-bool Kiran::Style::drawControlScrollBarSlider(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
+bool drawControlScrollBarSlider(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
 {
     const QStyleOptionSlider *sliderOption(qstyleoption_cast<const QStyleOptionSlider *>(option));
     if (!sliderOption)
@@ -242,9 +242,9 @@ bool Kiran::Style::drawControlScrollBarSlider(const QStyle *style, const QStyleO
 
     const QStyle::State &state(option->state);
     bool horizontal(state & QStyle::State_Horizontal);
-    //const QRect &rect(horizontal ? option->rect.adjusted(-1, 4, 0, -4) : option->rect.adjusted(4, -1, -4, 0));
+    // const QRect &rect(horizontal ? option->rect.adjusted(-1, 4, 0, -4) : option->rect.adjusted(4, -1, -4, 0));
     const QRect &rect(option->rect);
-    QRect handleRect ;
+    QRect handleRect;
 
     bool enabled(state & QStyle::State_Enabled);
     bool mouseOver((state & QStyle::State_Active) && enabled && (state & QStyle::State_MouseOver));
@@ -270,26 +270,27 @@ bool Kiran::Style::drawControlScrollBarSlider(const QStyle *style, const QStyleO
     bool hasFocus(enabled && parent && parent->hasFocus());
 
     handleRect = rect;
-    if( !mouseOver && horizontal )
+    if (!mouseOver && horizontal)
     {
-        handleRect = rect.adjusted(0,1,0,-1);
+        handleRect = rect.adjusted(0, 1, 0, -1);
     }
-    else if( !mouseOver && !horizontal)
+    else if (!mouseOver && !horizontal)
     {
-        handleRect = rect.adjusted(1,0,-1,0);
+        handleRect = rect.adjusted(1, 0, -1, 0);
     }
 
     QStyleOption tempOption(*option);
-    if(sunken)
+    if (sunken)
     {
         tempOption.state |= QStyle::State_Sunken;
     }
 
     auto schemeLoader = SchemeLoaderFetcher::getSchemeLoader();
-    auto sliderColor = schemeLoader->getColor(widget,option,SchemeLoader::Scroll_Slider);
+    auto sliderColor = schemeLoader->getColor(widget, option, SchemeLoader::Scroll_Slider);
 
-    painter->setRenderHint(QPainter::Antialiasing,true);
-    QPainterPath painterPath = RenderHelper::roundedPath(handleRect,AllCorners,2);
-    painter->fillPath(painterPath,sliderColor);
+    painter->setRenderHint(QPainter::Antialiasing, true);
+    QPainterPath painterPath = RenderHelper::roundedPath(handleRect, AllCorners, 2);
+    painter->fillPath(painterPath, sliderColor);
     return true;
 }
+}  // namespace Kiran

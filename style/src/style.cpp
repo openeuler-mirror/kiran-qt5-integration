@@ -12,8 +12,8 @@
  * Author:     liuxinhao <liuxinhao@kylinos.com.cn>
  */
 #include "style.h"
-#include "scheme-loader.h"
 #include "render-helper.h"
+#include "scheme-loader.h"
 
 #include <QAbstractItemView>
 #include <QApplication>
@@ -21,7 +21,7 @@
 #include <QFormLayout>
 #include <QPainter>
 
-#include <kiran-palette.h>
+#include <style-palette.h>
 #include <QCheckBox>
 #include <QComboBox>
 #include <QDial>
@@ -36,21 +36,19 @@
 #include <QTextEdit>
 #include <QToolButton>
 
-//TODO: 后期考虑再度整合到几个大类的源文件之中
+// TODO: 后期考虑再度整合到几个大类的源文件之中
 #include "draw-helper/draw-button-helper.h"
 #include "draw-helper/draw-combo-box-helper.h"
 #include "draw-helper/draw-edit-helper.h"
 #include "draw-helper/draw-group-box-helper.h"
 #include "draw-helper/draw-indicator-helper.h"
 #include "draw-helper/draw-item-view-helper.h"
+#include "draw-helper/draw-menu-helper.h"
 #include "draw-helper/draw-progress-bar-helper.h"
 #include "draw-helper/draw-scroll-bar-helper.h"
 #include "draw-helper/draw-slider-helper.h"
 #include "draw-helper/draw-spin-box-helper.h"
 #include "draw-helper/draw-tab-widget-helper.h"
-#include "draw-helper/draw-menu-helper.h"
-
-using namespace Kiran::Style;
 
 #if 0
 //调试用
@@ -64,6 +62,9 @@ QDebug operator<<(QDebug dbg, const QColor &color)
 }
 #endif
 
+using namespace Kiran;
+
+//FIXME:为什么加入namespace，导致crash
 Style::Style()
     : ParentStyle()
 {
@@ -77,84 +78,84 @@ int Style::styleHint(QStyle::StyleHint hint, const QStyleOption *option, const Q
 {
     switch (hint)
     {
-    //下栏框的下栏列表鼠标追踪
+    // 下栏框的下栏列表鼠标追踪
     case SH_ComboBox_ListMouseTracking:
         return true;
-    //菜单栏鼠标追踪
+    // 菜单栏鼠标追踪
     case SH_MenuBar_MouseTracking:
         return true;
-    //菜单鼠标追踪
+    // 菜单鼠标追踪
     case SH_Menu_MouseTracking:
         return true;
-    //菜单之中子菜单弹出延时时间
+    // 菜单之中子菜单弹出延时时间
     case SH_Menu_SubMenuPopupDelay:
         return 150;
-    //弹出菜单是否支持用户在跨越菜单的其他项时将鼠标光标移动到子菜单
+    // 弹出菜单是否支持用户在跨越菜单的其他项时将鼠标光标移动到子菜单
     case SH_Menu_SloppySubMenus:
         return true;
-    //该值目前亦废弃，改用SH_Widget_Animation_Duration
+    // 该值目前亦废弃，改用SH_Widget_Animation_Duration
     case SH_Widget_Animate:
         return true;
-    //动画持续时间ms,0代表禁用
+    // 动画持续时间ms,0代表禁用
     case SH_Widget_Animation_Duration:
         return 100;
-    //确定样式是在菜单中显示节，还是将其视为普通分隔符。节是带有文本和图标提示的分隔符
+    // 确定样式是在菜单中显示节，还是将其视为普通分隔符。节是带有文本和图标提示的分隔符
     case SH_Menu_SupportsSections:
         return true;
-    //指示QDialogButtonBox中的标准按钮是否应具有图标
+    // 指示QDialogButtonBox中的标准按钮是否应具有图标
     case SH_DialogButtonBox_ButtonsHaveIcons:
         return false;
-    //GroupBox文本标签垂直对齐选项
+    // GroupBox文本标签垂直对齐选项
     case SH_GroupBox_TextLabelVerticalAlignment:
         return Qt::AlignVCenter;
-    //TabBar的对齐方式
+    // TabBar的对齐方式
     case SH_TabBar_Alignment:
         return Qt::AlignLeft | Qt::AlignVCenter;
-    //ToolBox中所选页面标题是否显示粗体
+    // ToolBox中所选页面标题是否显示粗体
     case SH_ToolBox_SelectedPageTitleBold:
         return false;
-    //滚动条上单击鼠标中键滑块是否跳转到该绝对位置
+    // 滚动条上单击鼠标中键滑块是否跳转到该绝对位置
     case SH_ScrollBar_MiddleClickAbsolutePosition:
         return true;
-    //ScrollView是仅围绕内容（如Motif）还是围绕内容、滚动条和角部件（如窗口）绘制框架。
+    // ScrollView是仅围绕内容（如Motif）还是围绕内容、滚动条和角部件（如窗口）绘制框架。
     case SH_ScrollView_FrameOnlyAroundContents:
         return false;
-    //FormLayout对齐其内容的默认方式
+    // FormLayout对齐其内容的默认方式
     case SH_FormLayoutFormAlignment:
         return Qt::AlignLeft | Qt::AlignVCenter;
-    //FormatLayout对齐标签的默认方式
+    // FormatLayout对齐标签的默认方式
     case SH_FormLayoutLabelAlignment:
         return Qt::AlignRight;
-    //QFormLayout中字段增长方式的默认值。返回QFormLayout:：FieldGrowthPolicy枚举
+    // QFormLayout中字段增长方式的默认值。返回QFormLayout:：FieldGrowthPolicy枚举
     case SH_FormLayoutFieldGrowthPolicy:
         return QFormLayout::ExpandingFieldsGrow;
-    //QFormLayout中如何换行的默认方式。返回一个QFormLayout::RowWrapPolicy enum。
+    // QFormLayout中如何换行的默认方式。返回一个QFormLayout::RowWrapPolicy enum。
     case SH_FormLayoutWrapPolicy:
         return QFormLayout::DontWrapRows;
-    //消息框中的文本是否允许用户交互(如选择)
+    // 消息框中的文本是否允许用户交互(如选择)
     case SH_MessageBox_TextInteractionFlags:
         return Qt::TextSelectableByMouse | Qt::LinksAccessibleByMouse;
-    //进度对话框按钮取消按钮是否居中对齐，否则右对齐
+    // 进度对话框按钮取消按钮是否居中对齐，否则右对齐
     case SH_ProgressDialog_CenterCancelButton:
         return false;
-    //消息框是否按钮居中
+    // 消息框是否按钮居中
     case SH_MessageBox_CenterButtons:
         return false;
-    //输入控件请求输入面板的时间点,返回类型为QStyle::RequestSoftwareInputPanel。
+    // 输入控件请求输入面板的时间点,返回类型为QStyle::RequestSoftwareInputPanel。
     case SH_RequestSoftwareInputPanel:
         return RSIP_OnMouseClick;
-    //标题栏无边框
+    // 标题栏无边框
     case SH_TitleBar_NoBorder:
         return true;
-    //DockWidget的按钮是否有Frame
+    // DockWidget的按钮是否有Frame
     case SH_DockWidget_ButtonsHaveFrame:
         return false;
-    //ToolTip透明文本标签的透明度
+    // ToolTip透明文本标签的透明度
     case SH_ToolTipLabel_Opacity:
         return 204;
-    //Table里网格线的颜色
+    // Table里网格线的颜色
     case SH_Table_GridLineColor:
-        return KiranPalette::instance()->color(KiranPalette::Normal,KiranPalette::Widget,KiranPalette::Border).rgb();
+        return StylePalette::instance()->color(StylePalette::Normal, StylePalette::Widget, StylePalette::Border).rgb();
     default:
         return ParentStyle::styleHint(hint, option, widget, returnData);
     }
@@ -178,13 +179,13 @@ int Style::pixelMetric(QStyle::PixelMetric metric, const QStyleOption *option, c
     case PM_FocusFrameHMargin:
         return 2;
 
-    //布局默认边距
+    // 布局默认边距
     case PM_LayoutLeftMargin:
     case PM_LayoutTopMargin:
     case PM_LayoutRightMargin:
     case PM_LayoutBottomMargin:
     {
-        //使用子控件边距或顶层窗口边距，取决于部件类型
+        // 使用子控件边距或顶层窗口边距，取决于部件类型
         if ((option && (option->state & QStyle::State_Window)) || (widget && widget->isWindow()))
         {
             return 10;
@@ -195,42 +196,42 @@ int Style::pixelMetric(QStyle::PixelMetric metric, const QStyleOption *option, c
         }
     }
 
-    //布局默认间距
+    // 布局默认间距
     case PM_LayoutHorizontalSpacing:
     case PM_LayoutVerticalSpacing:
         return 6;
 
-    //按钮边距
+    // 按钮边距
     case PM_ButtonMargin:
         return 12;
 
-    //按钮默认指示器边框宽度
+    // 按钮默认指示器边框宽度
     case PM_ButtonDefaultIndicator:
         return 0;
-    //当按钮按下时，按钮的内容水平移动偏移量。
+    // 当按钮按下时，按钮的内容水平移动偏移量。
     case PM_ButtonShiftHorizontal:
         return 0;
-    //当按钮按下时，按钮的内容垂直移动偏移量。
+    // 当按钮按下时，按钮的内容垂直移动偏移量。
     case PM_ButtonShiftVertical:
         return 0;
 
-    //菜单栏默认边框宽度
+    // 菜单栏默认边框宽度
     case PM_MenuBarPanelWidth:
         return 0;
-    //菜单栏水平边距
+    // 菜单栏水平边距
     case PM_MenuBarHMargin:
         return 0;
-    //菜单栏垂直边距
+    // 菜单栏垂直边距
     case PM_MenuBarVMargin:
         return 3;
-    //菜单项间距
+    // 菜单项间距
     case PM_MenuBarItemSpacing:
         return 10;
-    //桌面菜单边框宽度
+    // 桌面菜单边框宽度
     case PM_MenuDesktopFrameWidth:
         return 0;
 
-    //菜单按钮指示器宽度
+    // 菜单按钮指示器宽度
     case PM_MenuButtonIndicator:
         return 24;
 
@@ -313,7 +314,7 @@ int Style::pixelMetric(QStyle::PixelMetric metric, const QStyleOption *option, c
     case PM_DockWidgetSeparatorExtent:
         return 1;
 
-    default:  //fallback
+    default:  // fallback
         break;
     }
     return ParentStyle::pixelMetric(metric, option, widget);
@@ -493,8 +494,8 @@ QSize Style::sizeFromContents(QStyle::ContentsType type, const QStyleOption *opt
         break;
     case CT_LineEdit:
     {
-        int buttuonMargin = pixelMetric(QStyle::PM_ButtonMargin,option,widget);
-        QSize size = contentSize + QSize(buttuonMargin,buttuonMargin);
+        int buttuonMargin = pixelMetric(QStyle::PM_ButtonMargin, option, widget);
+        QSize size = contentSize + QSize(buttuonMargin, buttuonMargin);
         return size;
     }
     case CT_SizeGrip:
@@ -520,7 +521,7 @@ void Style::drawControl(QStyle::ControlElement element, const QStyleOption *opti
     bool (*func)(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget);
     func = nullptr;
 
-    //不绘制的控件元素集合
+    // 不绘制的控件元素集合
     static QSet<QStyle::ControlElement> emptyControlSet = {CE_ToolBar};
 
     // clang-format off
@@ -554,7 +555,7 @@ void Style::drawControl(QStyle::ControlElement element, const QStyleOption *opti
     painter->save();
     if (!(func && (*func)(this, option, painter, widget)))
     {
-        if( emptyControlSet.find(element) == emptyControlSet.end() )
+        if (emptyControlSet.find(element) == emptyControlSet.end())
         {
             ParentStyle::drawControl(element, option, painter, widget);
         }
@@ -586,19 +587,20 @@ void Style::polish(QWidget *widget)
         widget->setAttribute(Qt::WA_Hover);
     }
 
-    if( qobject_cast<QAbstractScrollArea*>(widget) )
+    if (qobject_cast<QAbstractScrollArea *>(widget))
     {
-        auto scrollArea = qobject_cast<QAbstractScrollArea*>(widget);
-        if( scrollArea->frameShadow() == QFrame::Sunken && scrollArea->focusPolicy()&Qt::StrongFocus )
+        auto scrollArea = qobject_cast<QAbstractScrollArea *>(widget);
+        if (scrollArea->frameShadow() == QFrame::Sunken && scrollArea->focusPolicy() & Qt::StrongFocus)
         {
-            scrollArea->setAttribute( Qt::WA_Hover );
+            scrollArea->setAttribute(Qt::WA_Hover);
         }
-//        scrollArea->viewport()->setAutoFillBackground(false);
-//        qInfo() << "viewport:" << scrollArea->viewport()->geometry();
-//        qInfo() << "scroll area:" << scrollArea->geometry();
+        //        scrollArea->viewport()->setAutoFillBackground(false);
+        //        qInfo() << "viewport:" << scrollArea->viewport()->geometry();
+        //        qInfo() << "scroll area:" << scrollArea->geometry();
     }
 
-    if( QAbstractItemView *itemView = qobject_cast<QAbstractItemView*>( widget ) ) {
+    if (QAbstractItemView *itemView = qobject_cast<QAbstractItemView *>(widget))
+    {
         // enable mouse over effects in itemviews' viewport
         itemView->viewport()->setAttribute(Qt::WA_Hover);
     }
@@ -611,14 +613,14 @@ void Style::polish(QApplication *app)
     ParentStyle::polish(app);
 
     QPalette palette;
-    KiranPalette::instance()->polishPalette(&palette);
+    StylePalette::instance()->polishPalette(&palette);
     QApplication::setPalette(palette);
 }
 
 void Style::polish(QPalette &palette)
 {
-//    ParentStyle::polish(palette);
-    KiranPalette::instance()->polishPalette(&palette);
+    //    ParentStyle::polish(palette);
+    StylePalette::instance()->polishPalette(&palette);
 }
 
 QPixmap Style::standardPixmap(QStyle::StandardPixmap standardPixmap, const QStyleOption *opt, const QWidget *widget) const
@@ -627,12 +629,12 @@ QPixmap Style::standardPixmap(QStyle::StandardPixmap standardPixmap, const QStyl
     {
     case SP_ArrowRight:
     {
-        QPalette palette = widget?widget->palette():qApp->palette();
-        QPalette::ColorRole colorRole = widget?widget->foregroundRole():QPalette::ButtonText;
-        QPixmap arrowPixmap(16,16);
+        QPalette palette = widget ? widget->palette() : qApp->palette();
+        QPalette::ColorRole colorRole = widget ? widget->foregroundRole() : QPalette::ButtonText;
+        QPixmap arrowPixmap(16, 16);
         arrowPixmap.fill(Qt::transparent);
         QPainter painter(&arrowPixmap);
-        RenderHelper::renderArrow(&painter,arrowPixmap.rect(),Kiran::Style::Arrow_Right,palette.color(colorRole),arrowPixmap.size());
+        RenderHelper::renderArrow(&painter, arrowPixmap.rect(), Arrow_Right, palette.color(colorRole), arrowPixmap.size());
         return arrowPixmap;
     }
     default:
@@ -643,11 +645,11 @@ QPixmap Style::standardPixmap(QStyle::StandardPixmap standardPixmap, const QStyl
 
 QIcon Style::standardIcon(QStyle::StandardPixmap standardIcon, const QStyleOption *option, const QWidget *widget) const
 {
-    static const QMap<QStyle::StandardPixmap,QString> titleBarIconMap = {
-        {SP_TitleBarMinButton,":/style-helper/images/window-minimum-symbolic.svg"},
-        {SP_TitleBarMaxButton,":/style-helper/images/window-maximum-symbolic.svg"},
-        {SP_TitleBarCloseButton,":/style-helper/images/window-close-symbolic.svg"},
-        {SP_TitleBarNormalButton,":/style-helper/images/window-unmaximum-symbolic.svg"},
+    static const QMap<QStyle::StandardPixmap, QString> titleBarIconMap = {
+        {SP_TitleBarMinButton, ":/style-helper/images/window-minimum-symbolic.svg"},
+        {SP_TitleBarMaxButton, ":/style-helper/images/window-maximum-symbolic.svg"},
+        {SP_TitleBarCloseButton, ":/style-helper/images/window-close-symbolic.svg"},
+        {SP_TitleBarNormalButton, ":/style-helper/images/window-unmaximum-symbolic.svg"},
 
     };
     switch (standardIcon)
@@ -657,18 +659,18 @@ QIcon Style::standardIcon(QStyle::StandardPixmap standardIcon, const QStyleOptio
     case SP_TitleBarCloseButton:
     case SP_TitleBarNormalButton:
     {
-        QSize defaultTitleBarIconSize(16,16);
+        QSize defaultTitleBarIconSize(16, 16);
 
         QIcon res;
         auto iter = titleBarIconMap.find(standardIcon);
         QString iconPath = iter.value();
         QPalette palette = qApp->palette();
 
-        QPixmap normal = RenderHelper::changeSVGFillColor(iconPath,palette.color(QPalette::Normal,QPalette::Foreground),defaultTitleBarIconSize);
-        res.addPixmap(normal,QIcon::Normal);
+        QPixmap normal = RenderHelper::changeSVGFillColor(iconPath, palette.color(QPalette::Normal, QPalette::Foreground), defaultTitleBarIconSize);
+        res.addPixmap(normal, QIcon::Normal);
 
-        QPixmap disable = RenderHelper::changeSVGFillColor(iconPath,palette.color(QPalette::Disabled,QPalette::Foreground),defaultTitleBarIconSize);
-        res.addPixmap(normal,QIcon::Disabled);
+        QPixmap disable = RenderHelper::changeSVGFillColor(iconPath, palette.color(QPalette::Disabled, QPalette::Foreground), defaultTitleBarIconSize);
+        res.addPixmap(normal, QIcon::Disabled);
         return res;
     }
     default:

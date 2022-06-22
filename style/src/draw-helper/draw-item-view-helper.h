@@ -20,13 +20,10 @@ class QPainter;
 class QWidget;
 namespace Kiran
 {
-namespace Style
-{
 class SchemeLoader;
 bool drawControlHeaderSection(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget);
 bool drawControlHeaderLabel(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget);
 bool drawControlHeaderEmptyArea(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget);
-}
 }
 
 #endif  //KIRAN_QT5_PLATFORMTHEME_STYLE_SRC_DRAW_HELPER_DRAW_ITEM_VIEW_HELPER_H_

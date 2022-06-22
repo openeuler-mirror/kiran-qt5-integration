@@ -33,7 +33,9 @@
 #include <QTimer>
 #include <QVariant>
 #include <QWindow>
-#include "kiran-palette.h"
+#include "style-palette.h"
+
+using namespace Kiran;
 
 KiranTheme::KiranTheme(const QStringList& paramList)
     : QGenericUnixTheme()
@@ -98,7 +100,7 @@ const QPalette* KiranTheme::palette(QPlatformTheme::Palette type) const
     }
 
     static QPalette kiranThemePalette;
-    KiranPalette::instance()->polishPalette(&kiranThemePalette);
+    StylePalette::instance()->polishPalette(&kiranThemePalette);
     return &kiranThemePalette;
 }
 
@@ -126,7 +128,7 @@ void KiranTheme::init()
 
     // 不从KiranAppearanceMonitor接受主题变更事件，修改为接受KiranPalette的主题变更信号，能监听到系统主题变更以及应用程序手动指定主题
     //QObject::connect(m_settingsMonitor, &KiranAppearanceMonitor::gtkThemeChanged, this, &KiranTheme::handleThemeChanged);
-    QObject::connect(KiranPalette::instance(),&KiranPalette::themeChanged,this,&KiranTheme::handleThemeChanged);
+    QObject::connect(StylePalette::instance(),&StylePalette::themeChanged,this,&KiranTheme::handleThemeChanged);
 
     QObject::connect(qApp, &QApplication::screenAdded, this, &KiranTheme::handleScreenAdded);
 

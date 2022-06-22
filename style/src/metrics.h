@@ -16,8 +16,6 @@
 
 namespace Kiran
 {
-namespace Style
-{
 //* metrics
 struct Metrics
 {
@@ -80,9 +78,9 @@ struct Metrics
     static constexpr int ScrollBar_Extend = 12;
     static constexpr int ScrollBar_SliderWidth = 8;
     static constexpr int ScrollBar_MinSliderHeight = 20;
-    static constexpr int ScrollBar_NoButtonHeight = (ScrollBar_Extend-ScrollBar_SliderWidth)/2;
+    static constexpr int ScrollBar_NoButtonHeight = (ScrollBar_Extend - ScrollBar_SliderWidth) / 2;
     static constexpr int ScrollBar_SingleButtonHeight = ScrollBar_Extend;
-    static constexpr int ScrollBar_DoubleButtonHeight = 2*ScrollBar_Extend;
+    static constexpr int ScrollBar_DoubleButtonHeight = 2 * ScrollBar_Extend;
 
     // toolbars
     static constexpr int ToolBar_FrameWidth = 6;
@@ -142,6 +140,6 @@ struct Metrics
     // shadow dimensions
     static constexpr int Shadow_Overlap = 2;
 };
-}
-}
-#endif  //KIRAN_QT5_PLATFORMTHEME_STYLE_SRC_METRICS_H_
+}  // namespace Kiran
+
+#endif  // KIRAN_QT5_PLATFORMTHEME_STYLE_SRC_METRICS_H_

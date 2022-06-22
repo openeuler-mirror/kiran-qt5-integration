@@ -12,26 +12,28 @@
  * Author:     liuxinhao <liuxinhao@kylinos.com.cn>
  */
 #include "draw-edit-helper.h"
-#include "kiran-palette.h"
 #include "draw-common-helper.h"
 #include "render-helper.h"
 #include "scheme-loader-fetcher.h"
+#include "style-palette.h"
 
 #include <QColor>
+#include <QComboBox>
 #include <QPainter>
 #include <QStyle>
 #include <QStyleOption>
-#include <QComboBox>
 
-bool Kiran::Style::drawPEFrameLineEdit(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget)
+namespace Kiran
 {
-    const auto &rect = option->rect;
+bool drawPEFrameLineEdit(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget)
+{
+    const auto& rect = option->rect;
 
     auto schemeLoader = SchemeLoaderFetcher::getSchemeLoader();
-    auto background = schemeLoader->getColor(widget,option,SchemeLoader::Edit_Background);
-    auto border = schemeLoader->getColor(widget,option,SchemeLoader::Edit_Border);
+    auto background = schemeLoader->getColor(widget, option, SchemeLoader::Edit_Background);
+    auto border = schemeLoader->getColor(widget, option, SchemeLoader::Edit_Border);
 
-    //控件高度不足够绘制边框
+    // 控件高度不足够绘制边框
     if (rect.height() < 2 + option->fontMetrics.height())
     {
         painter->save();
@@ -43,11 +45,12 @@ bool Kiran::Style::drawPEFrameLineEdit(const QStyle* style, const QStyleOption* 
     }
     else
     {
-        if( qobject_cast<const QComboBox*>(widget) )
+        if (qobject_cast<const QComboBox*>(widget))
             RenderHelper::renderFlatFrame(painter, rect, 4, background, border);
         else
-            RenderHelper::renderFrame(painter, rect, 1,4, background, border);
+            RenderHelper::renderFrame(painter, rect, 1, 4, background, border);
     }
 
     return true;
 }
+}  // namespace Kiran

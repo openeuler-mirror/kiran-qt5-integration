@@ -1,9 +1,12 @@
 #include "scheme-loader-fetcher.h"
 
-#include "kiran-palette.h"
 #include "scheme-loader.h"
+#include "style-palette.h"
 
-Kiran::Style::SchemeLoader* SchemeLoaderFetcher::getSchemeLoader()
+namespace Kiran
 {
-    return  KiranPalette::instance()->getSchemeLoader();
+SchemeLoader* SchemeLoaderFetcher::getSchemeLoader()
+{
+    return StylePalette::instance()->getSchemeLoader();
 }
+}  // namespace Kiran

@@ -22,7 +22,6 @@ class KiranStylePlugin : public QStylePlugin
     Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QStyleFactoryInterface" FILE "../kiran-style-plugin.json")
 public:
     explicit KiranStylePlugin(QObject* parent = nullptr);
-    QStringList keys() const;
     QStyle* create(const QString&) override;
 };
 

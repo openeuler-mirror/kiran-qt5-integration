@@ -1,6 +1,6 @@
-#include "kiran-style-property.h"
-#include <QPushButton>
+#include "style-property.h"
 #include <QProgressBar>
+#include <QPushButton>
 #include <QVariant>
 
 /// pushbutton
@@ -10,16 +10,20 @@
 /// progress bar
 #define KIRAN_STYLE_PROPERTY_PROGRESSBAR_TEXT_POSITION "_kiran_progressbar_text_position"
 
-Kiran::Style::ButtonType Kiran::Style::PropertyHelper::getButtonType(const QPushButton *btn)
+namespace Kiran
+{
+namespace StylePropertyHelper
+{
+Kiran::ButtonType getButtonType(const QPushButton *btn)
 {
     ButtonType buttonType = BUTTON_Normal;
 
     QVariant var = btn->property(KIRAN_STYLE_PROPERTY_BUTTON_TYPE);
-    if( var.isValid() )
+    if (var.isValid())
     {
         bool toInt = false;
         auto temp = static_cast<ButtonType>(var.toInt(&toInt));
-        if(toInt)
+        if (toInt)
         {
             buttonType = temp;
         }
@@ -28,28 +32,28 @@ Kiran::Style::ButtonType Kiran::Style::PropertyHelper::getButtonType(const QPush
     return buttonType;
 }
 
-void Kiran::Style::PropertyHelper::setButtonType(QPushButton *btn,
-                                                 Kiran::Style::ButtonType type)
+void setButtonType(QPushButton *btn,
+                                          Kiran::ButtonType type)
 {
-    btn->setProperty(KIRAN_STYLE_PROPERTY_BUTTON_TYPE,type);
+    btn->setProperty(KIRAN_STYLE_PROPERTY_BUTTON_TYPE, type);
 }
 
-void Kiran::Style::PropertyHelper::setProgressBarTextPosition(QProgressBar *progressBar,
-                                                              Kiran::Style::ProgressBarTextPosition textPosition)
+void setProgressBarTextPosition(QProgressBar *progressBar,
+                                                       Kiran::ProgressBarTextPosition textPosition)
 {
-    progressBar->setProperty(KIRAN_STYLE_PROPERTY_PROGRESSBAR_TEXT_POSITION,textPosition);
+    progressBar->setProperty(KIRAN_STYLE_PROPERTY_PROGRESSBAR_TEXT_POSITION, textPosition);
 }
 
-Kiran::Style::ProgressBarTextPosition Kiran::Style::PropertyHelper::getProgressBarTextPosition(const QProgressBar *progressBar)
+Kiran::ProgressBarTextPosition getProgressBarTextPosition(const QProgressBar *progressBar)
 {
     ProgressBarTextPosition progressBarTextPosition = PROGRESS_TEXT_RIGHT;
 
     QVariant var = progressBar->property(KIRAN_STYLE_PROPERTY_PROGRESSBAR_TEXT_POSITION);
-    if( var.isValid() )
+    if (var.isValid())
     {
         bool toInt = false;
         auto temp = static_cast<ProgressBarTextPosition>(var.toInt(&toInt));
-        if(toInt)
+        if (toInt)
         {
             progressBarTextPosition = temp;
         }
@@ -57,3 +61,6 @@ Kiran::Style::ProgressBarTextPosition Kiran::Style::PropertyHelper::getProgressB
 
     return progressBarTextPosition;
 }
+
+}  // namespace StylePropertyHelper
+}  // namespace Kiran

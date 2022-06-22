@@ -25,12 +25,12 @@
 #include <QStyleOption>
 #include <QWidget>
 
-using namespace Kiran::Style;
-
-QSize Kiran::Style::progressBarSizeFromContents(const QStyle *style,
-                                                const QStyleOption *option,
-                                                const QSize &contentSize,
-                                                const QWidget *widget)
+namespace Kiran
+{
+QSize progressBarSizeFromContents(const QStyle *style,
+                                  const QStyleOption *option,
+                                  const QSize &contentSize,
+                                  const QWidget *widget)
 {
     const auto progressBarOption(qstyleoption_cast<const QStyleOptionProgressBar *>(option));
     if (!progressBarOption) return contentSize;
@@ -56,10 +56,10 @@ QSize Kiran::Style::progressBarSizeFromContents(const QStyle *style,
     return size;
 }
 
-QRect Kiran::Style::progressBarElementRect(const QStyle *style,
-                                           QStyle::SubElement subElement,
-                                           const QStyleOption *option,
-                                           const QWidget *widget)
+QRect progressBarElementRect(const QStyle *style,
+                             QStyle::SubElement subElement,
+                             const QStyleOption *option,
+                             const QWidget *widget)
 {
     const auto progressBarOption(qstyleoption_cast<const QStyleOptionProgressBar *>(option));
     if (!progressBarOption) return option->rect;
@@ -80,7 +80,7 @@ QRect Kiran::Style::progressBarElementRect(const QStyle *style,
     {
     case QStyle::SE_ProgressBarContents:
     {
-        rect = style->subElementRect(QStyle::SE_ProgressBarGroove,option,widget);
+        rect = style->subElementRect(QStyle::SE_ProgressBarGroove, option, widget);
 
         qreal progress(progressBarOption->progress - progressBarOption->minimum);
         int steps(qMax(progressBarOption->maximum - progressBarOption->minimum, 1));
@@ -139,76 +139,77 @@ QRect Kiran::Style::progressBarElementRect(const QStyle *style,
     return rect;
 }
 
-bool Kiran::Style::drawControlProgressBar(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
+bool drawControlProgressBar(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
 {
     const auto progressBarOption(qstyleoption_cast<const QStyleOptionProgressBar *>(option));
     if (!progressBarOption) return true;
 
     QStyleOptionProgressBar tempOption(*progressBarOption);
 
-    QRect grooveRect = style->subElementRect(QStyle::SE_ProgressBarGroove,option,widget);
-    QRect contentsRect = style->subElementRect(QStyle::SE_ProgressBarContents,option,widget);
-    QRect labelRect = style->subElementRect(QStyle::SE_ProgressBarLabel,option,widget);
+    QRect grooveRect = style->subElementRect(QStyle::SE_ProgressBarGroove, option, widget);
+    QRect contentsRect = style->subElementRect(QStyle::SE_ProgressBarContents, option, widget);
+    QRect labelRect = style->subElementRect(QStyle::SE_ProgressBarLabel, option, widget);
 
     tempOption.rect = grooveRect;
-    style->drawControl(QStyle::CE_ProgressBarGroove,&tempOption,painter,widget);
+    style->drawControl(QStyle::CE_ProgressBarGroove, &tempOption, painter, widget);
 
-    //TODO: BUSY动画
+    // TODO: BUSY动画
     tempOption.rect = contentsRect;
-    style->drawControl(QStyle::CE_ProgressBarContents,&tempOption,painter,widget);
+    style->drawControl(QStyle::CE_ProgressBarContents, &tempOption, painter, widget);
 
-    bool textVisible( progressBarOption->textVisible );
-    bool busy( progressBarOption->minimum == 0 && progressBarOption->maximum == 0 );
-    if( textVisible && !busy )
+    bool textVisible(progressBarOption->textVisible);
+    bool busy(progressBarOption->minimum == 0 && progressBarOption->maximum == 0);
+    if (textVisible && !busy)
     {
         tempOption.rect = labelRect;
-        style->drawControl(QStyle::CE_ProgressBarLabel,&tempOption,painter,widget);
+        style->drawControl(QStyle::CE_ProgressBarLabel, &tempOption, painter, widget);
     }
 
     return true;
 }
 
-bool Kiran::Style::drawControlProgressBarGroove(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
+bool drawControlProgressBarGroove(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
 {
     const auto progressBarOption(qstyleoption_cast<const QStyleOptionProgressBar *>(option));
     if (!progressBarOption) return true;
 
     auto schemeLoader = SchemeLoaderFetcher::getSchemeLoader();
-    auto grooveColor = schemeLoader->getColor(widget,option,SchemeLoader::Progress_Groove);
+    auto grooveColor = schemeLoader->getColor(widget, option, SchemeLoader::Progress_Groove);
 
-    RenderHelper::renderFrame(painter,option->rect,1,4,grooveColor);
+    RenderHelper::renderFrame(painter, option->rect, 1, 4, grooveColor);
     return true;
 }
 
-bool Kiran::Style::drawControlProgressBarContents(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
+bool drawControlProgressBarContents(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
 {
     const auto progressBarOption(qstyleoption_cast<const QStyleOptionProgressBar *>(option));
     if (!progressBarOption) return true;
 
     auto schemeLoader = SchemeLoaderFetcher::getSchemeLoader();
-    auto contentsColor = schemeLoader->getColor(widget,option,SchemeLoader::Progress_Content);
+    auto contentsColor = schemeLoader->getColor(widget, option, SchemeLoader::Progress_Content);
 
-    RenderHelper::renderFrame(painter,option->rect,1,4,contentsColor);
+    RenderHelper::renderFrame(painter, option->rect, 1, 4, contentsColor);
     return true;
 }
 
-bool Kiran::Style::drawControlProgressBarLabel(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
+bool drawControlProgressBarLabel(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
 {
-    const auto progressBarOption( qstyleoption_cast<const QStyleOptionProgressBar*>( option ) );
-    if( !progressBarOption ) return true;
+    const auto progressBarOption(qstyleoption_cast<const QStyleOptionProgressBar *>(option));
+    if (!progressBarOption) return true;
 
     bool horizontal = progressBarOption->orientation == Qt::Horizontal;
-    if( !horizontal ) return true;
+    if (!horizontal) return true;
 
-    const QRect& rect( option->rect );
-    const QPalette& palette( option->palette );
+    const QRect &rect(option->rect);
+    const QPalette &palette(option->palette);
 
     // store state and direction
-    const QStyle::State& state( option->state );
-    bool enabled( state & QStyle::State_Enabled );
+    const QStyle::State &state(option->state);
+    bool enabled(state & QStyle::State_Enabled);
 
     // define text rect
-    Qt::Alignment hAlign( ( progressBarOption->textAlignment == Qt::AlignLeft ) ? Qt::AlignHCenter : progressBarOption->textAlignment );
-    style->drawItemText( painter, rect, Qt::AlignVCenter | hAlign, palette, enabled, progressBarOption->text, QPalette::WindowText );
+    Qt::Alignment hAlign((progressBarOption->textAlignment == Qt::AlignLeft) ? Qt::AlignHCenter : progressBarOption->textAlignment);
+    style->drawItemText(painter, rect, Qt::AlignVCenter | hAlign, palette, enabled, progressBarOption->text, QPalette::WindowText);
     return true;
 }
+}  // namespace Kiran

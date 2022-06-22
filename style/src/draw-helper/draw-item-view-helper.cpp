@@ -18,7 +18,9 @@
 #include <QPainter>
 #include <QStyleOption>
 
-bool Kiran::Style::drawControlHeaderSection(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
+namespace Kiran
+{
+bool drawControlHeaderSection(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
 {
     const QRect &rect(option->rect);
     const QPalette &palette(option->palette);
@@ -101,7 +103,7 @@ bool Kiran::Style::drawControlHeaderSection(const QStyle *style, const QStyleOpt
     return true;
 }
 
-bool Kiran::Style::drawControlHeaderLabel(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
+bool drawControlHeaderLabel(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
 {
     if (const QStyleOptionHeader *header = qstyleoption_cast<const QStyleOptionHeader *>(option))
     {
@@ -129,7 +131,7 @@ bool Kiran::Style::drawControlHeaderLabel(const QStyle *style, const QStyleOptio
     return true;
 }
 
-bool Kiran::Style::drawControlHeaderEmptyArea(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
+bool drawControlHeaderEmptyArea(const QStyle *style, const QStyleOption *option, QPainter *painter, const QWidget *widget)
 {
     // use the same background as in drawHeaderPrimitive
     const QRect &rect(option->rect);
@@ -168,4 +170,5 @@ bool Kiran::Style::drawControlHeaderEmptyArea(const QStyle *style, const QStyleO
     }
 
     return true;
+}
 }

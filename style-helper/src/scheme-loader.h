@@ -17,10 +17,10 @@
 #include <QMap>
 #include <QMutex>
 #include <QObject>
-#include <QVariant>
-#include <QUrl>
 #include <QReadWriteLock>
-#include "kiran-style-global.h"
+#include <QUrl>
+#include <QVariant>
+#include "style-global-define.h"
 
 class QPalette;
 class QWidget;
@@ -32,8 +32,6 @@ class StyleSheet;
 }
 
 namespace Kiran
-{
-namespace Style
 {
 enum PseudoClassType
 {
@@ -259,6 +257,5 @@ private:
     QReadWriteLock m_rwLock;
     QMap<QString, QVariant> m_styleSchemeCache;
 };
-}  // namespace Style
 }  // namespace Kiran
 #endif  //KIRAN_QT5_PLATFORMTHEME_STYLE_LIB_SRC_SCHEME_LOADER_H_
