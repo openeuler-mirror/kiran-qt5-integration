@@ -312,7 +312,7 @@ void RenderHelper::renderArrow(QPainter *painter, const QRect &rect, ArrowOrient
     painter->setRenderHint(QPainter::Antialiasing);
 
     // 修改箭头默认颜色
-    QPixmap tempPixmap = changeSVGFillColor(svgFile, color, arrowSize.isEmpty() ? QSize(16, 16) : arrowSize);
+    QPixmap tempPixmap = changeSVGFillColor(svgFile, color, arrowSize.isEmpty() ? QSize(10, 8) : arrowSize);
 
     // 旋转图片
     int rotateAngle = 0;

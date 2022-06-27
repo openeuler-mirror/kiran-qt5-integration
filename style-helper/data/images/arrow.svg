@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+<svg xmlns="http://www.w3.org/2000/svg" width="10" height="8" viewBox="0 0 10 8">
   <metadata><?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>
 <x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 5.6-c138 79.159824, 2016/09/14-01:09:01        ">
    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
@@ -35,5 +35,5 @@
       }
     </style>
   </defs>
-  <path id="arrow1" class="cls-1" d="M888,797l-7,6.5-7-6.5v1.511l7,6.5,7-6.5V797Z" transform="translate(-873 -793)"/>
+  <path id="下箭头" class="cls-1" d="M1375,291l5,4.873,5-4.873v2.133L1380,298l-5-4.873V291Z" transform="translate(-1375 -290.5)"/>
 </svg>

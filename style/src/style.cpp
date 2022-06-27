@@ -634,7 +634,7 @@ QPixmap Style::standardPixmap(QStyle::StandardPixmap standardPixmap, const QStyl
         QPixmap arrowPixmap(16, 16);
         arrowPixmap.fill(Qt::transparent);
         QPainter painter(&arrowPixmap);
-        RenderHelper::renderArrow(&painter, arrowPixmap.rect(), Arrow_Right, palette.color(colorRole), arrowPixmap.size());
+        RenderHelper::renderArrow(&painter, arrowPixmap.rect(), Arrow_Right, palette.color(colorRole));
         return arrowPixmap;
     }
     default:
