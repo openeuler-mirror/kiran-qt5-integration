@@ -1,0 +1,84 @@
+[ColorEffects:Disabled]
+Color=56,56,56
+ColorAmount=0
+ColorEffect=0
+ContrastAmount=0.65
+ContrastEffect=1
+IntensityAmount=0.1
+IntensityEffect=2
+
+[ColorEffects:Inactive]
+ChangeSelectionColor=true
+Color=112,111,110
+ColorAmount=0.1
+ColorEffect=2
+ContrastAmount=0.05
+ContrastEffect=2
+Enable=true
+IntensityAmount=0
+IntensityEffect=0
+
+[Colors:Default]
+BackgroundNormal=0xFFFFFF
+ForegroundNormal=0x222222
+BareNormal=0xCCCCCC
+Border=0xCCCCCC
+Selection=0x2EB3FF
+Warning=0xFA4949
+Error=0xCC0000
+Success=0x73D216
+Link=darken(Default::Selection, 0.1)
+LinkVisited=darken(Default::Selection, 0.2)
+
+[Colors:Widget]
+BackgroundNormal=darken(Default::BackgroundNormal, 0.05)
+ForegroundNormal=Default::ForegroundNormal
+BackgroundHover=mix(Widget::BackgroundNormal, Widget::ForegroundNormal, 0.9)
+BackgroundActive=mix(Widget::BackgroundNormal, Widget::ForegroundNormal, 0.8)
+BackgroundChecked=Default::Selection
+ForegroundHover=mix(Widget::BackgroundNormal, Widget::ForegroundNormal, 0.3)
+ForegroundActive=mix(Widget::BackgroundNormal, Widget::ForegroundNormal, 0.4)
+ForegroundChecked=Default::Selection
+BorderNormal=Default::Border
+BorderHover=mix(Widget::BorderNormal, Widget::ForegroundNormal, 0.3)
+BorderFocus=Default::Selection
+
+[Colors:Bare]
+BackgroundNormal=Default::BareNormal
+ForegroundNormal=Default::ForegroundNormal
+BackgroundHover=mix(Bare::BackgroundNormal, Bare::ForegroundNormal, 0.9)
+BackgroundActive=mix(Bare::BackgroundNormal, Bare::ForegroundNormal, 0.8)
+BackgroundChecked=Default::Selection
+ForegroundHover=mix(Bare::BackgroundNormal, Bare::ForegroundNormal, 0.3)
+ForegroundActive=mix(Bare::BackgroundNormal, Bare::ForegroundNormal, 0.4)
+ForegroundChecked=Default::Selection
+
+[Colors:Window]
+BackgroundNormal=Default::BackgroundNormal
+ForegroundNormal=Default::ForegroundNormal
+BorderNormal=Default::Border
+BackgroundAlternate=227,229,231
+
+[Colors:Selection]
+BackgroundNormal=Default::Selection
+ForegroundNormal=Default::ForegroundNormal
+
+
+[Colors:View]
+BackgroundNormal=Default::BackgroundNormal
+ForegroundNormal=Default::ForegroundNormal
+BorderNormal=Default::Border
+BorderFocus=Default::Selection
+
+[WM]
+BackgroundNormal=Default::BackgroundNormal
+ForegroundNormal=Default::ForegroundNormal
+BorderNormal=Default::Border
+
+[Colors:SpecialButton]
+DefaultNormal=Default::Selection
+DefaultHover=mix(Default::Selection, Default::ForegroundNormal, 0.9)
+DefaultActive=mix(Default::Selection, Default::ForegroundNormal,0.8)
+WarnningNormal=Default::Error
+WarnningHover=mix(Default::Error, Default::ForegroundNormal,0.9)
+WarnningActive=mix(Default::Error, Default::ForegroundNormal,0.8)

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #656565;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <path id="复选框-未勾选" class="cls-1" d="M1112,162h-10a2,2,0,0,1-2-2V150a2,2,0,0,1,2-2h10a2,2,0,0,1,2,2v10A2,2,0,0,1,1112,162Zm1-12a1,1,0,0,0-1-1h-10a1,1,0,0,0-1,1v10a1,1,0,0,0,1,1h10a1,1,0,0,0,1-1V150Z" transform="translate(-1100 -148)"/>
+</svg>
