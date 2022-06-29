@@ -118,12 +118,12 @@ $titlebar_border_backdrop_insensitive: #{"" + internal_insensitive(internal_back
 $special_button_default_normal: #{"" + internal_special_button(default)};
 $special_button_default_hover: #{"" + internal_special_button(default-hover)};
 $special_button_default_active: #{"" + internal_special_button(default-active)};
-$special_button_default_insensitive: #{"" + internal_insensitive(internal_special_button(default))};
+$special_button_default_insensitive: #{"" + internal_insensitive(internal_widget(background))};
 
 $special_button_warnning_normal: #{"" + internal_special_button(warnning)};
 $special_button_warnning_hover: #{"" + internal_special_button(warnning-hover)};
 $special_button_warnning_active: #{"" + internal_special_button(warnning-active)};
-$special_button_warnning_insensitive: #{"" + internal_insensitive(internal_special_button(warnning))};
+$special_button_warnning_insensitive: #{"" + internal_insensitive(internal_widget(background))};
 
 // === Flag ===
 //NOTE:此处需要修改，.colors之中定义的Success为绿色，应该是错误的，而且其他类型也并未有其他状态的值
