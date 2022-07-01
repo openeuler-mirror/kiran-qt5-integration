@@ -16,6 +16,7 @@
 
 #include <QCoreApplication>
 #include <QDebug>
+#include <QStyleFactory>
 
 KiranStylePlugin::KiranStylePlugin(QObject *parent) : QStylePlugin(parent)
 {
@@ -24,9 +25,16 @@ KiranStylePlugin::KiranStylePlugin(QObject *parent) : QStylePlugin(parent)
 
 QStyle *KiranStylePlugin::create(const QString & key)
 {
-    //TODO:根据情况，后期加入黑名单，屏蔽掉一些不需要加载KiranStyle的Qt程序
-    qInfo("create style:%s",key.toStdString().c_str());
+    QList<QString> blackApps = {
+        "kiran-screensaver",
+        "lightdm-kiran-greeter"
+    };
+    if( blackApps.contains(qAppName()) )
+    {
+        return QStyleFactory::create("fusion");
+    }
 
+    qInfo("create style:%s",key.toStdString().c_str());
     if( key.compare("kiran",Qt::CaseInsensitive) == 0 )
     {
         return new Style();
