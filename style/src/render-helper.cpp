@@ -85,6 +85,11 @@ bool RenderHelper::isMenuTitle(const QWidget *widget)
     return false;
 }
 
+QWindow* RenderHelper::getWindow(const QWidget* widget)
+{
+    return widget? widget->window()->windowHandle(): nullptr;
+}
+
 QRectF RenderHelper::strokedRect(const QRectF &rect, const qreal penWidth)
 {
     qreal adjustment = 0.5 * penWidth;

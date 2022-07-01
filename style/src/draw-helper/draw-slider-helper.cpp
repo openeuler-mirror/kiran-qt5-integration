@@ -102,8 +102,9 @@ bool drawCCSlider(const QStyle *style, const QStyleOptionComplex *option, QPaint
     auto schemeLoader = SchemeLoaderFetcher::getSchemeLoader();
     auto grooveColor = schemeLoader->getColor(widget, option, SchemeLoader::Slider_Groove);
     auto contentColor = schemeLoader->getColor(widget, option, SchemeLoader::Slider_Content);
+
     // tickmarks
-    if (sliderDrawTickMarks && (sliderOption->subControls & QStyle::SC_SliderTickmarks))
+    if ( sliderDrawTickMarks && (sliderOption->subControls & QStyle::SC_SliderTickmarks) )
     {
         bool upsideDown(sliderOption->upsideDown);
         int tickPosition(sliderOption->tickPosition);

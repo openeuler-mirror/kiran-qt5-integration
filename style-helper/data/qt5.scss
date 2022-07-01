@@ -477,14 +477,14 @@ Slider
 {
   Groove: $bare_background_normal;
   Content: $bare_foreground_checked;
-  HandleBorder: $bare_foreground_normal;
+  HandleBorder: white;
   HandleBackground: $bare_foreground_checked;
 }
 
 Slider:pressed
 {
-  HandleBorder: $bare_foreground_normal;
-  HandleBackground: $bare_foreground_normal;
+  HandleBorder: white;
+  HandleBackground: white;
 }
 
 Slider:disabled
