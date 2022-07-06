@@ -62,8 +62,12 @@ bool drawControlMenuBarItem(const QStyle* style, const QStyleOption* option, QPa
         else
         {
             QStyleOptionMenuItem itemOption = *menuItemOption;
-            auto background = schemeLoader->getColor(widget,option,SchemeLoader::MenuBar_ItemBackground);
-            painter->fillRect(option->rect,background);
+            QColor bgColor;
+            if(  mouseOver || sunken  )
+            {
+                bgColor = schemeLoader->getColor(widget,option,SchemeLoader::MenuBar_ItemBackground);
+                painter->fillRect(option->rect,bgColor);
+            }
             style->drawItemText(painter,itemOption.rect,alignment,itemOption.palette,enabled,itemOption.text,QPalette::ButtonText);
         }
     }
@@ -73,9 +77,8 @@ bool drawControlMenuBarItem(const QStyle* style, const QStyleOption* option, QPa
 bool drawControlMenuBarEmptyArea(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget)
 {
     auto schemeLoader = SchemeLoaderFetcher::getSchemeLoader();
-    QColor background = schemeLoader->getColor(widget,option,SchemeLoader::MenuBar_EmptyAreaBackground);
+    QColor background = schemeLoader->getColor(SchemeLoader::MenuBar_EmptyAreaBackground,PseudoClass_Unspecified);
     painter->fillRect(option->rect,background);
     return true;
 }
-
 }

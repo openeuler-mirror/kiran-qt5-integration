@@ -52,6 +52,8 @@ bool isVerticalTab(const QTabBar::Shape& shape);
 // 判断控件是否位于菜单
 bool isMenuTitle(const QWidget* widget);
 
+QWindow* getWindow(const QWidget* widget);
+
 // 当QPainter中QPen宽度为１时，矩形每个笔画像素侧面向内移动半个像素
 // 这样可以使笔划是像素完美的，而不是像素之间的模糊，并防止带有笔划的矩形变得大于矩形的原始大小
 QRectF strokedRect(const QRectF& rect, const qreal penWidth);
