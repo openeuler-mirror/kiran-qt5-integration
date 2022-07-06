@@ -128,10 +128,10 @@ QSize toolButtonSizeFromContents(const QStyle* style,
 }
 
 bool toolButtonSubControlRect(const QStyle* style,
-                                            const QStyleOptionComplex* opt,
-                                            QStyle::SubControl sc,
-                                            const QWidget* widget,
-                                            QRect& controlRect)
+                              const QStyleOptionComplex* opt,
+                              QStyle::SubControl sc,
+                              const QWidget* widget,
+                              QRect& controlRect)
 {
     const auto toolButtonOption = qstyleoption_cast<const QStyleOptionToolButton*>(opt);
     if (!toolButtonOption) return false;
@@ -395,6 +395,96 @@ bool drawControlToolButtonLabel(const QStyle* style, const QStyleOption* option,
         painter->setFont(toolButtonOption->font);
         style->drawItemText(painter, textRect, textFlags, palette, enabled, toolButtonOption->text, textRole);
     }
+    return true;
+}
+
+bool drawControlPushButtonLabel(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget)
+{
+    const auto* buttonOption = qstyleoption_cast<const QStyleOptionButton*>(option);
+    if( !buttonOption)
+        return false;
+
+    const auto * pushbutton = qobject_cast<const QPushButton*>(widget);
+
+    QRect textRect = buttonOption->rect;
+    uint tf = Qt::AlignVCenter | Qt::TextShowMnemonic;
+    if (!style->styleHint(QStyle::SH_UnderlineShortcut, buttonOption, widget))
+        tf |= Qt::TextHideMnemonic;
+
+    if (!buttonOption->icon.isNull())
+    {
+        // Center both icon and text
+        QIcon::Mode mode = buttonOption->state & QStyle::State_Enabled ? QIcon::Normal : QIcon::Disabled;
+        if (mode == QIcon::Normal && buttonOption->state & QStyle::State_HasFocus)
+            mode = QIcon::Active;
+        QIcon::State state = QIcon::Off;
+        if (buttonOption->state & QStyle::State_On)
+            state = QIcon::On;
+
+        QPixmap pixmap = buttonOption->icon.pixmap(RenderHelper::getWindow(widget), buttonOption->iconSize, mode, state);
+        int pixmapWidth = pixmap.width() / pixmap.devicePixelRatio();
+        int pixmapHeight = pixmap.height() / pixmap.devicePixelRatio();
+        int labelWidth = pixmapWidth;
+        int labelHeight = pixmapHeight;
+        int iconSpacing = 4;  //### 4 is currently hardcoded in QPushButton::sizeHint()
+        if (!buttonOption->text.isEmpty())
+        {
+            int textWidth = buttonOption->fontMetrics.boundingRect(option->rect, tf, buttonOption->text).width();
+            labelWidth += (textWidth + iconSpacing);
+        }
+
+        QRect iconRect = QRect(textRect.x() + (textRect.width() - labelWidth) / 2,
+                               textRect.y() + (textRect.height() - labelHeight) / 2,
+                               pixmapWidth, pixmapHeight);
+
+        iconRect = QStyle::visualRect(buttonOption->direction, textRect, iconRect);
+
+        if (buttonOption->direction == Qt::RightToLeft)
+        {
+            tf |= Qt::AlignRight;
+            textRect.setRight(iconRect.left() - iconSpacing / 2);
+        }
+        else
+        {
+            tf |= Qt::AlignLeft;  // left align, we adjust the text-rect instead
+            textRect.setLeft(iconRect.left() + iconRect.width() + iconSpacing / 2);
+        }
+
+        if (buttonOption->state & (QStyle::State_On | QStyle::State_Sunken))
+            iconRect.translate(style->pixelMetric(QStyle::PM_ButtonShiftHorizontal, option, widget),
+                               style->pixelMetric(QStyle::PM_ButtonShiftVertical, option, widget));
+        painter->drawPixmap(iconRect, pixmap);
+    }
+    else
+    {
+        tf |= Qt::AlignHCenter;
+    }
+
+    if (buttonOption->state & (QStyle::State_On | QStyle::State_Sunken))
+    {
+        textRect.translate(style->pixelMetric(QStyle::PM_ButtonShiftHorizontal, option, widget),
+                           style->pixelMetric(QStyle::PM_ButtonShiftVertical, option, widget));
+    }
+
+    if (buttonOption->features & QStyleOptionButton::HasMenu)
+    {
+        int indicatorSize = style->pixelMetric(QStyle::PM_MenuButtonIndicator, buttonOption, widget);
+        if (buttonOption->direction == Qt::LeftToRight)
+            textRect = textRect.adjusted(0, 0, -indicatorSize, 0);
+        else
+            textRect = textRect.adjusted(indicatorSize, 0, 0, 0);
+    }
+
+    QPalette palette = buttonOption->palette;
+    //按钮为高亮或警告色并且为启用状态修改文本颜色
+    if( pushbutton && (StylePropertyHelper::getButtonType(pushbutton) != BUTTON_Normal) && (option->state & QStyle::State_Enabled)  )
+    {
+        palette.setColor(QPalette::ButtonText,Qt::white);
+    }
+
+    style->drawItemText(painter, textRect, tf, palette, (buttonOption->state & QStyle::State_Enabled),
+                        buttonOption->text, QPalette::ButtonText);
+
     return true;
 }
 

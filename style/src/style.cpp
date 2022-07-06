@@ -527,27 +527,28 @@ void Style::drawControl(QStyle::ControlElement element, const QStyleOption *opti
     // clang-format off
     switch (element)
     {
-    case QStyle::CE_ShapedFrame:      func = &drawControlShapedFrame; break;
+    case CE_ShapedFrame:      func = &drawControlShapedFrame; break;
 
-    case QStyle::CE_TabBarTabLabel:   func = &drawControlTabBarTabLabel; break;
-    case QStyle::CE_TabBarTabShape:   func = &drawControlTabBarTabShape; break;
+    case CE_TabBarTabLabel:   func = &drawControlTabBarTabLabel; break;
+    case CE_TabBarTabShape:   func = &drawControlTabBarTabShape; break;
 
-    case QStyle::CE_ToolBoxTabLabel:  func = &drawControlToolButtonLabel; break;
-    case QStyle::CE_ComboBoxLabel:    func = &drawControlComboBoxLabel; break;
+    case CE_PushButtonLabel:  func = &drawControlPushButtonLabel; break;
+    case CE_ToolBoxTabLabel:  func = &drawControlToolButtonLabel; break;
+    case CE_ComboBoxLabel:    func = &drawControlComboBoxLabel; break;
 
-    case QStyle::CE_HeaderLabel:      func = &drawControlHeaderLabel; break;
-    case QStyle::CE_HeaderSection:    func = &drawControlHeaderSection; break;
-    case QStyle::CE_HeaderEmptyArea:  func = &drawControlHeaderEmptyArea; break;
+    case CE_HeaderLabel:      func = &drawControlHeaderLabel; break;
+    case CE_HeaderSection:    func = &drawControlHeaderSection; break;
+    case CE_HeaderEmptyArea:  func = &drawControlHeaderEmptyArea; break;
 
-    case QStyle::CE_ScrollBarSlider:  func = &drawControlScrollBarSlider; break;
+    case CE_ScrollBarSlider:  func = &drawControlScrollBarSlider; break;
 
-    case QStyle::CE_ProgressBar:      func = &drawControlProgressBar; break;
+    case CE_ProgressBar:      func = &drawControlProgressBar; break;
     case CE_ProgressBarGroove:        func = &drawControlProgressBarGroove; break;
     case CE_ProgressBarContents:      func = &drawControlProgressBarContents; break;
     case CE_ProgressBarLabel:         func = &drawControlProgressBarLabel; break;
 
-    case QStyle::CE_MenuBarItem:      func = &drawControlMenuBarItem; break;
-    case QStyle::CE_MenuBarEmptyArea: func = &drawControlMenuBarEmptyArea; break;
+    case CE_MenuBarItem:      func = &drawControlMenuBarItem; break;
+    case CE_MenuBarEmptyArea: func = &drawControlMenuBarEmptyArea; break;
     default: break;
     }
     // clang-format on

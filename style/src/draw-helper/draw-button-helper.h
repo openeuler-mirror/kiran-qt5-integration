@@ -37,6 +37,7 @@ bool drawPEPanelButtonCommand(const QStyle* style, const QStyleOption* option, Q
 bool drawPEPanelButtonTool(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget);
 
 // drawControl
+bool drawControlPushButtonLabel(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget);
 bool drawControlToolButtonLabel(const QStyle* style, const QStyleOption* option, QPainter* painter, const QWidget* widget);
 
 // drawComplexControl
