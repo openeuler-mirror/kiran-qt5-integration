@@ -290,7 +290,7 @@ bool SchemeLoader::load(const QString& schemeFile)
     }
 
     m_isValid = true;
-    qInfo() << "load" << schemeFile << "succeed!";
+    qDebug() << "load" << schemeFile << "succeed!";
     return true;
 }
 

@@ -274,13 +274,13 @@ void KiranTheme::handleScaleFactorChanged(int factor)
         }
         else
         {
-            qWarning(kiranPlatformTheme) << "not support this factor:" << factor;
+            qDebug(kiranPlatformTheme) << "not support this factor:" << factor;
             return;
         }
     }
     else
     {
-        qWarning(kiranPlatformTheme) << "disable real time scaling,ignore scale factor changed!";
+        qDebug(kiranPlatformTheme) << "disable real time scaling,ignore scale factor changed!";
     }
 }
 

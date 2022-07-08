@@ -57,7 +57,7 @@ KiranAppearanceMonitor::KiranAppearanceMonitor(QObject *parent)
         }
         else
         {
-            qWarning(kiranPlatformThemeCommon) << "parse titlebar font failed!";
+            qDebug(kiranPlatformThemeCommon) << "parse titlebar font failed!";
         }
 
         //icon theme
@@ -70,7 +70,7 @@ KiranAppearanceMonitor::KiranAppearanceMonitor(QObject *parent)
         }
         else
         {
-            qWarning(kiranPlatformThemeCommon) << "get  icon theme failed," << themeReply.error();
+            qDebug(kiranPlatformThemeCommon) << "get  icon theme failed," << themeReply.error();
         }
 
         //gtk theme
@@ -89,12 +89,12 @@ KiranAppearanceMonitor::KiranAppearanceMonitor(QObject *parent)
         }
         else
         {
-            qWarning(kiranPlatformThemeCommon) << "get gtk theme failed," << themeReply.error();
+            qDebug(kiranPlatformThemeCommon) << "get gtk theme failed," << themeReply.error();
         }
     }
     else
     {
-        qCritical(kiranPlatformThemeCommon) << "kiran session daemon appearance service isn't registered!";
+        qDebug(kiranPlatformThemeCommon) << "kiran session daemon appearance service isn't registered!";
     }
 
     connect(m_appearanceIface, &KiranAppearanceProxy::FontChanged,
@@ -113,7 +113,7 @@ KiranAppearanceMonitor::KiranAppearanceMonitor(QObject *parent)
     }
     else
     {
-        qCritical(kiranPlatformThemeCommon) << "kiran session daemon display service isn't registered!";
+        qDebug(kiranPlatformThemeCommon) << "kiran session daemon display service isn't registered!";
     }
 
     connect(m_displayIface, &KiranDisplayProxy::window_scaling_factorChanged,
@@ -197,7 +197,7 @@ bool KiranAppearanceMonitor::parseFontValue(const QString &font, QString &fontNa
     QFontDatabase fontDatabase;
     if( !fontDatabase.hasFamily(fontName) )
     {
-        qInfo() << "font data base don't has this font:" << fontName;
+        qDebug(kiranPlatformThemeCommon) << "font data base don't has this font:" << fontName;
         return false;
     }
 
@@ -252,7 +252,7 @@ void KiranAppearanceMonitor::handleThemeSettingChanged(int type, const QString &
 
         if(gtkTheme!=m_gtkThemeName)
         {
-            qInfo() << "gtk theme changed:" << themeName;
+            qDebug(kiranPlatformThemeCommon) << "gtk theme changed:" << themeName;
             m_gtkThemeName = gtkTheme;
             emit gtkThemeChanged(m_gtkThemeName);
         }

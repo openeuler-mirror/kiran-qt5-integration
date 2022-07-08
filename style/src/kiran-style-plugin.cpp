@@ -34,7 +34,7 @@ QStyle *KiranStylePlugin::create(const QString & key)
         return QStyleFactory::create("fusion");
     }
 
-    qInfo("create style:%s",key.toStdString().c_str());
+    qDebug("create style:%s",key.toStdString().c_str());
     if( key.compare("kiran",Qt::CaseInsensitive) == 0 )
     {
         return new Style();
