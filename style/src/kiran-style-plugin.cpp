@@ -13,6 +13,7 @@
  */
 #include "kiran-style-plugin.h"
 #include "style.h"
+#include "kiran-integration-settings.h"
 
 #include <QCoreApplication>
 #include <QDebug>
@@ -25,11 +26,9 @@ KiranStylePlugin::KiranStylePlugin(QObject *parent) : QStylePlugin(parent)
 
 QStyle *KiranStylePlugin::create(const QString & key)
 {
-    QList<QString> blackApps = {
-        "kiran-screensaver",
-        "lightdm-kiran-greeter"
-    };
-    if( blackApps.contains(qAppName()) )
+    QStringList disableApps = KiranIntegrationSettings::instance()->getDisableKiranStyleApps();
+    QString processName = qAppName();
+    if( disableApps.contains(processName) )
     {
         return QStyleFactory::create("fusion");
     }

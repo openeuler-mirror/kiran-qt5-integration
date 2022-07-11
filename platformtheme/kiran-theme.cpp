@@ -15,6 +15,7 @@
 #include "kiran-theme.h"
 #include "kiran-appearance-monitor.h"
 #include "logging-category.h"
+#include "kiran-integration-settings.h"
 
 #include <private/qguiapplication_p.h>
 #include <private/qiconloader_p.h>
@@ -95,6 +96,12 @@ QVariant KiranTheme::themeHint(QPlatformTheme::ThemeHint hint) const
 const QPalette* KiranTheme::palette(QPlatformTheme::Palette type) const
 {
     if (type != SystemPalette)
+    {
+        return QGenericUnixTheme::palette(type);
+    }
+
+    QStringList blackapps = KiranIntegrationSettings::instance()->getDisableKiranStyleApps();
+    if( blackapps.contains(qAppName()) )
     {
         return QGenericUnixTheme::palette(type);
     }
