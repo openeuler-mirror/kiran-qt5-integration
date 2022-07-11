@@ -15,6 +15,7 @@
 #include "kiran-theme.h"
 #include "kiran-appearance-monitor.h"
 #include "logging-category.h"
+#include "kiran-integration-settings.h"
 
 #include <private/qguiapplication_p.h>
 #include <private/qiconloader_p.h>
@@ -95,6 +96,12 @@ QVariant KiranTheme::themeHint(QPlatformTheme::ThemeHint hint) const
 const QPalette* KiranTheme::palette(QPlatformTheme::Palette type) const
 {
     if (type != SystemPalette)
+    {
+        return QGenericUnixTheme::palette(type);
+    }
+
+    QStringList blackapps = KiranIntegrationSettings::instance()->getDisableKiranStyleApps();
+    if( blackapps.contains(qAppName()) )
     {
         return QGenericUnixTheme::palette(type);
     }
@@ -274,13 +281,13 @@ void KiranTheme::handleScaleFactorChanged(int factor)
         }
         else
         {
-            qWarning(kiranPlatformTheme) << "not support this factor:" << factor;
+            qDebug(kiranPlatformTheme) << "not support this factor:" << factor;
             return;
         }
     }
     else
     {
-        qWarning(kiranPlatformTheme) << "disable real time scaling,ignore scale factor changed!";
+        qDebug(kiranPlatformTheme) << "disable real time scaling,ignore scale factor changed!";
     }
 }
 

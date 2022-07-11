@@ -6,6 +6,7 @@ find_package(KiranDBusGenerate REQUIRED)
 
 pkg_search_module(KIRAN_CC_DAEMON REQUIRED kiran-cc-daemon)
 pkg_search_module(KLOG_QT5 REQUIRED klog-qt5)
+pkg_search_module(GSETTINGS_QT REQUIRED gsettings-qt)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
@@ -38,12 +39,17 @@ add_library(${TARGET_NAME} STATIC ${ALL_FILES})
 target_link_libraries(${TARGET_NAME}
         Qt5::Gui
         Qt5::DBus
-        ${QGSETTINGS_LIBRARIES})
+        ${QGSETTINGS_LIBRARIES}
+        ${GSETTINGS_QT_LIBRARIES})
 
 target_include_directories(${TARGET_NAME} PRIVATE
         ${CMAKE_CURRENT_BINARY_DIR}
         ${QGSETTINGS_INCLUDE_DIRS}
-        ${KIRAN_CC_DAEMON_INCLUDE_DIRS})
+        ${KIRAN_CC_DAEMON_INCLUDE_DIRS}
+        ${GSETTINGS_QT_INCLUDE_DIRS})
 
 target_include_directories(${TARGET_NAME} PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src)
+
+install(FILES data/kiran-qt5-integration.ini 
+        DESTINATION /${CMAKE_INSTALL_SYSCONFDIR}/kiran-qt5-integration/ )
