@@ -157,6 +157,9 @@
     @if $c == background {
         @return $WindowBackgroundNormal;
     }
+    @if $c == background-hover {
+        @return $WindowBackgroundHover;
+    }
     @if $c == foreground {
         @return $WindowForegroundNormal;
     }
