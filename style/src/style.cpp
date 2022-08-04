@@ -64,7 +64,7 @@ QDebug operator<<(QDebug dbg, const QColor &color)
 
 using namespace Kiran;
 
-//FIXME:为什么加入namespace，导致crash
+//FIXME:由于kiran-widgets-qt5之前包含的Kiran::Style重名导致现在暂时不能加入Kiran命名控件，否则将引起崩溃
 Style::Style()
     : ParentStyle()
 {

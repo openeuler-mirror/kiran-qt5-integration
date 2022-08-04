@@ -73,6 +73,7 @@ $bare_foreground_backdrop_insensitive: #{"" + internal_insensitive(internal_back
 
 // window
 $window_background_normal: #{"" + internal_window(background)};
+$window_background_hover: #{"" + internal_window(background-hover)};
 $window_background_insensitive: #{"" + internal_insensitive(internal_window(background))};
 $window_background_backdrop: #{"" + internal_backdrop(internal_window(background))};
 $window_background_backdrop_insensitive: #{"" + internal_insensitive(internal_backdrop(internal_window(background)))};
@@ -194,6 +195,10 @@ Window {
   Border: $window_border_normal;
 }
 
+Window:hover {
+  Background: $window_background_hover;
+}
+
 Window:disabled {
   Background: $window_background_insensitive;
   Foreground: $window_foreground_insensitive;
@@ -249,7 +254,7 @@ Widget:checked,
 Widget:selected {
   Background: $widget_background_checked;
   Foreground: $widget_foreground_checked;
-  Border:  $widget_border_focus;
+  Border: $widget_border_focus;
 }
 
 Widget:disabled {
@@ -301,220 +306,182 @@ TitleBar:disabled {
 
 
 /** --- 提供给KiranStyle直接使用的相关属性 --- **/
-Frame
-{
+Frame {
   Background: $window_background_normal;
   Border: $window_border_normal;
 }
 
-Frame:disabled
-{
+Frame:disabled {
   Background: $window_background_insensitive;
   Border: $window_border_insensitive;
 }
 
-Button
-{
+Button {
   Background: $widget_background_normal;
   Border: $widget_border_normal;
 }
 
-Button:hover
-{
+Button:hover {
   Background: $widget_background_hover;
 }
 
-Button:pressed
-{
+Button:pressed {
   Background: $widget_background_active;
 }
 
-Button:disabled
-{
+Button:disabled {
   Background: $widget_background_insensitive;
   Border: $widget_border_insensitive;
 }
 
-SpecialButton
-{
-  DefaultBackground:$special_button_default_normal;
-  WarnningBackground:$special_button_warnning_normal;
+SpecialButton {
+  DefaultBackground: $special_button_default_normal;
+  WarnningBackground: $special_button_warnning_normal;
 }
 
-SpecialButton:hover
-{
-  DefaultBackground:$special_button_default_hover;
-  WarnningBackground:$special_button_warnning_hover;
+SpecialButton:hover {
+  DefaultBackground: $special_button_default_hover;
+  WarnningBackground: $special_button_warnning_hover;
 }
 
-SpecialButton:pressed
-{
-  DefaultBackground:$special_button_default_active;
-  WarnningBackground:$special_button_warnning_active;
+SpecialButton:pressed {
+  DefaultBackground: $special_button_default_active;
+  WarnningBackground: $special_button_warnning_active;
 }
 
-SpecialButton:disabled
-{
-  DefaultBackground:$special_button_default_insensitive;
-  WarnningBackground:$special_button_warnning_insensitive;
+SpecialButton:disabled {
+  DefaultBackground: $special_button_default_insensitive;
+  WarnningBackground: $special_button_warnning_insensitive;
 }
 
-Edit
-{
+Edit {
   Background: $view_background_normal;
   Foreground: $view_foreground_normal;
   Border: $view_border_normal;
 }
 
-Edit:focus
-{
+Edit:focus {
   Border: $view_border_focus;
 }
 
-Edit:disabled
-{
+Edit:disabled {
   Background: $view_background_insensitive;
   Border: $view_border_insensitive;
 }
 
-Indicator
-{
+Indicator {
   Arrow: $widget_foreground_normal;
 }
 
-Indicator:disabled
-{
+Indicator:disabled {
   Arrow: $widget_foreground_insensitive;
 }
 
-Combo
-{
+Combo {
   Background: transparent;
   Border: $widget_border_normal;
 }
 
-Combo:hover
-{
+Combo:hover {
   Background: $widget_background_hover;
 }
 
-Combo:pressed
-{
+Combo:pressed {
   Background: $widget_background_active;
 }
 
-Combo:disabled
-{
+Combo:disabled {
   Background: $widget_background_insensitive;
   Border: $widget_border_insensitive;
 }
 
-ItemView
-{
+ItemView {
   Branch: $widget_border_normal;
 }
 
-ItemView:disabled
-{
+ItemView:disabled {
   Branch: $widget_border_insensitive;
 }
 
-MenuBar
-{
+MenuBar {
   ItemBackground: $window_background_normal;
   EmptyAreaBackground: $window_background_normal;
 }
 
-MenuBar:hover
-{
+MenuBar:hover {
   ItemBackground: $widget_background_hover;
 }
 
-MenuBar:pressed
-{
+MenuBar:pressed {
   ItemBackground: $widget_background_active;
 }
 
-MenuBar:disabled
-{
+MenuBar:disabled {
   ItemBackground: $window_background_insensitive;
   EmptyAreaBackground: $window_background_insensitive;
 }
 
-Progress
-{
+Progress {
   Groove: $bare_background_normal;
   Content: $bare_foreground_checked;
 }
 
-Progress:disabled
-{
+Progress:disabled {
   Groove: $bare_background_insensitive;
   Content: $bare_foreground_insensitive;
 }
 
-Scroll
-{
+Scroll {
   Slider: $bare_background_normal;
 }
 
-Scroll:hover
-{
+Scroll:hover {
   Slider: $bare_background_hover;
 }
 
-Scroll:pressed
-{
+Scroll:pressed {
   Slider: $bare_background_checked;
 }
 
-Scroll:disabled
-{
+Scroll:disabled {
   Slider: $bare_background_insensitive;
 }
 
-Slider
-{
+Slider {
   Groove: $bare_background_normal;
   Content: $bare_foreground_checked;
   HandleBorder: white;
   HandleBackground: $bare_foreground_checked;
 }
 
-Slider:pressed
-{
+Slider:pressed {
   HandleBorder: white;
   HandleBackground: white;
 }
 
-Slider:disabled
-{
+Slider:disabled {
   Groove: $bare_background_insensitive;
   Content: $bare_foreground_insensitive;
   HandleBorder: $bare_foreground_insensitive;
   HandleBackground: $bare_foreground_insensitive;
 }
 
-SpinBox
-{
+SpinBox {
   Background: $widget_background_normal;
   Border: $widget_border_normal;
   SignColor: $widget_foreground_normal;
 }
 
-SpinBox:hover
-{
+SpinBox:hover {
   Background: $widget_background_hover;
   Border: $widget_border_hover;
 }
 
-SpinBox:pressed
-{
+SpinBox:pressed {
   Background: $widget_background_active;
 }
 
-SpinBox:disabled
-{
+SpinBox:disabled {
   Background: $widget_background_insensitive;
   Border: $widget_border_insensitive;
   SignColor: $widget_foreground_insensitive;
