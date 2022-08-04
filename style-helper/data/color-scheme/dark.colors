@@ -57,6 +57,7 @@ ForegroundChecked=Default::Selection
 BackgroundNormal=Default::BackgroundNormal
 ForegroundNormal=Default::ForegroundNormal
 BorderNormal=Default::Border
+BackgroundHover=mix(Window::BackgroundNormal, Window::ForegroundNormal, 0.9)
 
 [Colors:Selection]
 BackgroundNormal=Default::Selection
