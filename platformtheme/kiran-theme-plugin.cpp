@@ -23,7 +23,7 @@ QPlatformTheme* KiranThemePlugin::create(const QString& key, const QStringList& 
 
     if(keySet.contains(key))
     {
-        qDebug(kiranPlatformTheme) << "create kiran style for" << QCoreApplication::applicationName();
+        qDebug(kiranPlatformTheme) << "create kiran platformtheme for" << QCoreApplication::applicationName();
         return new KiranTheme(paramList);
     }
 
