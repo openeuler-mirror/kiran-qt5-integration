@@ -53,7 +53,13 @@ bool RenderHelper::drawTreeBranches()
 
 bool RenderHelper::isQtQuickControl(const QStyleOption *option, const QWidget *widget)
 {
+#if QT_VERSION >= 0x050000
     return (widget == nullptr) && option && option->styleObject && option->styleObject->inherits("QQuickItem");
+#else
+    Q_UNUSED(widget);
+    Q_UNUSED(option);
+    return false;
+#endif
 }
 
 bool RenderHelper::isVerticalTab(const QTabBar::Shape &shape)
