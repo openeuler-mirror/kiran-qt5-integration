@@ -25,6 +25,7 @@
 #include <QRect>
 #include <QStyle>
 #include <QStyleOption>
+#include <QAbstractScrollArea>
 
 namespace Kiran
 {
@@ -39,7 +40,15 @@ bool drawPEFrame(const QStyle *style,
     background = schemeLoader->getColor(widget,option,SchemeLoader::Frame_Background);
     border = schemeLoader->getColor(widget,option,SchemeLoader::Frame_Border);
 
-    RenderHelper::renderFrame(painter, option->rect, 1, 0, background,border );
+    if( qobject_cast<const QAbstractScrollArea*>(widget) )
+    {
+        RenderHelper::renderFrame(painter, option->rect, 1, 0, Qt::transparent,border );
+    }
+    else
+    {
+        RenderHelper::renderFrame(painter, option->rect, 1, 0, background,border );
+    }
+
     return true;
 }
 

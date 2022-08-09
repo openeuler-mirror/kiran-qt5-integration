@@ -564,6 +564,38 @@ void Style::drawControl(QStyle::ControlElement element, const QStyleOption *opti
     painter->restore();
 }
 
+void Style::polishScrollArea(QAbstractScrollArea* scrollArea)
+{
+    if (!scrollArea)
+        return;
+
+    // enable mouse over effect in sunken scrollareas that support focus
+    if (scrollArea->frameShadow() == QFrame::Sunken && scrollArea->focusPolicy() & Qt::StrongFocus) {
+        scrollArea->setAttribute(Qt::WA_Hover);
+    }
+
+    // disable autofill background for flat (== NoFrame) scrollareas, with QPalette::Window as a background
+    // this fixes flat scrollareas placed in a tinted widget, such as groupboxes, tabwidgets or framed dock-widgets
+    if (!(scrollArea->frameShape() == QFrame::NoFrame || scrollArea->backgroundRole() == QPalette::Window)) {
+        return;
+    }
+
+    // get viewport and check background role
+    QWidget *viewport(scrollArea->viewport());
+    if (!(viewport && viewport->backgroundRole() == QPalette::Window))
+        return;
+
+    // change viewport autoFill background.
+    // do the same for all children if the background role is QPalette::Window
+    viewport->setAutoFillBackground(false);
+    QList<QWidget *> children(viewport->findChildren<QWidget *>());
+    foreach (QWidget *child, children) {
+        if (child->parent() == viewport && child->backgroundRole() == QPalette::Window) {
+            child->setAutoFillBackground(false);
+        }
+    }
+}
+
 void Style::polish(QWidget *widget)
 {
     if (!widget)
@@ -588,18 +620,8 @@ void Style::polish(QWidget *widget)
         widget->setAttribute(Qt::WA_Hover);
     }
 
-    if (qobject_cast<QAbstractScrollArea *>(widget))
-    {
-        auto scrollArea = qobject_cast<QAbstractScrollArea *>(widget);
-        if (scrollArea->frameShadow() == QFrame::Sunken && scrollArea->focusPolicy() & Qt::StrongFocus)
-        {
-            scrollArea->setAttribute(Qt::WA_Hover);
-        }
-        //        scrollArea->viewport()->setAutoFillBackground(false);
-        //        qInfo() << "viewport:" << scrollArea->viewport()->geometry();
-        //        qInfo() << "scroll area:" << scrollArea->geometry();
-    }
-
+    polishScrollArea(qobject_cast<QAbstractScrollArea *>(widget));
+    
     if (QAbstractItemView *itemView = qobject_cast<QAbstractItemView *>(widget))
     {
         // enable mouse over effects in itemviews' viewport

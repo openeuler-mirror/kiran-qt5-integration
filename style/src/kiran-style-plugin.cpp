@@ -26,18 +26,20 @@ KiranStylePlugin::KiranStylePlugin(QObject *parent) : QStylePlugin(parent)
 
 QStyle *KiranStylePlugin::create(const QString & key)
 {
-    QStringList disableApps = KiranIntegrationSettings::instance()->getDisableKiranStyleApps();
-    QString processName = qAppName();
-    if( disableApps.contains(processName) )
-    {
-        return QStyleFactory::create("fusion");
-    }
-
-    qDebug("create style:%s",key.toStdString().c_str());
     if( key.compare("kiran",Qt::CaseInsensitive) == 0 )
     {
-        return new Style();
+        QStringList disableApps = KiranIntegrationSettings::instance()->getDisableKiranStyleApps();
+        QString processName = qAppName();
+        if( disableApps.contains(processName) )
+        {
+            qDebug("%s in black list,create fusion style for it.",processName.toStdString().c_str());
+            return QStyleFactory::create("fusion");
+        }
+        else
+        {
+            qDebug("create style:%s",key.toStdString().c_str());
+            return new Style();
+        }
     }
-
     return nullptr;
 }

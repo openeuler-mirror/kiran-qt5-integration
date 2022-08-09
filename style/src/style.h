@@ -27,6 +27,7 @@
 #define ParentStyle QCommonStyle
 #endif
 
+class QAbstractScrollArea;
 class Style : public ParentStyle
 {
 public:
@@ -47,6 +48,7 @@ public:
     QPixmap standardPixmap(StandardPixmap standardPixmap, const QStyleOption* opt, const QWidget* widget) const override;
     QIcon standardIcon(StandardPixmap standardIcon, const QStyleOption* option, const QWidget* widget) const override;
 
+    void polishScrollArea(QAbstractScrollArea* scrollArea);
     void polish(QWidget* widget) override;
     void polish(QApplication* app) override;
     void polish(QPalette& pal) override;
