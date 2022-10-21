@@ -19,10 +19,11 @@ IntensityAmount=0
 IntensityEffect=0
 
 [Colors:Default]
-BackgroundNormal=0xFFFFFF
+BackgroundNormal=0xe8e8e8
 ForegroundNormal=0x222222
 BareNormal=0xCCCCCC
-Border=0xDDDDDD
+Border=0xCCCCCC
+Bulk=0xffffff
 Selection=0x2EB3FF
 Warning=0xFA4949
 Error=0xCC0000
@@ -31,7 +32,7 @@ Link=darken(Default::Selection, 0.1)
 LinkVisited=darken(Default::Selection, 0.2)
 
 [Colors:Widget]
-BackgroundNormal=darken(Default::BackgroundNormal, 0.05)
+BackgroundNormal=0xefefef
 ForegroundNormal=Default::ForegroundNormal
 BackgroundHover=mix(Widget::BackgroundNormal, Widget::ForegroundNormal, 0.9)
 BackgroundActive=mix(Widget::BackgroundNormal, Widget::ForegroundNormal, 0.8)
@@ -73,6 +74,7 @@ BorderFocus=Default::Selection
 
 [WM]
 BackgroundNormal=Default::BackgroundNormal
+BackgroundBackdrop=0xf1f1f1
 ForegroundNormal=Default::ForegroundNormal
 BorderNormal=Default::Border
 

@@ -136,6 +136,20 @@ QColor StylePalette::color(const QWidget* widget,
     return color;
 }
 
+QColor StylePalette::getBulkColor()
+{
+    QColor defaultColor;
+
+    QColor color = d_ptr->m_schemeLoader->getColor(SchemeLoader::Bulk_Background, PseudoClass_Any);
+    if (!color.isValid())
+    {
+        qWarning() << "can't get bulk color!";
+        return defaultColor;
+    }
+
+    return color;
+}
+
 void StylePalette::dump()
 {
     d_ptr->m_schemeLoader->dump();

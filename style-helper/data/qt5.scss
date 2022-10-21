@@ -20,6 +20,7 @@ $default_error: #{"" + internal_default(error)};
 $default_error_backdrop: #{"" + internal_backdrop(internal_default(error))};
 $default_success: #{"" + internal_default(success)};
 $default_success_backdrop: #{"" + internal_backdrop(internal_default(success))};
+$default_bulk: #{"" + internal_default(bulk)};
 
 // selection
 $selection_background_normal: #{"" + internal_selection(background)};
@@ -355,7 +356,7 @@ SpecialButton:disabled {
 }
 
 Edit {
-  Background: $view_background_normal;
+  Background: $widget_background_normal;
   Foreground: $view_foreground_normal;
   Border: $view_border_normal;
 }
@@ -365,8 +366,8 @@ Edit:focus {
 }
 
 Edit:disabled {
-  Background: $view_background_insensitive;
-  Border: $view_border_insensitive;
+  Background: $widget_background_insensitive;
+  Border: transparent;
 }
 
 Indicator {
@@ -378,7 +379,7 @@ Indicator:disabled {
 }
 
 Combo {
-  Background: transparent;
+  Background: $widget_background_normal;
   Border: $widget_border_normal;
 }
 
@@ -392,7 +393,7 @@ Combo:pressed {
 
 Combo:disabled {
   Background: $widget_background_insensitive;
-  Border: $widget_border_insensitive;
+  Border: transparent;
 }
 
 ItemView {
@@ -483,6 +484,10 @@ SpinBox:pressed {
 
 SpinBox:disabled {
   Background: $widget_background_insensitive;
-  Border: $widget_border_insensitive;
+  Border: transparent;
   SignColor: $widget_foreground_insensitive;
+}
+
+Bulk {
+  Background: $default_bulk
 }
