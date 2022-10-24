@@ -132,8 +132,9 @@ public:
      */
     QColor color(const QWidget* widget, const QStyleOption* option, WidgetType type, WidgetColorRule rule, ColorState specialState = Normal);
 
-    void dump();
+    QColor getBulkColor();
 
+    void dump();
 signals:
     void themeChanged(Kiran::PaletteType paletteType);
 

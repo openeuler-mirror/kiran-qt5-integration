@@ -64,7 +64,7 @@ QDebug operator<<(QDebug dbg, const QColor &color)
 
 using namespace Kiran;
 
-//FIXME:由于kiran-widgets-qt5之前包含的Kiran::Style重名导致现在暂时不能加入Kiran命名控件，否则将引起崩溃
+// FIXME:由于kiran-widgets-qt5之前包含的Kiran::Style重名导致现在暂时不能加入Kiran命名控件，否则将引起崩溃
 Style::Style()
     : ParentStyle()
 {
@@ -327,7 +327,7 @@ void Style::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOption *
 
     // clang-format off
     switch (element)
-    {
+    { 
     case PE_Frame:                   func = &drawPEFrame; break;
     case PE_FrameFocusRect:          func = &drawPEFrameFocusRect; break;
     case PE_FrameGroupBox:           func = &drawPEFrameGroupBox; break;
@@ -338,15 +338,25 @@ void Style::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOption *
     case PE_FrameLineEdit:           func = &drawPEFrameLineEdit; break;
     case PE_PanelLineEdit:
     {
+        /*作为QComoBox和QAbstractSpinBox的子控件时不进行绘制*/
         if( widget && widget->parentWidget() )
         {
-            /*作为QComoBox和QAbstractSpinBox的子控件时不进行绘制*/
             if( qobject_cast<const QComboBox*>(widget->parentWidget()) ||
                 qobject_cast<const QAbstractSpinBox*>(widget->parentWidget()) )
             {
                 return;
             }
         }
+
+        if (const QStyleOptionFrame *panel = qstyleoption_cast<const QStyleOptionFrame *>(option))
+        {
+            if (panel->lineWidth > 0)
+            {
+                return Style::drawPrimitive(PE_FrameLineEdit, panel, painter, widget);
+            }
+            return;
+        }
+
         break;
     }
     case PE_IndicatorButtonDropDown:    func = &drawPEIndicatorButtonDropDown; break;
@@ -564,19 +574,21 @@ void Style::drawControl(QStyle::ControlElement element, const QStyleOption *opti
     painter->restore();
 }
 
-void Style::polishScrollArea(QAbstractScrollArea* scrollArea)
+void Style::polishScrollArea(QAbstractScrollArea *scrollArea)
 {
     if (!scrollArea)
         return;
 
     // enable mouse over effect in sunken scrollareas that support focus
-    if (scrollArea->frameShadow() == QFrame::Sunken && scrollArea->focusPolicy() & Qt::StrongFocus) {
+    if (scrollArea->frameShadow() == QFrame::Sunken && scrollArea->focusPolicy() & Qt::StrongFocus)
+    {
         scrollArea->setAttribute(Qt::WA_Hover);
     }
 
     // disable autofill background for flat (== NoFrame) scrollareas, with QPalette::Window as a background
     // this fixes flat scrollareas placed in a tinted widget, such as groupboxes, tabwidgets or framed dock-widgets
-    if (!(scrollArea->frameShape() == QFrame::NoFrame || scrollArea->backgroundRole() == QPalette::Window)) {
+    if (!(scrollArea->frameShape() == QFrame::NoFrame || scrollArea->backgroundRole() == QPalette::Window))
+    {
         return;
     }
 
@@ -589,8 +601,10 @@ void Style::polishScrollArea(QAbstractScrollArea* scrollArea)
     // do the same for all children if the background role is QPalette::Window
     viewport->setAutoFillBackground(false);
     QList<QWidget *> children(viewport->findChildren<QWidget *>());
-    foreach (QWidget *child, children) {
-        if (child->parent() == viewport && child->backgroundRole() == QPalette::Window) {
+    foreach (QWidget *child, children)
+    {
+        if (child->parent() == viewport && child->backgroundRole() == QPalette::Window)
+        {
             child->setAutoFillBackground(false);
         }
     }
@@ -621,7 +635,7 @@ void Style::polish(QWidget *widget)
     }
 
     polishScrollArea(qobject_cast<QAbstractScrollArea *>(widget));
-    
+
     if (QAbstractItemView *itemView = qobject_cast<QAbstractItemView *>(widget))
     {
         // enable mouse over effects in itemviews' viewport

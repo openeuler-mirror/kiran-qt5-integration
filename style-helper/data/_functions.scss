@@ -46,6 +46,9 @@
     @if $c == success {
         @return $DefaultSuccess;
     }
+    @if $c ==bulk {
+        @return $DefaultBulk;
+    }
     @if $c == link {
         @return $DefaultLink;
     }
