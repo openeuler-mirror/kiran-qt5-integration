@@ -35,7 +35,7 @@
 @define-color theme_default_error_backdrop                    #{"" + internal_backdrop(internal_default(error))};
 @define-color theme_default_success                           #{"" + internal_default(success)};
 @define-color theme_default_success_backdrop                  #{"" + internal_backdrop(internal_default(success))};
-
+@define-color theme_default_bulk #{"" + internal_default(bulk)};
 
 /* these are pretty self explicative */
 @define-color warning_color #{"" +internal_default(warning)};
