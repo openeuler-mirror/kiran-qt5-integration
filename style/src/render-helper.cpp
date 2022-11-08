@@ -313,6 +313,7 @@ QPixmap RenderHelper::changeSVGFillColor(const QString &svgFile, const QColor &f
     tinyDoc->draw(&tempPainter);
     tempPainter.end();
 
+    delete tinyDoc;
     return tempPixmap;
 }
 
