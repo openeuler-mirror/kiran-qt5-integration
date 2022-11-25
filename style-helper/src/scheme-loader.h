@@ -97,88 +97,88 @@ public:
     enum SchemePropertyName
     {
         // === Palette === //
-        Palette_Window             = 0x00000000,
-        Palette_WindowText         = 0x00000001,
-        Palette_Base               = 0x00000002,
-        Palette_Text               = 0x00000003,
-        Palette_Button             = 0x00000004,
-        Palette_ButtonText         = 0x00000005,
-        Palette_Highlight          = 0x00000006,
-        Palette_HighlightedText    = 0x00000007,
-        Palette_ToolTipBase        = 0x00000008,
-        Palette_ToolTipText        = 0x00000009,
+        Palette_Window = 0x00000000,
+        Palette_WindowText = 0x00000001,
+        Palette_Base = 0x00000002,
+        Palette_Text = 0x00000003,
+        Palette_Button = 0x00000004,
+        Palette_ButtonText = 0x00000005,
+        Palette_Highlight = 0x00000006,
+        Palette_HighlightedText = 0x00000007,
+        Palette_ToolTipBase = 0x00000008,
+        Palette_ToolTipText = 0x00000009,
 
         // === Flag === ///
-        Flag_Warning               = 0x00000010,
-        Flag_Error                 = 0x00000011,
-        Flag_Success               = 0x00000012,
+        Flag_Warning = 0x00000010,
+        Flag_Error = 0x00000011,
+        Flag_Success = 0x00000012,
 
         // === Window === ///
-        Window_Background          = 0x00000020,
-        Window_Foreground          = 0x00000021,
-        Window_Border              = 0x00000022,
+        Window_Background = 0x00000020,
+        Window_Foreground = 0x00000021,
+        Window_Border = 0x00000022,
 
         // === Bare === ///
-        Bare_Background            = 0x00000030,
-        Bare_Foreground            = 0x00000031,
+        Bare_Background = 0x00000030,
+        Bare_Foreground = 0x00000031,
 
         // === Widget === ///
-        Widget_Background          = 0x00000040,
-        Widget_Foreground          = 0x00000041,
-        Widget_Border              = 0x00000042,
+        Widget_Background = 0x00000040,
+        Widget_Foreground = 0x00000041,
+        Widget_Border = 0x00000042,
 
         // === View === ///
-        View_Background            = 0x00000050,
-        View_Foreground            = 0x00000051,
-        View_Border                = 0x00000052,
+        View_Background = 0x00000050,
+        View_Foreground = 0x00000051,
+        View_Border = 0x00000052,
 
         // === Selection === ///
-        Selection_Background       = 0x00000060,
-        Selection_Foreground       = 0x00000061,
+        Selection_Background = 0x00000060,
+        Selection_Foreground = 0x00000061,
 
         // === TitleBar === ///
-        TitleBar_Background        = 0x00000070,
-        TitleBar_Foreground        = 0x00000071,
-        TitleBar_Border            = 0x00000072,
+        TitleBar_Background = 0x00000070,
+        TitleBar_Foreground = 0x00000071,
+        TitleBar_Border = 0x00000072,
 
         /// --- 提供给KiranStyle直接使用的相关属性 --- ///
-        Frame_Background           = 0x00001000,
-        Frame_Border                           ,
+        Frame_Background = 0x00001000,
+        Frame_Border,
 
-        Button_Background                      ,
-        Button_Border                          ,
+        Button_Background,
+        Button_Border,
 
-        SpecialButton_DefaultBackground        ,
-        SpecialButton_WarnningBackground       ,
+        SpecialButton_DefaultBackground,
+        SpecialButton_WarnningBackground,
 
-        Edit_Background                        ,
-        Edit_Border                            ,
+        Edit_Background,
+        Edit_Border,
 
-        Indicator_Arrow                        ,
+        Indicator_Arrow,
 
-        Combo_Background                       ,
-        Combo_Border                           ,
+        Combo_Background,
+        Combo_Border,
 
-        ItemView_Branch                        ,
+        ItemView_Branch,
 
-        MenuBar_ItemBackground                 ,
-        MenuBar_EmptyAreaBackground            ,
+        MenuBar_ItemBackground,
+        MenuBar_EmptyAreaBackground,
 
-        Progress_Groove                        ,
-        Progress_Content                       ,
+        Progress_Groove,
+        Progress_Content,
 
-        Scroll_Slider                          ,
+        Scroll_Slider,
 
-        Slider_Groove                          ,
-        Slider_Content                         ,
-        Slider_HandleBorder                    ,
-        Slider_HandleBackground                ,
+        Slider_Groove,
+        Slider_Content,
+        Slider_HandleBorder,
+        Slider_HandleBackground,
 
-        SpinBox_Background                     ,
-        SpinBox_Border                         ,
-        SpinBox_SignColor                      ,
+        SpinBox_Background,
+        SpinBox_Border,
+        SpinBox_SignColor,
 
-        //TODO:定义kiranstyle私有的属性枚举
+        Bulk_Background,
     };
     //clang-format on
     Q_ENUM(SchemePropertyName)
