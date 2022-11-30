@@ -335,6 +335,7 @@ void KiranTheme::handleThemeChanged()
 {
     // NOTE: SchemeLoader会接收KiranAppearanceMonitor的GTK主题改变信号，重新加载配色方案
     // 此处只需等到下一个事件循环，通知QGuiApplication重新更新palette
+    
     // clang-format off
     QTimer::singleShot(0, [this] {
         // 此事件会促使QGuiApplication重新从QPlatformTheme中获取系统级别的QPalette
@@ -356,7 +357,14 @@ void KiranTheme::handleThemeChanged()
         ///FIXME:
         ///1.后续看是否有更好的方式能应用更新系统级别QPalette
         ///2.加入判断是否外部自定义设置Application palette，若外部自定义设置了，则应不做处理
+
+        QPalette* oldPalette = nullptr;
+        oldPalette = QGuiApplicationPrivate::app_pal;
+
         QGuiApplicationPrivate::app_pal = new QPalette(*palette(SystemPalette));
+
+        if( oldPalette )
+            delete oldPalette;
 
         // 该接口原本用于windows通知窗口主题变化时使用,现用来通知调用QGuiApplicationPrivate::notifyThemeChanged
         QGuiApplicationPrivate::processThemeChanged(&event);
