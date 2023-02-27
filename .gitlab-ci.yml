@@ -1,0 +1,13 @@
+variables:
+  EXTRA_DNF_REPOS: |
+                   [KiranBase2.4]
+                   name=KiranBase2.4
+                   gpgcheck=0
+                   baseurl=http://192.168.120.71/kojifiles/repos/KY3.5-1-Kiran-base-2.4-build/latest/x86_64/
+
+  RPM_BUILD_REQUIRES: 'gcc-c++ cmake pkgconf sassc python3 python3-cairo qt5-qtbase-devel qt5-qtbase-private-devel qt5-qtbase-static qt5-qtsvg-devel qt5-linguist gsettings-qt-devel kiran-qdbusxml2cpp kiran-log-qt5-devel kiran-cc-daemon-devel'
+
+include:
+  - project: 'os/gitlab-ci'
+    ref: main
+    file: '/cmake/cxx.gitlab-ci.yml'
