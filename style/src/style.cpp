@@ -664,6 +664,9 @@ QPixmap Style::standardPixmap(QStyle::StandardPixmap standardPixmap, const QStyl
 {
     switch (standardPixmap)
     {
+    case SP_ArrowUp:
+    case SP_ArrowDown:
+    case SP_ArrowLeft:
     case SP_ArrowRight:
     {
         QPalette palette = widget ? widget->palette() : qApp->palette();
@@ -671,7 +674,7 @@ QPixmap Style::standardPixmap(QStyle::StandardPixmap standardPixmap, const QStyl
         QPixmap arrowPixmap(16, 16);
         arrowPixmap.fill(Qt::transparent);
         QPainter painter(&arrowPixmap);
-        RenderHelper::renderArrow(&painter, arrowPixmap.rect(), Arrow_Right, palette.color(colorRole));
+        RenderHelper::renderArrow(&painter, arrowPixmap.rect(), (Kiran::ArrowOrientation)((int)standardPixmap-SP_ArrowUp), palette.color(colorRole));
         return arrowPixmap;
     }
     default:
