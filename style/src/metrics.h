@@ -130,7 +130,7 @@ struct Metrics
     static constexpr int Header_ArrowSize = 10;
 
     // tree view
-    static constexpr int ItemView_ArrowSize = 12;
+    static constexpr int ItemView_ArrowSize = 10;
     static constexpr int ItemView_ItemMarginWidth = 3;
     static constexpr int SidePanel_ItemMarginWidth = 4;
 

@@ -26,7 +26,11 @@ public:
     void init()
     {
         connect(qGuiApp, &QGuiApplication::fontChanged, this, &FontSizeManagerPrivate::handleGuiAppFontChanged);
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
         connect(&m_destorySignalMapper, &QSignalMapper::mappedWidget, this, &FontSizeManagerPrivate::handleBindWidgetDestroyed);
+#else
+        connect(&m_destorySignalMapper, QOverload<QWidget *>::of(&QSignalMapper::mapped), this, &FontSizeManagerPrivate::handleBindWidgetDestroyed);
+#endif
     }
 
     void updateWidgetFont()

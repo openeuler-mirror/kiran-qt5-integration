@@ -318,7 +318,7 @@ QPixmap RenderHelper::changeSVGFillColor(const QString &svgFile, const QColor &f
 
 void RenderHelper::renderArrow(QPainter *painter, const QRect &rect, ArrowOrientation orientation, const QColor &color, const QSize &arrowSize)
 {
-    QString svgFile = QString(":/style-helper/images/arrow.svg");
+    QString svgFile = QString(":/style-helper/images/arrow-down.svg");
     PainterSaver painterSave(painter);
     painter->setRenderHint(QPainter::Antialiasing);
 
