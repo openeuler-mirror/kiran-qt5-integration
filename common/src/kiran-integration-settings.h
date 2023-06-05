@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QStringList>
+#include <QSet>
 
 class KiranIntegrationSettings
 {
@@ -8,12 +9,23 @@ public:
     static KiranIntegrationSettings* instance();
     ~KiranIntegrationSettings();
     
-    QStringList getDisableKiranStyleApps();
+    QSet<QString> getKiranStyleApps();
+    static bool appKiranStyleAvailable(const QString& app);
 
 private:
     KiranIntegrationSettings();
     void init();
     
 private:
-    QStringList m_disableKiranStyleApps = {"lightdm-kiran-greeter","kiran-screensaver"};
+    QSet<QString> m_kiranStyleApps = {
+        "kiran-control-panel",
+        "kiran-cpanel-*",
+        "kiran-polkit-agent",
+        "kiran-avatar-editor",
+        "kiran-calculator",
+        "kiran-power-status-icon",
+        "kiran-network-status-icon",
+        "kiran-audio-status-icon",
+        "kiran-flameshot"
+    };
 };

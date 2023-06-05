@@ -100,8 +100,8 @@ const QPalette* KiranTheme::palette(QPlatformTheme::Palette type) const
         return QGenericUnixTheme::palette(type);
     }
 
-    QStringList blackapps = KiranIntegrationSettings::instance()->getDisableKiranStyleApps();
-    if( blackapps.contains(qAppName()) )
+    bool enable = KiranIntegrationSettings::appKiranStyleAvailable(qAppName());
+    if( !enable )
     {
         return QGenericUnixTheme::palette(type);
     }
