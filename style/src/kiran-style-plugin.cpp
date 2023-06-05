@@ -28,11 +28,11 @@ QStyle *KiranStylePlugin::create(const QString & key)
 {
     if( key.compare("kiran",Qt::CaseInsensitive) == 0 )
     {
-        QStringList disableApps = KiranIntegrationSettings::instance()->getDisableKiranStyleApps();
-        QString processName = qAppName();
-        if( disableApps.contains(processName) )
+        auto processName = qAppName();
+        bool enable = KiranIntegrationSettings::appKiranStyleAvailable(processName);
+        if( !enable )
         {
-            qDebug("%s in black list,create fusion style for it.",processName.toStdString().c_str());
+            qDebug("%s not enable kiran style,create fusion style for it.",processName.toStdString().c_str());
             return QStyleFactory::create("fusion");
         }
         else
