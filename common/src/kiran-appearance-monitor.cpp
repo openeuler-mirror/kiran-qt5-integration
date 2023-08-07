@@ -118,6 +118,10 @@ KiranAppearanceMonitor::KiranAppearanceMonitor(QObject *parent)
 
     connect(m_displayIface, &KiranDisplayProxy::window_scaling_factorChanged,
             this, &KiranAppearanceMonitor::handleWindowScaleFactorChanged);
+    m_polishCursorTimer.setInterval(500);
+    m_polishCursorTimer.setSingleShot(true);
+
+    connect(&m_polishCursorTimer,&QTimer::timeout,this,&KiranAppearanceMonitor::handleCursorThemeChanged);
 }
 
 KiranAppearanceMonitor *KiranAppearanceMonitor::instance()
@@ -257,6 +261,17 @@ void KiranAppearanceMonitor::handleThemeSettingChanged(int type, const QString &
             emit gtkThemeChanged(m_gtkThemeName);
         }
     }
+    else if(type==APPEARANCE_THEME_TYPE_CURSOR)
+    {
+        // 延迟通知,让QXcbCursor更新主题
+        // 若未变化光标,qt5.15之前都需要合入修复补丁
+        m_polishCursorTimer.start();
+    }
+}
+
+void KiranAppearanceMonitor::handleCursorThemeChanged()
+{
+    emit cursorThemeChanged();
 }
 
 QString KiranAppearanceMonitor::gtkTheme() const
