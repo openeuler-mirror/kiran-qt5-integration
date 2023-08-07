@@ -50,6 +50,7 @@ private slots:
     void handleScaleFactorChanged(int factor);
     void handleScreenAdded(QScreen* screen);
     void handleThemeChanged();
+    void handleCursorThemeChanged();
 
 private:
     KiranAppearanceMonitor* m_settingsMonitor;

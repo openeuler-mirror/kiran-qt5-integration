@@ -132,6 +132,7 @@ void KiranTheme::init()
     QObject::connect(m_settingsMonitor, &KiranAppearanceMonitor::titleBarFontChanged, this, &KiranTheme::handleTitleBarFontChanged);
     QObject::connect(m_settingsMonitor, &KiranAppearanceMonitor::iconThemeChanged, this, &KiranTheme::handleIconThemeChanged);
     QObject::connect(m_settingsMonitor, &KiranAppearanceMonitor::scaleFactorChanged, this, &KiranTheme::handleScaleFactorChanged);
+    QObject::connect(m_settingsMonitor, &KiranAppearanceMonitor::cursorThemeChanged, this, &KiranTheme::handleCursorThemeChanged);
 
     // 不从KiranAppearanceMonitor接受主题变更事件，修改为接受KiranPalette的主题变更信号，能监听到系统主题变更以及应用程序手动指定主题
     //QObject::connect(m_settingsMonitor, &KiranAppearanceMonitor::gtkThemeChanged, this, &KiranTheme::handleThemeChanged);
@@ -291,6 +292,13 @@ void KiranTheme::handleScaleFactorChanged(int factor)
     }
 }
 
+void KiranTheme::handleCursorThemeChanged()
+{
+    // 强制让窗口更新光标
+    QApplication::setOverrideCursor(QCursor());
+    QApplication::restoreOverrideCursor();
+}
+
 bool KiranTheme::enableRealTimeScaling()
 {
     static bool enable = !qEnvironmentVariableIsSet("QT_DEVICE_PIXEL_RATIO") &&
@@ -335,7 +343,7 @@ void KiranTheme::handleThemeChanged()
 {
     // NOTE: SchemeLoader会接收KiranAppearanceMonitor的GTK主题改变信号，重新加载配色方案
     // 此处只需等到下一个事件循环，通知QGuiApplication重新更新palette
-    
+
     // clang-format off
     QTimer::singleShot(0, [this] {
         // 此事件会促使QGuiApplication重新从QPlatformTheme中获取系统级别的QPalette
