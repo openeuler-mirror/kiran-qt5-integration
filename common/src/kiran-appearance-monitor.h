@@ -15,6 +15,7 @@
 
 #include <QObject>
 #include <QFont>
+#include <QTimer>
 
 class KiranDisplayProxy;
 class KiranAppearanceProxy;
@@ -39,6 +40,7 @@ signals:
     void scaleFactorChanged(int factor);
     void iconThemeChanged(QString iconTheme);
     void gtkThemeChanged(QString gtkTheme);
+    void cursorThemeChanged();
 
 private:
     static bool parseFontValue(const QString& font,QString& fontName,int& fontSize);
@@ -47,6 +49,7 @@ private slots:
     void handleFontSettingChanged(int type,const QString& fontValue);
     void handleWindowScaleFactorChanged(int scaleFactor);
     void handleThemeSettingChanged(int type,const QString& themeName);
+    void handleCursorThemeChanged();
 
 private:
     QString m_appFontName = "Noto Sans CJK";
@@ -59,6 +62,8 @@ private:
 
     QString m_iconTheme = "hicolor";
     QString m_gtkThemeName = "kiran";
+
+    QTimer m_polishCursorTimer;
     KiranDisplayProxy* m_displayIface;
     KiranAppearanceProxy* m_appearanceIface;
 };
