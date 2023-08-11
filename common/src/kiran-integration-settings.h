@@ -26,7 +26,6 @@ private:
         "kiran-power-status-icon",
         "kiran-network-status-icon",
         "kiran-audio-status-icon",
-        "kiran-flameshot",
-        "ksl-os-gui"
+        "kiran-flameshot"
     };
 };
