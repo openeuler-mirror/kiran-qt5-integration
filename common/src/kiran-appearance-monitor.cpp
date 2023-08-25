@@ -186,22 +186,33 @@ bool KiranAppearanceMonitor::parseFontValue(const QString &font, QString &fontNa
     int fontSizeIdx = font.lastIndexOf(' ');
     if (fontSizeIdx <= 0)
     {
+        qDebug(kiranPlatformThemeCommon) << "Invalid font value format:" << font;
         return false;
     }
 
-    bool toIntOk = false;
-    fontName = font.left(fontSizeIdx);
-    fontSize = font.mid(fontSizeIdx + 1).toInt(&toIntOk);
+    // Extract font size substring
+    QString fontSizeStr = font.mid(fontSizeIdx + 1);
 
-    if (!toIntOk)
+    bool toIntOk = false;
+    fontSize = fontSizeStr.toInt(&toIntOk);
+    if (!toIntOk || fontSize <= 0)
     {
+        qDebug(kiranPlatformThemeCommon) << "Invalid font size:" << fontSizeStr;
+        return false;
+    }
+
+    // Extract font name substring
+    fontName = font.left(fontSizeIdx);
+    if (fontName.isEmpty())
+    {
+        qDebug(kiranPlatformThemeCommon) << "Invalid font name:" << fontName;
         return false;
     }
 
     QFontDatabase fontDatabase;
-    if( !fontDatabase.hasFamily(fontName) )
+    if (!fontDatabase.hasFamily(fontName))
     {
-        qDebug(kiranPlatformThemeCommon) << "font data base don't has this font:" << fontName;
+        qDebug(kiranPlatformThemeCommon) << "Font not available in database:" << fontName;
         return false;
     }
 
