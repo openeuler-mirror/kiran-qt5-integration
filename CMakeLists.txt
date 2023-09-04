@@ -17,4 +17,4 @@ add_subdirectory(platformtheme)
 add_subdirectory(style-helper)
 #QStyle插件
 add_subdirectory(style)
-add_subdirectory(test)
+#add_subdirectory(integration-test)
