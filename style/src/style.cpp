@@ -93,12 +93,15 @@ int Style::styleHint(QStyle::StyleHint hint, const QStyleOption *option, const Q
     // 弹出菜单是否支持用户在跨越菜单的其他项时将鼠标光标移动到子菜单
     case SH_Menu_SloppySubMenus:
         return true;
+#if (QT_VERSION < QT_VERSION_CHECK(5, 10, 0))
     // 该值目前亦废弃，改用SH_Widget_Animation_Duration
     case SH_Widget_Animate:
         return true;
+#else
     // 动画持续时间ms,0代表禁用
     case SH_Widget_Animation_Duration:
         return 100;
+#endif
     // 确定样式是在菜单中显示节，还是将其视为普通分隔符。节是带有文本和图标提示的分隔符
     case SH_Menu_SupportsSections:
         return true;
@@ -327,7 +330,7 @@ void Style::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOption *
 
     // clang-format off
     switch (element)
-    { 
+    {
     case PE_Frame:                   func = &drawPEFrame; break;
     case PE_FrameFocusRect:          func = &drawPEFrameFocusRect; break;
     case PE_FrameGroupBox:           func = &drawPEFrameGroupBox; break;
