@@ -150,22 +150,18 @@ void KiranAppearanceMonitor::handleFontSettingChanged(int type, const QString &f
 {
     QString fontName;
     int fontSize;
+    if (!parseFontValue(fontValue, fontName, fontSize))
+    {
+        return;
+    }
     switch (type)
     {
-    case APPEARANCE_FONT_TYPE_APPLICATION:
-        if (!parseFontValue(fontValue, fontName, fontSize))
-        {
-            return;
-        }
+    case APPEARANCE_FONT_TYPE_APPLICATION: 
         m_appFontSize = fontSize;
         m_appFontName = fontName;
         emit appFontChanged(appFont());
         break;
     case APPEARANCE_FONT_TYPE_WINDOW_TITLE:
-        if (!parseFontValue(fontValue, fontName, fontSize))
-        {
-            return;
-        }
         m_titleBarFontSize = fontSize;
         m_titleBarFontName = fontName;
         emit titleBarFontChanged(titleBarFont());
