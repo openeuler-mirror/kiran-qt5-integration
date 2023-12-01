@@ -14,8 +14,8 @@
 
 #include "kiran-theme.h"
 #include "kiran-appearance-monitor.h"
-#include "logging-category.h"
 #include "kiran-integration-settings.h"
+#include "logging-category.h"
 
 #include <private/qguiapplication_p.h>
 #include <private/qiconloader_p.h>
@@ -27,6 +27,8 @@
 #undef private
 
 #include <QApplication>
+#include <QGuiApplication>
+
 #include <QIcon>
 #include <QLabel>
 #include <QPixmap>
@@ -37,6 +39,10 @@
 #include "style-palette.h"
 
 using namespace Kiran;
+
+// NOTE: QPlatformTheme插件是QGuiApplication中init_platform将会进行加载的
+//  1. 关于Application的调用，QPlatformTheme中只能使用QGuiApplication。
+//  2. 若一定需要使用QApplication的相关方法，得先判断Qt应用代码中是否使用的是QApplication
 
 KiranTheme::KiranTheme(const QStringList& paramList)
     : QGenericUnixTheme()
@@ -86,7 +92,7 @@ QVariant KiranTheme::themeHint(QPlatformTheme::ThemeHint hint) const
                              << "/usr/share/icons"
                              << "/usr/local/share/icons";
     case StyleNames:
-        return QStringList{"kiran","fusion"};
+        return QStringList{"kiran", "fusion"};
     default:
         break;
     }
@@ -101,7 +107,7 @@ const QPalette* KiranTheme::palette(QPlatformTheme::Palette type) const
     }
 
     bool enable = KiranIntegrationSettings::appKiranStyleAvailable(qAppName());
-    if( !enable )
+    if (!enable)
     {
         return QGenericUnixTheme::palette(type);
     }
@@ -119,9 +125,9 @@ void KiranTheme::init()
     m_scaleFactor = m_settingsMonitor->scaleFactor();
     qDebug(kiranPlatformTheme) << "\tscale factor:" << m_scaleFactor;
 
-    m_systemFont.setFamily(m_settingsMonitor->appFont().family());
-    m_systemFont.setPointSize(m_settingsMonitor->appFont().pointSize());
-    QApplication::setFont(m_systemFont);
+    updateAppFont(m_settingsMonitor->appFont().family(),
+                  m_settingsMonitor->appFont().pointSize());
+
     qDebug(kiranPlatformTheme) << "\tapplication font:" << m_settingsMonitor->appFont().family() << m_settingsMonitor->appFont().pointSize();
 
     m_titleBarFont.setFamily(m_settingsMonitor->titleBarFont().family());
@@ -135,12 +141,29 @@ void KiranTheme::init()
     QObject::connect(m_settingsMonitor, &KiranAppearanceMonitor::cursorThemeChanged, this, &KiranTheme::handleCursorThemeChanged);
 
     // 不从KiranAppearanceMonitor接受主题变更事件，修改为接受KiranPalette的主题变更信号，能监听到系统主题变更以及应用程序手动指定主题
-    //QObject::connect(m_settingsMonitor, &KiranAppearanceMonitor::gtkThemeChanged, this, &KiranTheme::handleThemeChanged);
-    QObject::connect(StylePalette::instance(),&StylePalette::themeChanged,this,&KiranTheme::handleThemeChanged);
+    // QObject::connect(m_settingsMonitor, &KiranAppearanceMonitor::gtkThemeChanged, this, &KiranTheme::handleThemeChanged);
+    QObject::connect(StylePalette::instance(), &StylePalette::themeChanged, this, &KiranTheme::handleThemeChanged);
 
-    QObject::connect(qApp, &QApplication::screenAdded, this, &KiranTheme::handleScreenAdded);
+    QObject::connect(qApp, &QGuiApplication::screenAdded, this, &KiranTheme::handleScreenAdded);
 
     handleScaleFactorChanged(m_scaleFactor);
+}
+
+void KiranTheme::updateAppFont(const QString& fontFamily, int pointSize)
+{
+    m_systemFont.setFamily(fontFamily);
+    m_systemFont.setPointSize(pointSize);
+
+    auto coreApp = QGuiApplication::instance();
+    if (!qobject_cast<QApplication*>(coreApp))
+    {
+        // FIXME: 使用QGuiApplication更新字体不全
+        QGuiApplication::setFont(m_systemFont);
+    }
+    else
+    {
+        QApplication::setFont(m_systemFont);
+    }
 }
 
 const QFont* KiranTheme::font(QPlatformTheme::Font type) const
@@ -177,9 +200,8 @@ void KiranTheme::handleAppFontChanged()
                                << m_settingsMonitor->appFont().family()
                                << m_settingsMonitor->appFont().pointSize();
 
-    m_systemFont.setFamily(m_settingsMonitor->appFont().family());
-    m_systemFont.setPointSize(m_settingsMonitor->appFont().pointSize());
-    QApplication::setFont(m_systemFont);
+    updateAppFont(m_settingsMonitor->appFont().family(),
+                  m_settingsMonitor->appFont().pointSize());
 }
 
 void KiranTheme::handleTitleBarFontChanged()
@@ -295,8 +317,8 @@ void KiranTheme::handleScaleFactorChanged(int factor)
 void KiranTheme::handleCursorThemeChanged()
 {
     // 强制让窗口更新光标
-    QApplication::setOverrideCursor(QCursor());
-    QApplication::restoreOverrideCursor();
+    QGuiApplication::setOverrideCursor(QCursor());
+    QGuiApplication::restoreOverrideCursor();
 }
 
 bool KiranTheme::enableRealTimeScaling()
