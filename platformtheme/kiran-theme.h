@@ -41,6 +41,7 @@ public:
 
 private:
     void init();
+    void updateAppFont(const QString& fontFamily,int pointSize);
     static bool enableRealTimeScaling();
 
 private slots:
