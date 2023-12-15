@@ -26,6 +26,7 @@ private:
         "kiran-power-status-icon",
         "kiran-network-status-icon",
         "kiran-audio-status-icon",
-        "kiran-flameshot"
+        "kiran-flameshot",
+        "kiran-manual"
     };
 };
