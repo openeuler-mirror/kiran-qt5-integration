@@ -25,7 +25,13 @@ public:
 
     void init()
     {
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 11, 0))
         connect(qGuiApp, &QGuiApplication::fontChanged, this, &FontSizeManagerPrivate::handleGuiAppFontChanged);
+#else
+        connect(qGuiApp, &QGuiApplication::fontDatabaseChanged, [this](){
+            this->handleGuiAppFontChanged(qGuiApp->font());
+        });
+#endif
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
         connect(&m_destorySignalMapper, &QSignalMapper::mappedWidget, this, &FontSizeManagerPrivate::handleBindWidgetDestroyed);
 #else
