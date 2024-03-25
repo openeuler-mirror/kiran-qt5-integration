@@ -35,6 +35,7 @@
 #include <QSvgGenerator>
 #include <QTextEdit>
 #include <QToolButton>
+#include <QStyleFactory>
 
 // TODO: 后期考虑再度整合到几个大类的源文件之中
 #include "draw-helper/draw-button-helper.h"
@@ -66,7 +67,7 @@ using namespace Kiran;
 
 // FIXME:由于kiran-widgets-qt5之前包含的Kiran::Style重名导致现在暂时不能加入Kiran命名控件，否则将引起崩溃
 Style::Style()
-    : ParentStyle()
+    : QProxyStyle(QStyleFactory::create("fusion"))
 {
 }
 
@@ -160,7 +161,7 @@ int Style::styleHint(QStyle::StyleHint hint, const QStyleOption *option, const Q
     case SH_Table_GridLineColor:
         return StylePalette::instance()->color(StylePalette::Normal, StylePalette::Widget, StylePalette::Border).rgb();
     default:
-        return ParentStyle::styleHint(hint, option, widget, returnData);
+        return QProxyStyle::styleHint(hint, option, widget, returnData);
     }
 }
 
@@ -320,7 +321,7 @@ int Style::pixelMetric(QStyle::PixelMetric metric, const QStyleOption *option, c
     default:  // fallback
         break;
     }
-    return ParentStyle::pixelMetric(metric, option, widget);
+    return QProxyStyle::pixelMetric(metric, option, widget);
 }
 
 void Style::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
@@ -382,7 +383,7 @@ void Style::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOption *
     PainterSaver painterSaver(painter);
     if (!(func && (*func)(this, option, painter, widget)))
     {
-        ParentStyle::drawPrimitive(element, option, painter, widget);
+        QProxyStyle::drawPrimitive(element, option, painter, widget);
     }
 }
 
@@ -410,7 +411,7 @@ void Style::drawComplexControl(QStyle::ComplexControl control,
     painter->save();
     if (!(func && (*func)(this, option, painter, widget)))
     {
-        ParentStyle::drawComplexControl(control, option, painter, widget);
+        QProxyStyle::drawComplexControl(control, option, painter, widget);
     }
     painter->restore();
 }
@@ -445,7 +446,7 @@ QRect Style::subElementRect(QStyle::SubElement element, const QStyleOption *opti
         break;
     }
 
-    return ParentStyle::subElementRect(element, option, widget);
+    return QProxyStyle::subElementRect(element, option, widget);
 }
 
 QRect Style::subControlRect(QStyle::ComplexControl cc, const QStyleOptionComplex *opt, QStyle::SubControl sc, const QWidget *widget) const
@@ -467,7 +468,7 @@ QRect Style::subControlRect(QStyle::ComplexControl cc, const QStyleOptionComplex
     }
     else
     {
-        return ParentStyle::subControlRect(cc, opt, sc, widget);
+        return QProxyStyle::subControlRect(cc, opt, sc, widget);
     }
 }
 
@@ -526,7 +527,7 @@ QSize Style::sizeFromContents(QStyle::ContentsType type, const QStyleOption *opt
     default:
         break;
     }
-    return ParentStyle::sizeFromContents(type, option, contentSize, widget);
+    return QProxyStyle::sizeFromContents(type, option, contentSize, widget);
 }
 
 void Style::drawControl(QStyle::ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
@@ -571,7 +572,7 @@ void Style::drawControl(QStyle::ControlElement element, const QStyleOption *opti
     {
         if (emptyControlSet.find(element) == emptyControlSet.end())
         {
-            ParentStyle::drawControl(element, option, painter, widget);
+            QProxyStyle::drawControl(element, option, painter, widget);
         }
     }
     painter->restore();
@@ -645,12 +646,12 @@ void Style::polish(QWidget *widget)
         itemView->viewport()->setAttribute(Qt::WA_Hover);
     }
 
-    ParentStyle::polish(widget);
+    QProxyStyle::polish(widget);
 }
 
 void Style::polish(QApplication *app)
 {
-    ParentStyle::polish(app);
+    QProxyStyle::polish(app);
 
     QPalette palette;
     StylePalette::instance()->polishPalette(&palette);
@@ -659,7 +660,7 @@ void Style::polish(QApplication *app)
 
 void Style::polish(QPalette &palette)
 {
-    //    ParentStyle::polish(palette);
+    //    QProxyStyle::polish(palette);
     StylePalette::instance()->polishPalette(&palette);
 }
 
@@ -683,7 +684,7 @@ QPixmap Style::standardPixmap(QStyle::StandardPixmap standardPixmap, const QStyl
     default:
         break;
     }
-    return ParentStyle::standardPixmap(standardPixmap, opt, widget);
+    return QProxyStyle::standardPixmap(standardPixmap, opt, widget);
 }
 
 QIcon Style::standardIcon(QStyle::StandardPixmap standardIcon, const QStyleOption *option, const QWidget *widget) const
@@ -719,5 +720,5 @@ QIcon Style::standardIcon(QStyle::StandardPixmap standardIcon, const QStyleOptio
     default:
         break;
     }
-    return ParentStyle::standardIcon(standardIcon, option, widget);
+    return QProxyStyle::standardIcon(standardIcon, option, widget);
 }
