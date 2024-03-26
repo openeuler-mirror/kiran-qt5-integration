@@ -16,19 +16,12 @@
 #define KIRAN_QT5_PLATFORMTHEME_STYLE_KIRAN_STYLE_H_
 
 #include <QAbstractItemDelegate>
+#include <QProxyStyle>
 
 #include "draw-helper/draw-common-helper.h"
 
-#if 1
-#include <private/qfusionstyle_p.h>
-#define ParentStyle QFusionStyle
-#else
-#include <QCommonStyle>
-#define ParentStyle QCommonStyle
-#endif
-
 class QAbstractScrollArea;
-class Style : public ParentStyle
+class Style : public QProxyStyle
 {
 public:
     explicit Style();
