@@ -299,7 +299,7 @@ bool sliderSubControlRect(const QStyle *style, const QStyleOptionComplex *opt, Q
 
         // get base class rect
         // NOTE:该处直接调用父类的方法
-        QRect grooveRect = qobject_cast<const ParentStyle *>(style)->ParentStyle::subControlRect(QStyle::CC_Slider, opt, sc, widget);
+        QRect grooveRect = qobject_cast<const QProxyStyle *>(style)->QProxyStyle::subControlRect(QStyle::CC_Slider, opt, sc, widget);
         grooveRect = RenderHelper::insideMargin(grooveRect, style->pixelMetric(QStyle::PM_DefaultFrameWidth, opt, widget));
 
         // centering
