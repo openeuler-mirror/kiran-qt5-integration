@@ -16,6 +16,7 @@ find_path(Qt5ThemeSupport_INCLUDE_DIR
 #　拼出Qt5ThemeSupport静态库位置
 find_library(Qt5ThemeSupport_LIBRARY
         NAMES
+        Qt5ThemeSupportKS
         Qt5ThemeSupport
         HINTS
         ${PKG_Qt5ThemeSupport_LIBRARY_DIRS}
