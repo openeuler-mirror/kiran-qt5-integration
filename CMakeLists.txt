@@ -9,6 +9,11 @@ list(APPEND ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake/modules/)
 include(GNUInstallDirs)
 include(Qt5PluginInstallDirs)
 
+find_package(Qt5 COMPONENTS Core Gui Widgets Svg DBus)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTORCC ON)
+
 #共用代码,生成静态库
 add_subdirectory(common)
 #QPlatformTheme插件
