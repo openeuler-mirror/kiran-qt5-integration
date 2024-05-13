@@ -27,21 +27,19 @@ add_custom_command(
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
+# 生成资源文件
 set(KIRANSTYLE_HELPER_QRC ${CMAKE_CURRENT_BINARY_DIR}/kiranstyle-helper.qrc)
 configure_file(kiranstyle-helper.qrc.in ${KIRANSTYLE_HELPER_QRC})
+# 手动添加resources，避免低版本Qt上AUTORCC未扫描到资源文件并关联上依赖关系
+qt5_add_resources(KIRANSTYLE_HELPER_QRC_SOURCE ${KIRANSTYLE_HELPER_QRC})
 
-message("${CMAKE_CURRENT_SOURCE_DIR}")
-find_package(Qt5 COMPONENTS Core Gui Widgets)
 file(GLOB_RECURSE SRC "src/*.cpp" "src/*.h" "src/*.ui")
 file(GLOB_RECURSE INCLUDE "include/*.h")
-
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_AUTORCC ON)
 
 add_library(${TARGET_NAME} SHARED
         ${SRC}
         ${KIRANSTYLE_HELPER_QRC}
+        ${KIRANSTYLE_HELPER_QRC_SOURCE}
         ${INCLUDE}
         ${KIRAN_DARK_COLORS}
         ${KIRAN_LIGHT_COLORS})
