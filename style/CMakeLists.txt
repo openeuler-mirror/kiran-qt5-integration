@@ -1,11 +1,6 @@
 set(TARGET_NAME "kiranstyle")
 
-find_package(Qt5 COMPONENTS Widgets Svg DBus)
 file(GLOB_RECURSE SRC "src/*.cpp" "src/*.h" "src/*.ui")
-
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_AUTORCC ON)
 
 add_library( ${TARGET_NAME} SHARED
         ${SRC} )
