@@ -1,0 +1,9 @@
+LibDir=@CMAKE_INSTALL_FULL_LIBDIR@
+IncludeDir=@KQI_INSTALL_INCLUDEDIR@/theme
+
+Name: kiran integration theme library
+Description: kiran integration theme library
+Version: @PROJECT_VERSION@
+Requires:   Qt5Core Qt5Gui Qt5Widgets
+Libs: -L${LibDir}  -lkiran-integration-theme
+Cflags: -I${IncludeDir}
