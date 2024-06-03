@@ -54,6 +54,7 @@ private:
         "kiran-network-status-icon",
         "kiran-audio-status-icon",
         "kiran-flameshot",
+        "kiran-manual"
     };
 //    "kiran-integration-example"
 
