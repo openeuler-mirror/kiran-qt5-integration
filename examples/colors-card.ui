@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ColorsCard</class>
+ <widget class="QDialog" name="ColorsCard">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>ColorsCard</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <layout class="QVBoxLayout" name="m_baseColors"/>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="m_infoSpace1"/>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="m_infoSpace2"/>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
