@@ -19,109 +19,66 @@
 
 #include <kiran-session-daemon/appearance-i.h>
 
+#include <QDBusServiceWatcher>
 #include <QFont>
 #include <QFontDatabase>
 
+#define APPEARANCE_DBUS_NAME "com.kylinsec.Kiran.SessionDaemon.Appearance"
+#define APPEARANCE_DBUS_OBJECT_PATH "/com/kylinsec/Kiran/SessionDaemon/Appearance"
+
+#define DISPLAY_DBUS_NAME "com.kylinsec.Kiran.SessionDaemon.Display"
+#define DISPLAY_DBUS_OBJECT_PATH "/com/kylinsec/Kiran/SessionDaemon/Display"
+
 KiranAppearanceMonitor::KiranAppearanceMonitor(QObject *parent)
-    : QObject(parent)
+    : QObject(parent),
+      m_appearanceServiceWatcher(nullptr),
+      m_displayServiceWatcher(nullptr)
 {
-    m_appearanceIface = new KiranAppearanceProxy("com.kylinsec.Kiran.SessionDaemon.Appearance",
-                                                 "/com/kylinsec/Kiran/SessionDaemon/Appearance",
+    m_polishCursorTimer.setInterval(500);
+    m_polishCursorTimer.setSingleShot(true);
+    connect(&m_polishCursorTimer, &QTimer::timeout, this, &KiranAppearanceMonitor::handleCursorThemeChanged);
+
+    m_appearanceIface = new KiranAppearanceProxy(APPEARANCE_DBUS_NAME,
+                                                 APPEARANCE_DBUS_OBJECT_PATH,
                                                  QDBusConnection::sessionBus(),
                                                  this);
 
-    if (QDBusConnection::sessionBus().interface()->isServiceRegistered("com.kylinsec.Kiran.SessionDaemon.Appearance"))
+    if (QDBusConnection::sessionBus().interface()->isServiceRegistered(APPEARANCE_DBUS_NAME))
     {
-        //application font
-        QString tempFontName;
-        int tempFontSize;
-        QString fontValue = m_appearanceIface->GetFont(APPEARANCE_FONT_TYPE_APPLICATION);
-        if (parseFontValue(fontValue, tempFontName, tempFontSize))
-        {
-            m_appFontName = tempFontName;
-            m_appFontSize = tempFontSize;
-            qDebug(kiranPlatformThemeCommon,"application font: %s %d",m_appFontName.toStdString().c_str(),m_appFontSize);
-        }
-        else
-        {
-            qWarning(kiranPlatformThemeCommon) << "appearance monitor: parse application font failed!";
-        }
-
-        //window titlebar font
-        fontValue = m_appearanceIface->GetFont(APPEARANCE_FONT_TYPE_WINDOW_TITLE);
-        if(parseFontValue(fontValue,tempFontName,tempFontSize))
-        {
-            m_titleBarFontName = tempFontName;
-            m_titleBarFontSize = tempFontSize;
-            qDebug(kiranPlatformThemeCommon,"title bar font: %s %d",m_titleBarFontName.toStdString().c_str(),m_titleBarFontSize);
-        }
-        else
-        {
-            qDebug(kiranPlatformThemeCommon) << "parse titlebar font failed!";
-        }
-
-        //icon theme
-        auto themeReply = m_appearanceIface->GetTheme(APPEARANCE_THEME_TYPE_ICON);
-        themeReply.waitForFinished();
-        if( !themeReply.isError() )
-        {
-            m_iconTheme = themeReply.value();
-            qDebug(kiranPlatformThemeCommon,"icon theme: %s",m_iconTheme.toStdString().c_str());
-        }
-        else
-        {
-            qDebug(kiranPlatformThemeCommon) << "get  icon theme failed," << themeReply.error();
-        }
-
-        //gtk theme
-        themeReply = m_appearanceIface->GetTheme(APPEARANCE_THEME_TYPE_GTK);
-        themeReply.waitForFinished();
-        if( !themeReply.isError() )
-        {
-            QString gtkThemeName = themeReply.value();
-
-            if( gtkThemeName.contains("dark",Qt::CaseInsensitive) )
-                m_gtkThemeName = "kiran-dark";
-            else
-                m_gtkThemeName = "kiran";
-
-            qDebug(kiranPlatformThemeCommon,"gtk theme: %s",m_gtkThemeName.toStdString().c_str());
-        }
-        else
-        {
-            qDebug(kiranPlatformThemeCommon) << "get gtk theme failed," << themeReply.error();
-        }
+        loadAppearance();
     }
     else
     {
-        qDebug(kiranPlatformThemeCommon) << "kiran session daemon appearance service isn't registered!";
+        m_appearanceServiceWatcher = new QDBusServiceWatcher(APPEARANCE_DBUS_NAME, QDBusConnection::sessionBus(), QDBusServiceWatcher::WatchForRegistration, this);
+        connect(m_appearanceServiceWatcher, &QDBusServiceWatcher::serviceRegistered, this, &KiranAppearanceMonitor::loadAppearance);
+
+        qDebug(kiranPlatformThemeCommon)
+            << "kiran session daemon appearance service isn't registered!";
     }
 
     connect(m_appearanceIface, &KiranAppearanceProxy::FontChanged,
             this, &KiranAppearanceMonitor::handleFontSettingChanged);
-    connect(m_appearanceIface,&KiranAppearanceProxy::ThemeChanged,
-            this,&KiranAppearanceMonitor::handleThemeSettingChanged);
+    connect(m_appearanceIface, &KiranAppearanceProxy::ThemeChanged,
+            this, &KiranAppearanceMonitor::handleThemeSettingChanged);
 
-
-    m_displayIface = new KiranDisplayProxy("com.kylinsec.Kiran.SessionDaemon.Display",
-                                           "/com/kylinsec/Kiran/SessionDaemon/Display",
+    m_displayIface = new KiranDisplayProxy(DISPLAY_DBUS_NAME,
+                                           DISPLAY_DBUS_OBJECT_PATH,
                                            QDBusConnection::sessionBus(),
                                            this);
-    if (QDBusConnection::sessionBus().interface()->isServiceRegistered("com.kylinsec.Kiran.SessionDaemon.Display"))
+    if (QDBusConnection::sessionBus().interface()->isServiceRegistered(DISPLAY_DBUS_NAME))
     {
-        m_scaleFactor = m_displayIface->window_scaling_factor();
+        loadScalingFactor();
     }
     else
     {
+        m_displayServiceWatcher = new QDBusServiceWatcher(DISPLAY_DBUS_NAME, QDBusConnection::sessionBus(), QDBusServiceWatcher::WatchForRegistration, this);
+        connect(m_displayServiceWatcher, &QDBusServiceWatcher::serviceRegistered, this, &KiranAppearanceMonitor::loadScalingFactor);
+
         qDebug(kiranPlatformThemeCommon) << "kiran session daemon display service isn't registered!";
     }
 
     connect(m_displayIface, &KiranDisplayProxy::window_scaling_factorChanged,
             this, &KiranAppearanceMonitor::handleWindowScaleFactorChanged);
-    m_polishCursorTimer.setInterval(500);
-    m_polishCursorTimer.setSingleShot(true);
-
-    connect(&m_polishCursorTimer,&QTimer::timeout,this,&KiranAppearanceMonitor::handleCursorThemeChanged);
 }
 
 KiranAppearanceMonitor *KiranAppearanceMonitor::instance()
@@ -143,7 +100,6 @@ KiranAppearanceMonitor *KiranAppearanceMonitor::instance()
 
 KiranAppearanceMonitor::~KiranAppearanceMonitor()
 {
-
 }
 
 void KiranAppearanceMonitor::handleFontSettingChanged(int type, const QString &fontValue)
@@ -215,6 +171,84 @@ bool KiranAppearanceMonitor::parseFontValue(const QString &font, QString &fontNa
     return true;
 }
 
+void KiranAppearanceMonitor::loadAppearance()
+{
+    // application font
+    QString tempFontName;
+    int tempFontSize;
+    QString fontValue = m_appearanceIface->GetFont(APPEARANCE_FONT_TYPE_APPLICATION);
+    if (parseFontValue(fontValue, tempFontName, tempFontSize))
+    {
+        m_appFontName = tempFontName;
+        m_appFontSize = tempFontSize;
+        qDebug(kiranPlatformThemeCommon, "application font: %s %d", m_appFontName.toStdString().c_str(), m_appFontSize);
+
+        emit appFontChanged(appFont());
+    }
+    else
+    {
+        qWarning(kiranPlatformThemeCommon) << "appearance monitor: parse application font failed!";
+    }
+
+    // window titlebar font
+    fontValue = m_appearanceIface->GetFont(APPEARANCE_FONT_TYPE_WINDOW_TITLE);
+    if (parseFontValue(fontValue, tempFontName, tempFontSize))
+    {
+        m_titleBarFontName = tempFontName;
+        m_titleBarFontSize = tempFontSize;
+        qDebug(kiranPlatformThemeCommon, "title bar font: %s %d", m_titleBarFontName.toStdString().c_str(), m_titleBarFontSize);
+
+        emit titleBarFontChanged(titleBarFont());
+    }
+    else
+    {
+        qDebug(kiranPlatformThemeCommon) << "parse titlebar font failed!";
+    }
+
+    // icon theme
+    auto themeReply = m_appearanceIface->GetTheme(APPEARANCE_THEME_TYPE_ICON);
+    themeReply.waitForFinished();
+    if (!themeReply.isError())
+    {
+        m_iconTheme = themeReply.value();
+        qDebug(kiranPlatformThemeCommon, "icon theme: %s", m_iconTheme.toStdString().c_str());
+
+        emit iconThemeChanged(m_iconTheme);
+    }
+    else
+    {
+        qDebug(kiranPlatformThemeCommon) << "get  icon theme failed," << themeReply.error();
+    }
+
+    // gtk theme
+    themeReply = m_appearanceIface->GetTheme(APPEARANCE_THEME_TYPE_GTK);
+    themeReply.waitForFinished();
+    if (!themeReply.isError())
+    {
+        QString gtkThemeName = themeReply.value();
+
+        if (gtkThemeName.contains("dark", Qt::CaseInsensitive))
+            m_gtkThemeName = "kiran-dark";
+        else
+            m_gtkThemeName = "kiran";
+
+        qDebug(kiranPlatformThemeCommon, "gtk theme: %s", m_gtkThemeName.toStdString().c_str());
+
+        emit gtkThemeChanged(m_gtkThemeName);
+    }
+    else
+    {
+        qDebug(kiranPlatformThemeCommon) << "get gtk theme failed," << themeReply.error();
+    }
+
+    m_polishCursorTimer.start();
+}
+
+void KiranAppearanceMonitor::loadScalingFactor()
+{
+    handleWindowScaleFactorChanged(m_displayIface->window_scaling_factor());
+}
+
 QFont KiranAppearanceMonitor::appFont() const
 {
     QFont font = QFont(QString());
@@ -243,16 +277,16 @@ QString KiranAppearanceMonitor::iconTheme() const
 
 void KiranAppearanceMonitor::handleThemeSettingChanged(int type, const QString &themeName)
 {
-    if(type == APPEARANCE_THEME_TYPE_ICON)
+    if (type == APPEARANCE_THEME_TYPE_ICON)
     {
         m_iconTheme = themeName;
         emit iconThemeChanged(m_iconTheme);
     }
-    else if(type == APPEARANCE_THEME_TYPE_GTK)
+    else if (type == APPEARANCE_THEME_TYPE_GTK)
     {
         QString gtkTheme;
 
-        if( themeName.contains("dark",Qt::CaseInsensitive) )
+        if (themeName.contains("dark", Qt::CaseInsensitive))
         {
             gtkTheme = "kiran-dark";
         }
@@ -261,14 +295,14 @@ void KiranAppearanceMonitor::handleThemeSettingChanged(int type, const QString &
             gtkTheme = "kiran";
         }
 
-        if(gtkTheme!=m_gtkThemeName)
+        if (gtkTheme != m_gtkThemeName)
         {
             qDebug(kiranPlatformThemeCommon) << "gtk theme changed:" << themeName;
             m_gtkThemeName = gtkTheme;
             emit gtkThemeChanged(m_gtkThemeName);
         }
     }
-    else if(type==APPEARANCE_THEME_TYPE_CURSOR)
+    else if (type == APPEARANCE_THEME_TYPE_CURSOR)
     {
         // 延迟通知,让QXcbCursor更新主题
         // 若未变化光标,qt5.15之前都需要合入修复补丁

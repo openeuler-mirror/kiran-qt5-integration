@@ -13,17 +13,19 @@
  */
 #pragma once
 
-#include <QObject>
 #include <QFont>
+#include <QObject>
 #include <QTimer>
 
+class QDBusServiceWatcher;
 class KiranDisplayProxy;
 class KiranAppearanceProxy;
 class KiranAppearanceMonitor : public QObject
 {
     Q_OBJECT
 private:
-    explicit KiranAppearanceMonitor(QObject* parent= nullptr);
+    explicit KiranAppearanceMonitor(QObject* parent = nullptr);
+
 public:
     static KiranAppearanceMonitor* instance();
     ~KiranAppearanceMonitor() override;
@@ -43,12 +45,15 @@ signals:
     void cursorThemeChanged();
 
 private:
-    static bool parseFontValue(const QString& font,QString& fontName,int& fontSize);
+    static bool parseFontValue(const QString& font, QString& fontName, int& fontSize);
+
+    void loadAppearance();
+    void loadScalingFactor();
 
 private slots:
-    void handleFontSettingChanged(int type,const QString& fontValue);
+    void handleFontSettingChanged(int type, const QString& fontValue);
     void handleWindowScaleFactorChanged(int scaleFactor);
-    void handleThemeSettingChanged(int type,const QString& themeName);
+    void handleThemeSettingChanged(int type, const QString& themeName);
     void handleCursorThemeChanged();
 
 private:
@@ -64,6 +69,10 @@ private:
     QString m_gtkThemeName = "kiran";
 
     QTimer m_polishCursorTimer;
+
     KiranDisplayProxy* m_displayIface;
+    QDBusServiceWatcher* m_displayServiceWatcher;
+
     KiranAppearanceProxy* m_appearanceIface;
+    QDBusServiceWatcher* m_appearanceServiceWatcher;
 };
