@@ -32,6 +32,10 @@ set(KIRANSTYLE_HELPER_QRC ${CMAKE_CURRENT_BINARY_DIR}/kiranstyle-helper.qrc)
 configure_file(kiranstyle-helper.qrc.in ${KIRANSTYLE_HELPER_QRC})
 # 手动添加resources，避免低版本Qt上AUTORCC未扫描到资源文件并关联上依赖关系
 qt5_add_resources(KIRANSTYLE_HELPER_QRC_SOURCE ${KIRANSTYLE_HELPER_QRC})
+# qt5-qtbase-5.9.2下qt5_add_resources手动添加rcc,不会给qrc文件标记SKIP_AUTORCC
+if("${Qt5_VERSION_MAJOR}.${Qt5_VERSION_MINOR}.${Qt5_VERSION_PATCH}" STREQUAL "5.9.2")
+        set_source_files_properties(${KIRANSTYLE_HELPER_QRC} PROPERTIES SKIP_AUTORCC ON)
+endif()
 
 file(GLOB_RECURSE SRC "src/*.cpp" "src/*.h" "src/*.ui")
 file(GLOB_RECURSE INCLUDE "include/*.h")
