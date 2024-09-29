@@ -170,6 +170,8 @@ int Style::pixelMetric(QStyle::PixelMetric metric, const QStyleOption *option, c
     switch (metric)
     {
     case PM_DefaultFrameWidth:
+         if (qobject_cast<const QAbstractScrollArea *>(widget))
+            return 2; 
         return 6;
     case PM_SpinBoxFrameWidth:
         return 2;
@@ -182,7 +184,6 @@ int Style::pixelMetric(QStyle::PixelMetric metric, const QStyleOption *option, c
     case PM_FocusFrameVMargin:
     case PM_FocusFrameHMargin:
         return 2;
-
     // 布局默认边距
     case PM_LayoutLeftMargin:
     case PM_LayoutTopMargin:
@@ -199,7 +200,7 @@ int Style::pixelMetric(QStyle::PixelMetric metric, const QStyleOption *option, c
             return 6;
         }
     }
-
+    
     // 布局默认间距
     case PM_LayoutHorizontalSpacing:
     case PM_LayoutVerticalSpacing:
@@ -268,7 +269,6 @@ int Style::pixelMetric(QStyle::PixelMetric metric, const QStyleOption *option, c
     case PM_TabCloseIndicatorWidth:
     case PM_TabCloseIndicatorHeight:
         return pixelMetric(PM_SmallIconSize, option, widget);
-
     // scrollbars
     case PM_ScrollBarExtent:
         return 5;
@@ -317,7 +317,6 @@ int Style::pixelMetric(QStyle::PixelMetric metric, const QStyleOption *option, c
         return 1;
     case PM_DockWidgetSeparatorExtent:
         return 1;
-
     default:  // fallback
         break;
     }
