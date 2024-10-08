@@ -157,7 +157,7 @@ void QtWidgetFactor::initTabBar()
         }
     });
 
-    //docment mode
+    //document mode
     bool documentMode = ui->tabWidget->documentMode();
     ui->check_docmode->setChecked(documentMode);
     connect(ui->check_docmode, &QCheckBox::toggled, [&](bool checked) {
