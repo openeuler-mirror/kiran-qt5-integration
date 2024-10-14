@@ -975,10 +975,6 @@ void Style::polish(QWidget *widget)
 void Style::polish(QApplication *application)
 {
     QProxyStyle::polish(application);
-
-    QPalette palette;
-    this->polish(palette);
-    QApplication::setPalette(palette);
 }
 
 void Style::polish(QPalette &palette)
