@@ -1,0 +1,53 @@
+<RCC>
+    <qresource prefix="/style/colors">
+        <file alias="dark.css">@KIRAN_DARK_COLORS@</file>
+        <file alias="light.css">@KIRAN_LIGHT_COLORS@</file>
+    </qresource>
+
+    <qresource prefix="/style/images">
+        <file alias="arrow.svg">@PROJECT_SOURCE_DIR@/resources/images/arrow.svg</file>
+        <file alias="arrow-down.svg">@PROJECT_SOURCE_DIR@/resources/images/arrow-down.svg</file>
+        <file alias="arrow-down-disabled.svg">@PROJECT_SOURCE_DIR@/resources/images/arrow-down-disabled.svg</file>
+        <file alias="arrow-left.png">@PROJECT_SOURCE_DIR@/resources/images/arrow-left.png</file>
+        <file alias="arrow-right.png">@PROJECT_SOURCE_DIR@/resources/images/arrow-right.png</file>
+        <file alias="arrow-right-disabled.png">@PROJECT_SOURCE_DIR@/resources/images/arrow-right-disabled.png</file>
+        <file alias="arrow-up.svg">@PROJECT_SOURCE_DIR@/resources/images/arrow-up.svg</file>
+        <file alias="checkbox-checked.svg">@PROJECT_SOURCE_DIR@/resources/images/checkbox-checked.svg</file>
+        <file alias="checkbox-unchecked.svg">@PROJECT_SOURCE_DIR@/resources/images/checkbox-unchecked.svg</file>
+        <file alias="check-checked-active.svg">@PROJECT_SOURCE_DIR@/resources/images/check-checked-active.svg</file>
+        <file alias="check-checked-disabled.svg">@PROJECT_SOURCE_DIR@/resources/images/check-checked-disabled.svg</file>
+        <file alias="check-checked-hover.svg">@PROJECT_SOURCE_DIR@/resources/images/check-checked-hover.svg</file>
+        <file alias="check-checked-normal.svg">@PROJECT_SOURCE_DIR@/resources/images/check-checked-normal.svg</file>
+        <file alias="check-indeterminate-active.svg">@PROJECT_SOURCE_DIR@/resources/images/check-indeterminate-active.svg</file>
+        <file alias="check-indeterminate-disabled.svg">@PROJECT_SOURCE_DIR@/resources/images/check-indeterminate-disabled.svg</file>
+        <file alias="check-indeterminate-hover.svg">@PROJECT_SOURCE_DIR@/resources/images/check-indeterminate-hover.svg</file>
+        <file alias="check-indeterminate-normal.svg">@PROJECT_SOURCE_DIR@/resources/images/check-indeterminate-normal.svg</file>
+        <file alias="check-unchecked-active.svg">@PROJECT_SOURCE_DIR@/resources/images/check-unchecked-active.svg</file>
+        <file alias="check-unchecked-disabled.svg">@PROJECT_SOURCE_DIR@/resources/images/check-unchecked-disabled.svg</file>
+        <file alias="check-unchecked-hover.svg">@PROJECT_SOURCE_DIR@/resources/images/check-unchecked-hover.svg</file>
+        <file alias="check-unchecked-normal.svg">@PROJECT_SOURCE_DIR@/resources/images/check-unchecked-normal.svg</file>
+        <file alias="expander-collapsed.png">@PROJECT_SOURCE_DIR@/resources/images/expander-collapsed.png</file>
+        <file alias="expander-expanded.png">@PROJECT_SOURCE_DIR@/resources/images/expander-expanded.png</file>
+        <file alias="panel-grid-horizontal-symbolic.svg">@PROJECT_SOURCE_DIR@/resources/images/panel-grid-horizontal-symbolic.svg</file>
+        <file alias="panel-grid-vertical-symbolic.svg">@PROJECT_SOURCE_DIR@/resources/images/panel-grid-vertical-symbolic.svg</file>
+        <file alias="radio-checked-active.svg">@PROJECT_SOURCE_DIR@/resources/images/radio-checked-active.svg</file>
+        <file alias="radio-checked-disabled.svg">@PROJECT_SOURCE_DIR@/resources/images/radio-checked-disabled.svg</file>
+        <file alias="radio-checked-hover.svg">@PROJECT_SOURCE_DIR@/resources/images/radio-checked-hover.svg</file>
+        <file alias="radio-checked-normal.svg">@PROJECT_SOURCE_DIR@/resources/images/radio-checked-normal.svg</file>
+        <file alias="radio-selected.svg">@PROJECT_SOURCE_DIR@/resources/images/radio-selected.svg</file>
+        <file alias="radio-unchecked-active.svg">@PROJECT_SOURCE_DIR@/resources/images/radio-unchecked-active.svg</file>
+        <file alias="radio-unchecked-disabled.svg">@PROJECT_SOURCE_DIR@/resources/images/radio-unchecked-disabled.svg</file>
+        <file alias="radio-unchecked-hover.svg">@PROJECT_SOURCE_DIR@/resources/images/radio-unchecked-hover.svg</file>
+        <file alias="radio-unchecked-normal.svg">@PROJECT_SOURCE_DIR@/resources/images/radio-unchecked-normal.svg</file>
+        <file alias="scale-disabled.png">@PROJECT_SOURCE_DIR@/resources/images/scale-disabled.png</file>
+        <file alias="scale-normal.png">@PROJECT_SOURCE_DIR@/resources/images/scale-normal.png</file>
+        <file alias="scale-pressed.png">@PROJECT_SOURCE_DIR@/resources/images/scale-pressed.png</file>
+        <file alias="search.svg">@PROJECT_SOURCE_DIR@/resources/images/search.svg</file>
+        <file alias="search-light.svg">@PROJECT_SOURCE_DIR@/resources/images/search-light.svg</file>
+        <file alias="thumbnail.png">@PROJECT_SOURCE_DIR@/resources/images/thumbnail.png</file>
+        <file alias="window-close-symbolic.svg">@PROJECT_SOURCE_DIR@/resources/images/window-close-symbolic.svg</file>
+        <file alias="window-maximum-symbolic.svg">@PROJECT_SOURCE_DIR@/resources/images/window-maximum-symbolic.svg</file>
+        <file alias="window-minimum-symbolic.svg">@PROJECT_SOURCE_DIR@/resources/images/window-minimum-symbolic.svg</file>
+        <file alias="window-unmaximum-symbolic.svg">@PROJECT_SOURCE_DIR@/resources/images/window-unmaximum-symbolic.svg</file>
+    </qresource>
+</RCC>
