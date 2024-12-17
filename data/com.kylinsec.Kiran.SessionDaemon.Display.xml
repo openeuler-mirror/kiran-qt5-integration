@@ -18,7 +18,7 @@
         <method name="SwitchStyle">
             <arg type="u" name="style" direction="in">
                 <doc:doc>
-                    <doc:summary>The dispaly style for these connected monitors.</doc:summary>
+                    <doc:summary>The display style for these connected monitors.</doc:summary>
                 </doc:doc>
             </arg>
             <doc:doc>
