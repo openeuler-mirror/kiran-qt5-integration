@@ -41,7 +41,7 @@
 #include "lib/theme/style-private.h"
 #include "render-helper.h"
 
-#if 0
+#if 1
 //调试用
 QDebug operator<<(QDebug dbg, const QColor &color)
 {
@@ -274,14 +274,17 @@ StylePrivate::ButtonType StylePrivate::getButtonType(const QPushButton *btn)
 {
     ButtonType buttonType = BUTTON_Normal;
 
-    QVariant var = btn->property(KIRAN_STYLE_PROPERTY_BUTTON_TYPE);
-    if (var.isValid())
+    if(btn)
     {
-        bool toInt = false;
-        auto temp = static_cast<ButtonType>(var.toInt(&toInt));
-        if (toInt)
+        QVariant var = btn->property(KIRAN_STYLE_PROPERTY_BUTTON_TYPE);
+        if (var.isValid())
         {
-            buttonType = temp;
+            bool toInt = false;
+            auto temp = static_cast<ButtonType>(var.toInt(&toInt));
+            if (toInt)
+            {
+                buttonType = temp;
+            }
         }
     }
 
@@ -561,7 +564,16 @@ void Style::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOption *
     switch (element)
     {
     case PE_Frame:
-        this->drawPEFrame(option, painter, widget);
+        if (widget && widget->inherits("QComboBoxPrivateContainer"))
+        {
+            QStyleOption copy = *option;
+            copy.state |= State_Raised;
+            this->drawPrimitive(PE_PanelMenu, &copy, painter, widget);
+        }
+        else
+        {
+            this->drawPEFrame(option, painter, widget);
+        }
         break;
 //    case PE_FrameFocusRect:
 //        this->drawPEFrameFocusRect(option, painter, widget);
@@ -633,6 +645,9 @@ void Style::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOption *
         break;
     case PE_IndicatorToolBarHandle:
         this->drawPEIndicatorToolBarHandle(option, painter, widget);
+        break;
+    case PE_PanelMenu:
+        this->drawPEPanelMenu(option, painter, widget);
         break;
 //    case PE_PanelItemViewRow:
 //        this->drawPanelItemViewRow(option, painter, widget);
@@ -834,6 +849,13 @@ void Style::drawControl(QStyle::ControlElement element, const QStyleOption *opti
         break;
     case CE_MenuBarEmptyArea:
         this->drawControlMenuBarEmptyArea(option, painter, widget);
+        break;
+    case CE_MenuItem:
+        //针对QCombobox下拉框绘制菜单项
+        if (qobject_cast<const QComboBox*>(widget) || (option->styleObject && option->styleObject->property("_q_isComboBoxPopupItem").toBool()))
+        {
+            this->drawControlMenuItem(option, painter, widget);
+        }
         break;
     // 不绘制的控件元素集合
     case CE_ToolBar:
@@ -1816,6 +1838,12 @@ void Style::drawCCComboBox(const QStyleOptionComplex *option, QPainter *painter,
             else
             {
                 auto backgroundColor = Palette::getDefault()->getColor(option->state, Palette::WIDGET);
+                //combobox在选中状态时，背景颜色需设置为ACTIVE状态下的颜色
+                if(option->state & QStyle::State_Selected)
+                {
+                    backgroundColor = Palette::getDefault()->getColor(Palette::ACTIVE, Palette::WIDGET);
+                }
+
                 auto borderColor = Palette::getDefault()->getColor(option->state, Palette::BORDER);
                 RenderHelper::renderFrame(painter, option->rect, 1, 4, backgroundColor, borderColor);
             }
@@ -2551,6 +2579,56 @@ void Style::drawControlMenuBarEmptyArea(const QStyleOption *option, QPainter *pa
     // TODO: 需要确认
     auto background = Palette::getDefault()->getColor(option->state, Palette::WINDOW);
     painter->fillRect(option->rect, background);
+}
+
+void Style::drawControlMenuItem(const QStyleOption* option, QPainter* painter, const QWidget* widget) const
+{
+    const auto menuItemOption(qstyleoption_cast<const QStyleOptionMenuItem *>(option));
+    RETURN_IF_FALSE(menuItemOption);
+
+    painter->save();
+
+    int alignment = Qt::AlignVCenter | Qt::TextShowMnemonic | Qt::TextDontClip | Qt::TextSingleLine;
+
+    if (!this->styleHint(QStyle::SH_UnderlineShortcut, option, widget))
+    {
+        alignment |= Qt::TextHideMnemonic;
+    }
+    alignment |= Qt::AlignLeft;
+
+    const bool enabled(menuItemOption->state & QStyle::State_Enabled);
+    const bool mouseOver((menuItemOption->state & QStyle::State_MouseOver) && enabled);
+    const bool sunken((menuItemOption->state & QStyle::State_Sunken) && enabled);
+    const bool selected((menuItemOption->state & QStyle::State_Selected) && enabled);
+
+    if (selected || mouseOver || sunken) {
+        // 设置背景颜色
+        auto backgroundColor = Palette::getDefault()->getBaseColors().widgetMain;
+        painter->fillRect(menuItemOption->rect, backgroundColor);
+    }
+
+    //绘制文字
+    if(!menuItemOption->text.isEmpty())
+    {
+        auto itemTextRect = menuItemOption->rect.adjusted(Metrics::ComboBox_FrameWidth, 0, -1, 0);
+        this->drawItemText(painter,itemTextRect, alignment, menuItemOption->palette, enabled, menuItemOption->text, QPalette::ButtonText);
+        painter->restore();
+    }
+}
+
+void Style::drawPEPanelMenu(const QStyleOption* option, QPainter* painter, const QWidget* widget) const
+{
+    const auto panelMenuOption(qstyleoption_cast<const QStyleOptionFrame *>(option));
+    RETURN_IF_FALSE(panelMenuOption);
+
+    if (widget && widget->inherits("QComboBoxPrivateContainer"))
+    {
+        painter->save();
+        auto bgColor =  Palette::getDefault()->getBaseColors().widgetMain;   //与combobox菜单项颜色一致
+        auto borderColor = Palette::getDefault()->getColor(option->state, Palette::BORDER);
+        painter->fillRect(option->rect, bgColor);
+        painter->restore();
+    }
 }
 
 QSize Style::progressBarSizeFromContents(const QStyleOption *option, const QSize &contentSize, const QWidget *widget) const

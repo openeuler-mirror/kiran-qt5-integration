@@ -113,6 +113,8 @@ private:
     // menu
     void drawControlMenuBarItem(const QStyleOption* option, QPainter* painter, const QWidget* widget) const;
     void drawControlMenuBarEmptyArea(const QStyleOption* option, QPainter* painter, const QWidget* widget) const;
+    void drawControlMenuItem(const QStyleOption* option, QPainter* painter, const QWidget* widget) const;
+    void drawPEPanelMenu(const QStyleOption* option, QPainter* painter, const QWidget* widget) const;
 
     // progressbar
     QSize progressBarSizeFromContents(const QStyleOption* option, const QSize& contentSize, const QWidget* widget) const;
