@@ -41,13 +41,6 @@ enum Corner
 };
 Q_DECLARE_FLAGS(Corners, Corner)
 
-enum PaletteType
-{
-    PALETTE_LIGHT,
-    PALETTE_DARK,
-    PALETTE_LAST
-};
-
 #define KIRAN_STYLE_PROPERTY_BUTTON_TYPE "_kiran_button_type"
 
 }  // namespace Kiran

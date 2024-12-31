@@ -1,19 +1,32 @@
 #pragma once
 
-#include "lib/theme/palette.h"
-#include "lib/theme/define.h"
-
+#define DEFAULT_STYLE_HELPER StyleHelper::getDefault
 
 namespace Kiran
 {
 namespace Theme
 {
+
+enum PaletteType
+{
+    PALETTE_LIGHT,
+    PALETTE_DARK,
+    PALETTE_LAST
+};
+
 class StyleHelper
 {
 public:
     explicit StyleHelper();
     ~StyleHelper();
-    static void doChangeTheme(Kiran::PaletteType paletteType);
+
+    static StyleHelper* getDefault();
+
+    static PaletteType paletteType();
+    static void doChangeTheme(PaletteType paletteType);
+
+private:
+    static StyleHelper* m_instance;
 };
-} // namespace Theme
-} // namespace Kiran
+}  // namespace Theme
+}  // namespace Kiran
