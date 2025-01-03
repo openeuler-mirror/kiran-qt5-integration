@@ -3,43 +3,58 @@
 //
 
 #include "style-helper.h"
-
-//extern Kiran::Theme::Palette::BaseColors g_lightBaseColors;
-//extern Kiran::Theme::Palette::BaseColors g_darkBaseColors;
-
-Kiran::Theme::Palette::BaseColors g_lightBaseColors = {.baseBackground = QColor(232, 232, 232),    // #E8E8E8
-    .baseForeground = QColor(34, 34, 34),       // #222222
-    .widgetBackground = QColor(239, 239, 239),  // #EFEFEF
-    .widgetBorder = QColor(204, 204, 204),      // #CCCCCC
-    .widgetSelection = QColor(0, 162, 255),     // #00A2FF
-    .widgetMain = QColor(46, 179, 255),         // #2EB3FF
-    .widgetWarning = QColor(250, 73, 73)};      // #FA4949
-
-Kiran::Theme::Palette::BaseColors g_darkBaseColors = {.baseBackground = QColor(34, 34, 34),     // #222222
-    .baseForeground = QColor(255, 255, 255),  // #FFFFFF
-    .widgetBackground = QColor(57, 57, 57),   // #393939
-    .widgetBorder = QColor(69, 69, 69),       // #454545
-    .widgetSelection = QColor(0, 162, 255),   // #00A2FF
-    .widgetMain = QColor(46, 179, 255),       // #2EB3FF
-    .widgetWarning = QColor(250, 73, 73)};    // #FA4949
+#include "palette.h"
 
 namespace Kiran
 {
 namespace Theme
 {
-StyleHelper::StyleHelper()
-= default;
-StyleHelper::~StyleHelper()= default;
 
-void StyleHelper::doChangeTheme(Kiran::PaletteType paletteType)
+extern Kiran::Theme::Palette::BaseColors g_lightBaseColors;
+extern Kiran::Theme::Palette::BaseColors g_darkBaseColors;
+
+StyleHelper::StyleHelper() = default;
+StyleHelper::~StyleHelper() = default;
+
+StyleHelper* StyleHelper::m_instance = nullptr;
+StyleHelper* StyleHelper::getDefault()
+{
+    if (!StyleHelper::m_instance)
+    {
+        StyleHelper::m_instance = new StyleHelper();
+    }
+    return StyleHelper::m_instance;
+}
+
+PaletteType StyleHelper::paletteType()
+{
+    auto baseColors = DEFAULT_PALETTE()->getBaseColors();
+    if (baseColors.baseBackground == g_lightBaseColors.baseBackground)
+    {
+        return PaletteType::PALETTE_LIGHT;
+    }
+    else if (baseColors.baseBackground == g_darkBaseColors.baseBackground)
+    {
+        return PaletteType::PALETTE_DARK;
+    }
+    else
+    {
+        return PaletteType::PALETTE_DARK;
+    }
+}
+
+void StyleHelper::doChangeTheme(PaletteType paletteType)
 {
     Palette::BaseColors baseColors;
-    if (paletteType == PaletteType::PALETTE_LIGHT) {
+    if (paletteType == PaletteType::PALETTE_LIGHT)
+    {
         baseColors = g_lightBaseColors;
-    } else if (paletteType == PaletteType::PALETTE_DARK) {
+    }
+    else if (paletteType == PaletteType::PALETTE_DARK)
+    {
         baseColors = g_darkBaseColors;
     }
     DEFAULT_PALETTE()->setBaseColors(baseColors);
 }
-} // namespace Theme
-} // namespace Kiran
+}  // namespace Theme
+}  // namespace Kiran

@@ -5,7 +5,7 @@ Kiran桌面qt5平台一体化插件,其中包含QPlatformTheme插件，QStyle插
 
 ## 编译安装
 ```shell
-# yum install cmake gcc-c++ qt5-linguist qt5-qtbase-devel qt5-qtbase-private-devel qt5-qtx11extras-devel  kiran-qdbusxml2cpp kiran-log-qt5-devel qt5-qtsvg-devel gsettings-qt-devel
+# yum install cmake gcc-c++ qt5-linguist qt5-qtbase-devel qt5-qtbase-private-devel qt5-qtx11extras-devel  kiran-qdbusxml2cpp kiran-log-qt5-devel qt5-qtsvg-devel gsettings-qt-devel kiran-cc-daemon-devel qt5-qtbase-static
 # mkdir
 # cd build && cmake -DCMAKE_INSTALL_PREFIX=/usr ..
 # make

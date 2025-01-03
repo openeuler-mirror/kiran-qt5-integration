@@ -1,14 +1,14 @@
 /**
- * Copyright (c) 2023 ~ 2024 KylinSec Co., Ltd. 
+ * Copyright (c) 2023 ~ 2024 KylinSec Co., Ltd.
  * kiranwidgets-qt5 is licensed under Mulan PSL v2.
- * You can use this software according to the terms and conditions of the Mulan PSL v2. 
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
  * You may obtain a copy of Mulan PSL v2 at:
- *          http://license.coscl.org.cn/MulanPSL2 
- * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, 
- * EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, 
- * MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.  
- * See the Mulan PSL v2 for more details.  
- * 
+ *          http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
+ * EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
+ * MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
+ *
  * Author:     tangjie02 <tangjie02@kylinsec.com.cn>
  */
 
@@ -24,23 +24,23 @@ namespace Kiran
 namespace Theme
 {
 // 定义内置的基础颜色，只包含浅色和深色
-Palette::BaseColors g_lightBaseColors = {.baseBackground = QColor(232, 232, 232),    // #E8E8E8
-                                         .baseForeground = QColor(34, 34, 34),       // #222222
-                                         .widgetBackground = QColor(239, 239, 239),  // #EFEFEF
-                                         .widgetBorder = QColor(204, 204, 204),      // #CCCCCC
-                                         .widgetSelection = QColor(0, 162, 255),     // #00A2FF
-                                         .widgetMain = QColor(46, 179, 255),         // #2EB3FF
-                                         .widgetWarning = QColor(250, 73, 73),       // #FA4949
-                                         .containerBackground = QColor(255, 255, 255)};// #FFFFFF
+Palette::BaseColors g_lightBaseColors = {.baseBackground = QColor(232, 232, 232),        // #E8E8E8
+                                         .baseForeground = QColor(34, 34, 34),           // #222222
+                                         .widgetBackground = QColor(239, 239, 239),      // #EFEFEF
+                                         .widgetBorder = QColor(204, 204, 204),          // #CCCCCC
+                                         .widgetSelection = QColor(0, 162, 255),         // #00A2FF
+                                         .widgetMain = QColor(46, 179, 255),             // #2EB3FF
+                                         .widgetWarning = QColor(250, 73, 73),           // #FA4949
+                                         .containerBackground = QColor(255, 255, 255)};  // #FFFFFF
 
-Palette::BaseColors g_darkBaseColors = {.baseBackground = QColor(34, 34, 34),     // #222222
-                                        .baseForeground = QColor(255, 255, 255),  // #FFFFFF
-                                        .widgetBackground = QColor(57, 57, 57),   // #393939
-                                        .widgetBorder = QColor(69, 69, 69),       // #454545
-                                        .widgetSelection = QColor(0, 162, 255),   // #00A2FF
-                                        .widgetMain = QColor(46, 179, 255),       // #2EB3FF
-                                        .widgetWarning = QColor(250, 73, 73),     // #FA4949
-                                        .containerBackground = QColor(45, 45, 45)};// #2d2d2d
+Palette::BaseColors g_darkBaseColors = {.baseBackground = QColor(34, 34, 34),        // #222222
+                                        .baseForeground = QColor(255, 255, 255),     // #FFFFFF
+                                        .widgetBackground = QColor(57, 57, 57),      // #393939
+                                        .widgetBorder = QColor(69, 69, 69),          // #454545
+                                        .widgetSelection = QColor(0, 162, 255),      // #00A2FF
+                                        .widgetMain = QColor(46, 179, 255),          // #2EB3FF
+                                        .widgetWarning = QColor(250, 73, 73),        // #FA4949
+                                        .containerBackground = QColor(45, 45, 45)};  // #2d2d2d
 // 颜色计算因子
 Palette::ColorFactor g_colorFactor = {.widgetHover = 0.9,
                                       .widgetSunken = 0.8,
@@ -228,6 +228,7 @@ void Palette::setBaseColors(const BaseColors& baseColors)
     Q_D(Palette);
 
     d->setBaseColors(baseColors);
+    emit baseColorsChanged();
 }
 
 const Palette::BaseColors& Palette::getBaseColors()
@@ -295,8 +296,8 @@ void Palette::polish(QPalette& qPalette)
         for (auto colorGroupInter = colorGroupInfo.begin(); colorGroupInter != colorGroupInfo.end(); ++colorGroupInter)
         {
             qPalette.setColor(colorGroupInter.key(),
-                             colorRoleInter.key(),
-                             this->getColor(colorGroupInter.value(), colorRoleInter.value()));
+                              colorRoleInter.key(),
+                              this->getColor(colorGroupInter.value(), colorRoleInter.value()));
         }
     }
 }
