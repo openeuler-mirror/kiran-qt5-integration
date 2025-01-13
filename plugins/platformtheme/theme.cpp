@@ -37,9 +37,6 @@
 #include "plugins/platformtheme/appearance-monitor.h"
 #include "plugins/platformtheme/themed-icon-engine.h"
 
-extern Kiran::Theme::Palette::BaseColors g_lightBaseColors;
-extern Kiran::Theme::Palette::BaseColors g_darkBaseColors;
-
 #define THEMED_SVG_ICON_PREFIX "ksvg-"
 
 namespace Kiran
@@ -70,7 +67,7 @@ QPlatformDialogHelper* Theme::createPlatformDialogHelper(QPlatformTheme::DialogT
 QIconEngine* Theme::createIconEngine(const QString& iconName) const
 {
     // 针对特定图标前缀的svg，跟随主题变化, 目前只支持单色图标
-    if ( iconName.startsWith(THEMED_SVG_ICON_PREFIX) && ThemedIconEngine::isValid(iconName))
+    if (iconName.startsWith(THEMED_SVG_ICON_PREFIX) && ThemedIconEngine::isValid(iconName))
     {
         return new ThemedIconEngine(iconName);
     }
@@ -133,7 +130,7 @@ void Theme::init()
     // 根据当前初始明暗主题设定调色板，
     if (!m_settingsMonitor->gtkTheme().contains("dark"))
     {
-        Kiran::Theme::Palette::getDefault()->setBaseColors(g_lightBaseColors);
+        Kiran::Theme::Palette::getDefault()->setBaseColors(Kiran::Theme::g_lightBaseColors);
     }
 
     m_scaleFactor = m_settingsMonitor->scaleFactor();
@@ -157,7 +154,7 @@ void Theme::init()
 
     // TODO: 确定从AppearanceMonitor监听是否可行
     // 不从AppearanceMonitor接受主题变更事件，修改为接受KiranPalette的主题变更信号，能监听到系统主题变更以及应用程序手动指定主题
-    //QObject::connect(m_settingsMonitor, &AppearanceMonitor::gtkThemeChanged, this, &KiranTheme::handleThemeChanged);
+    // QObject::connect(m_settingsMonitor, &AppearanceMonitor::gtkThemeChanged, this, &KiranTheme::handleThemeChanged);
     // QObject::connect(StylePalette::instance(), &StylePalette::cursorThemeChanged, this, &Theme::handleThemeChanged);
 
     QObject::connect(qApp, &QGuiApplication::screenAdded, this, &Theme::handleScreenAdded);
@@ -165,7 +162,7 @@ void Theme::init()
     handleScaleFactorChanged(m_scaleFactor);
 }
 
-void Theme::updateAppFont(const QString& fontFamily,int pointSize)
+void Theme::updateAppFont(const QString& fontFamily, int pointSize)
 {
     m_systemFont.setFamily(fontFamily);
     m_systemFont.setPointSize(pointSize);
@@ -383,11 +380,11 @@ void Theme::handleThemeChanged()
 
     if (themeName.compare("kiran") == 0)
     {
-        Kiran::Theme::Palette::getDefault()->setBaseColors(g_lightBaseColors);
+        Kiran::Theme::Palette::getDefault()->setBaseColors(Kiran::Theme::g_lightBaseColors);
     }
     else
     {
-        Kiran::Theme::Palette::getDefault()->setBaseColors(g_darkBaseColors);
+        Kiran::Theme::Palette::getDefault()->setBaseColors(Kiran::Theme::g_darkBaseColors);
     }
 
     QTimer::singleShot(0, [this]
@@ -421,8 +418,7 @@ void Theme::handleThemeChanged()
 
                            // 该接口原本用于windows通知窗口主题变化时使用,现用来通知调用QGuiApplicationPrivate::notifyThemeChanged
                            QGuiApplicationPrivate::processThemeChanged(&event);
-                           emit qApp->paletteChanged(*palette(SystemPalette));
-                       });
+                           emit qApp->paletteChanged(*palette(SystemPalette)); });
 }
 
 }  // namespace Platformtheme

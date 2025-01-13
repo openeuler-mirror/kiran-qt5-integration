@@ -9,10 +9,6 @@ namespace Kiran
 {
 namespace Theme
 {
-
-extern Kiran::Theme::Palette::BaseColors g_lightBaseColors;
-extern Kiran::Theme::Palette::BaseColors g_darkBaseColors;
-
 StyleHelper::StyleHelper() = default;
 StyleHelper::~StyleHelper() = default;
 
@@ -29,11 +25,11 @@ StyleHelper* StyleHelper::getDefault()
 PaletteType StyleHelper::paletteType()
 {
     auto baseColors = DEFAULT_PALETTE()->getBaseColors();
-    if (baseColors.baseBackground == g_lightBaseColors.baseBackground)
+    if (baseColors.baseBackground == Kiran::Theme::g_lightBaseColors.baseBackground)
     {
         return PaletteType::PALETTE_LIGHT;
     }
-    else if (baseColors.baseBackground == g_darkBaseColors.baseBackground)
+    else if (baseColors.baseBackground == Kiran::Theme::g_darkBaseColors.baseBackground)
     {
         return PaletteType::PALETTE_DARK;
     }
@@ -48,11 +44,11 @@ void StyleHelper::doChangeTheme(PaletteType paletteType)
     Palette::BaseColors baseColors;
     if (paletteType == PaletteType::PALETTE_LIGHT)
     {
-        baseColors = g_lightBaseColors;
+        baseColors = Kiran::Theme::g_lightBaseColors;
     }
     else if (paletteType == PaletteType::PALETTE_DARK)
     {
-        baseColors = g_darkBaseColors;
+        baseColors = Kiran::Theme::g_darkBaseColors;
     }
     DEFAULT_PALETTE()->setBaseColors(baseColors);
 }
