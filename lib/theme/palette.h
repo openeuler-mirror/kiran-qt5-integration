@@ -143,6 +143,9 @@ private:
     Q_DECLARE_PRIVATE(Palette)
 };
 
+extern Palette::BaseColors g_lightBaseColors;
+extern Palette::BaseColors g_darkBaseColors;
+
 }  // namespace Theme
 
 }  // namespace Kiran
