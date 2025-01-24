@@ -16,11 +16,8 @@
 
 #include <QFont>
 #include <QObject>
-#include <QTimer>
 
-class DisplayProxy;
-class AppearanceProxy;
-class QDBusServiceWatcher;
+class QGSettings;
 
 namespace Kiran
 {
@@ -29,6 +26,7 @@ namespace Platformtheme
 class AppearanceMonitor : public QObject
 {
     Q_OBJECT
+
 private:
     explicit AppearanceMonitor(QObject* parent = nullptr);
 
@@ -38,9 +36,9 @@ public:
 
     QFont appFont() const;
     QFont titleBarFont() const;
-    QString iconTheme() const;
-    QString gtkTheme() const;
-    int scaleFactor() const;
+    QString iconTheme() const { return m_iconTheme; };
+    QString gtkTheme() const { return m_windowThemeName; };
+    int scaleFactor() const { return m_scaleFactor; };
 
 signals:
     void appFontChanged(QFont font);
@@ -54,12 +52,17 @@ private:
     static bool parseFontValue(const QString& font, QString& fontName, int& fontSize);
     void loadAppearance();
     void loadScalingFactor();
-    
+
+    void updateAppFont();
+    void updateWindowFont();
+    void updateIconTheme();
+    void updateWindowTheme();
+    void updateCursorTheme();
+
 private slots:
-    void handleFontSettingChanged(int type, const QString& fontValue);
-    void handleWindowScaleFactorChanged(int scaleFactor);
-    void handleThemeSettingChanged(int type, const QString& themeName);
     void handleCursorThemeChanged();
+    void processXSettingsSettingChanged(const QString& key);
+    void processMarcoSettingChanged(const QString& key);
 
 private:
     QString m_appFontName = "Noto Sans CJK";
@@ -71,15 +74,12 @@ private:
     int m_scaleFactor = 0;
 
     QString m_iconTheme = "hicolor";
-    QString m_gtkThemeName = "kiran";
+    QString m_windowThemeName = "kiran";
 
-    QTimer m_polishCursorTimer;
+    QTimer* m_polishCursorTimer;
 
-    DisplayProxy* m_displayIface;
-    QDBusServiceWatcher* m_displayServiceWatcher;
-
-    AppearanceProxy* m_appearanceIface;
-    QDBusServiceWatcher* m_appearanceServiceWatcher;
+    QGSettings* m_xsettingsSettings;
+    QGSettings* m_marcoSettings;
 };
 }  // namespace Platformtheme
 }  // namespace Kiran
