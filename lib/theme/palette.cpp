@@ -75,7 +75,9 @@ void PalettePrivate::setColorGroup(Palette::ColorGroup colorGroup,
                                    const QColor& widget,
                                    const QColor& icon,
                                    const QColor& scroll,
-                                   const QColor& border)
+                                   const QColor& border,
+                                   const QColor& highlight,
+                                   const QColor& highlightedText)
 {
     this->m_colors[colorGroup][Palette::WINDOW] = window;
     this->m_colors[colorGroup][Palette::TEXT] = text;
@@ -83,6 +85,8 @@ void PalettePrivate::setColorGroup(Palette::ColorGroup colorGroup,
     this->m_colors[colorGroup][Palette::ICON] = icon;
     this->m_colors[colorGroup][Palette::SCROLL] = scroll;
     this->m_colors[colorGroup][Palette::BORDER] = border;
+    this->m_colors[colorGroup][Palette::HIGHLIGHT] = highlight;
+    this->m_colors[colorGroup][Palette::HIGHLIGHTED_TEXT] = highlightedText;
 }
 
 QColor PalettePrivate::getColor(Palette::ColorGroup colorGroup, Palette::ColorRole colorRole)
@@ -103,7 +107,9 @@ void PalettePrivate::calcWidgetColors()
                         this->m_baseColors.widgetBackground,
                         this->m_baseColors.baseForeground,
                         this->m_baseColors.widgetBorder,
-                        this->m_baseColors.widgetBorder);
+                        this->m_baseColors.widgetBorder,
+                        this->m_baseColors.widgetSelection,
+                        this->m_baseColors.baseForeground);
 
     this->setColorGroup(Palette::DISABLED,
                         this->m_baseColors.baseBackground,
@@ -111,7 +117,9 @@ void PalettePrivate::calcWidgetColors()
                         this->disabledColor(this->m_baseColors.widgetBackground),
                         this->disabledColor(this->m_baseColors.baseForeground),
                         this->disabledColor(this->m_baseColors.widgetBorder),
-                        this->disabledColor(this->m_baseColors.widgetBorder));
+                        this->disabledColor(this->m_baseColors.widgetBorder),
+                        this->m_baseColors.widgetSelection,
+                        this->m_baseColors.baseForeground);
 
     // 未激活状态暂时跟激活状态保持相同
     this->setColorGroup(Palette::INACTIVE,
@@ -120,7 +128,9 @@ void PalettePrivate::calcWidgetColors()
                         this->m_baseColors.widgetBackground,
                         this->m_baseColors.baseForeground,
                         this->m_baseColors.widgetBorder,
-                        this->m_baseColors.widgetBorder);
+                        this->m_baseColors.widgetBorder,
+                        this->m_baseColors.widgetSelection,
+                        this->m_baseColors.baseForeground);
 
     this->setColorGroup(Palette::MOUSE_OVER,
                         this->m_baseColors.baseBackground,
@@ -134,7 +144,9 @@ void PalettePrivate::calcWidgetColors()
                         this->mixColor(this->m_baseColors.widgetBorder,
                                        this->m_baseColors.baseForeground,
                                        this->m_colorFactors.widgetHover),
-                        this->m_baseColors.widgetBorder);
+                        this->m_baseColors.widgetBorder,
+                        this->m_baseColors.widgetSelection,
+                        this->m_baseColors.baseForeground);
 
     this->setColorGroup(Palette::SUNKEN,
                         this->m_baseColors.baseBackground,
@@ -146,7 +158,9 @@ void PalettePrivate::calcWidgetColors()
                                        this->m_baseColors.baseForeground,
                                        this->m_colorFactors.iconSunken),
                         this->m_baseColors.widgetSelection,
-                        this->m_baseColors.widgetBorder);
+                        this->m_baseColors.widgetBorder,
+                        this->m_baseColors.widgetSelection,
+                        this->m_baseColors.baseForeground);
 
     this->setColorGroup(Palette::SELECTED,
                         this->m_baseColors.baseBackground,
@@ -154,7 +168,9 @@ void PalettePrivate::calcWidgetColors()
                         this->m_baseColors.widgetSelection,
                         this->m_baseColors.baseForeground,
                         this->m_baseColors.widgetBorder,
-                        this->m_baseColors.widgetBorder);
+                        this->m_baseColors.widgetBorder,
+                        this->m_baseColors.widgetSelection,
+                        this->m_baseColors.baseForeground);
 
     this->dumpColors();
 }
@@ -283,7 +299,9 @@ void Palette::polish(QPalette& qPalette)
                                    {QPalette::ColorRole::ToolTipText, Palette::TEXT},
                                    {QPalette::ColorRole::Text, Palette::TEXT},
                                    {QPalette::ColorRole::Button, Palette::WIDGET},
-                                   {QPalette::ColorRole::ButtonText, Palette::TEXT}};
+                                   {QPalette::ColorRole::ButtonText, Palette::TEXT},
+                                   {QPalette::ColorRole::Highlight, Palette::HIGHLIGHT},
+                                   {QPalette::ColorRole::HighlightedText, Palette::HIGHLIGHTED_TEXT}};
 
     using ColorGroupInfo = QMap<QPalette::ColorGroup, Palette::ColorGroup>;
     ColorGroupInfo colorGroupInfo = {{QPalette::ColorGroup::Active, Palette::ACTIVE},
