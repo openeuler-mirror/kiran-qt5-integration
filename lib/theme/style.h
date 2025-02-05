@@ -105,7 +105,7 @@ private:
     void drawPEIndicatorToolBarSeparator(const QStyleOption* option, QPainter* painter, const QWidget* widget) const;
     void drawPEIndicatorToolBarHandle(const QStyleOption* option, QPainter* painter, const QWidget* widget) const;
 
-    //item view
+    // item view
     void drawControlHeaderSection(const QStyleOption* option, QPainter* painter, const QWidget* widget) const;
     void drawControlHeaderLabel(const QStyleOption* option, QPainter* painter, const QWidget* widget) const;
     void drawControlHeaderEmptyArea(const QStyleOption* option, QPainter* painter, const QWidget* widget) const;
@@ -113,7 +113,6 @@ private:
     // menu
     void drawControlMenuBarItem(const QStyleOption* option, QPainter* painter, const QWidget* widget) const;
     void drawControlMenuBarEmptyArea(const QStyleOption* option, QPainter* painter, const QWidget* widget) const;
-    void drawControlMenuItem(const QStyleOption* option, QPainter* painter, const QWidget* widget) const;
     void drawPEPanelMenu(const QStyleOption* option, QPainter* painter, const QWidget* widget) const;
 
     // progressbar
