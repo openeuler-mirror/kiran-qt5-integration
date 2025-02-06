@@ -168,7 +168,7 @@ void PalettePrivate::calcWidgetColors()
                         this->m_baseColors.widgetSelection,
                         this->m_baseColors.baseForeground,
                         this->m_baseColors.widgetBorder,
-                        this->m_baseColors.widgetBorder,
+                        this->m_baseColors.widgetSelection,
                         this->m_baseColors.widgetSelection,
                         this->m_baseColors.baseForeground);
 
