@@ -41,13 +41,17 @@
 #include "lib/theme/style-private.h"
 #include "render-helper.h"
 
-#if 1
-//调试用
+#if 0
+// 调试用
 QDebug operator<<(QDebug dbg, const QColor &color)
 {
     QString format = QString("[rgb(%1,%2,%3) #%4%5%6]")
-                         .arg(color.red()).arg(color.green()).arg(color.blue())
-                         .arg(QString::number(color.red(),16)).arg(QString::number(color.green(),16)).arg(QString::number(color.blue(),16));
+                         .arg(color.red())
+                         .arg(color.green())
+                         .arg(color.blue())
+                         .arg(QString::number(color.red(), 16))
+                         .arg(QString::number(color.green(), 16))
+                         .arg(QString::number(color.blue(), 16));
     dbg << format;
     return dbg;
 }
@@ -171,7 +175,7 @@ void StylePrivate::renderSpinBoxArrow(const QStyle::SubControl &subControl, cons
         }
     }
 
-    auto backgroundColor = Palette::getDefault()->getColor(Palette::SELECTED, Palette::WIDGET);
+    auto backgroundColor = Palette::getDefault()->getColor(tempOption.state, Palette::WIDGET);
     auto borderColor = Palette::getDefault()->getColor(tempOption.state, Palette::BORDER);
     auto signColor = Palette::getDefault()->getColor(tempOption.state, Palette::ICON);
 
@@ -274,7 +278,7 @@ StylePrivate::ButtonType StylePrivate::getButtonType(const QPushButton *btn)
 {
     ButtonType buttonType = BUTTON_Normal;
 
-    if(btn)
+    if (btn)
     {
         QVariant var = btn->property(KIRAN_STYLE_PROPERTY_BUTTON_TYPE);
         if (var.isValid())
@@ -575,9 +579,9 @@ void Style::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOption *
             this->drawPEFrame(option, painter, widget);
         }
         break;
-//    case PE_FrameFocusRect:
-//        this->drawPEFrameFocusRect(option, painter, widget);
-//        break;
+        //    case PE_FrameFocusRect:
+        //        this->drawPEFrameFocusRect(option, painter, widget);
+        //        break;
     case PE_FrameGroupBox:
         this->drawPEFrameGroupBox(option, painter, widget);
         break;
@@ -649,12 +653,12 @@ void Style::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOption *
     case PE_PanelMenu:
         this->drawPEPanelMenu(option, painter, widget);
         break;
-//    case PE_PanelItemViewRow:
-//        this->drawPanelItemViewRow(option, painter, widget);
-//        break;
-//    case PE_PanelItemViewItem:
-//        this->drawPanelItemViewItem(option, painter, widget);
-//        break;
+    //    case PE_PanelItemViewRow:
+    //        this->drawPanelItemViewRow(option, painter, widget);
+    //        break;
+    //    case PE_PanelItemViewItem:
+    //        this->drawPanelItemViewItem(option, painter, widget);
+    //        break;
     default:
         QProxyStyle::drawPrimitive(element, option, painter, widget);
         break;
@@ -850,13 +854,6 @@ void Style::drawControl(QStyle::ControlElement element, const QStyleOption *opti
     case CE_MenuBarEmptyArea:
         this->drawControlMenuBarEmptyArea(option, painter, widget);
         break;
-    case CE_MenuItem:
-        //针对QCombobox下拉框绘制菜单项
-        if (qobject_cast<const QComboBox*>(widget) || (option->styleObject && option->styleObject->property("_q_isComboBoxPopupItem").toBool()))
-        {
-            this->drawControlMenuItem(option, painter, widget);
-        }
-        break;
     // 不绘制的控件元素集合
     case CE_ToolBar:
         break;
@@ -1038,7 +1035,7 @@ void Style::drawPEFrameFocusRect(const QStyleOption *option, QPainter *painter, 
     if (hasFocus)
     {
         background = Qt::transparent;
-        QColor borderColor = DEFAULT_PALETTE()->getColor(Palette::SELECTED,Palette::WIDGET);
+        QColor borderColor = DEFAULT_PALETTE()->getColor(Palette::SELECTED, Palette::WIDGET);
         RenderHelper::renderFrame(painter, option->rect, 1, 4, background, borderColor);
     }
 }
@@ -1249,17 +1246,17 @@ void Style::drawPEPushButton(ControlElement element, const QStyleOption *option,
     auto background = palette->getColor(option->state, Palette::WIDGET);
     auto border = palette->getColor(option->state, Palette::BORDER);
 
-    StylePrivate::ButtonType  buttonType = StylePrivate::getButtonType(qobject_cast<const QPushButton*>(widget));
+    StylePrivate::ButtonType buttonType = StylePrivate::getButtonType(qobject_cast<const QPushButton *>(widget));
     // 若为 Button_Default 按钮中的文字为白色
     if (enabled && buttonType == StylePrivate::BUTTON_Default)
     {
-        QColor textColor = Qt::white; // 主按钮文字总为白色
+        QColor textColor = Qt::white;  // 主按钮文字总为白色
         QStyleOptionButton modifiedOption(*buttonOption);
         modifiedOption.palette.setColor(QPalette::ButtonText, textColor);
         QProxyStyle::drawControl(element, &modifiedOption, painter, widget);
         return;
     }
-    if (enabled && qobject_cast<const QPushButton*>(widget) && StylePrivate::getButtonType(qobject_cast<const QPushButton*>(widget)) != StylePrivate::BUTTON_Normal)
+    if (enabled && qobject_cast<const QPushButton *>(widget) && StylePrivate::getButtonType(qobject_cast<const QPushButton *>(widget)) != StylePrivate::BUTTON_Normal)
     {
         if (buttonType == StylePrivate::BUTTON_Warning)
         {
@@ -1275,12 +1272,12 @@ void Style::drawPEPushButton(ControlElement element, const QStyleOption *option,
 
 void Style::drawItemViewItem(QStyle::ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
-    const auto itemOption = qstyleoption_cast<const QStyleOptionViewItem*>(option);
+    const auto itemOption = qstyleoption_cast<const QStyleOptionViewItem *>(option);
     if (itemOption && itemOption->state & QStyle::State_Selected)
     {
         QStyleOptionViewItem newOption(*itemOption);
-//        newOption.palette.setColor(QPalette::HighlightedText, Qt::red);
-//        newOption.palette.setColor(QPalette::Highlight, Qt::transparent);
+        //        newOption.palette.setColor(QPalette::HighlightedText, Qt::red);
+        //        newOption.palette.setColor(QPalette::Highlight, Qt::transparent);
         QProxyStyle::drawControl(element, &newOption, painter, widget);
         return;
     }
@@ -1299,7 +1296,7 @@ void Style::drawPEPanelButtonCommand(const QStyleOption *option, QPainter *paint
     bool windowActive(state & QStyle::State_Active);
     bool mouseOver((state & QStyle::State_Active) && enabled && (state & QStyle::State_MouseOver));
     bool hasFocus((enabled && (state & QStyle::State_HasFocus)) && !(widget && widget->focusProxy()));
-    bool hasKeyboardFocusChange((option->state & State_KeyboardFocusChange) && hasFocus);   // 加入 State_KeyboardFocusChange 的目的：确保是使用 TAB 键切换焦点才显示选中边框
+    bool hasKeyboardFocusChange((option->state & State_KeyboardFocusChange) && hasFocus);  // 加入 State_KeyboardFocusChange 的目的：确保是使用 TAB 键切换焦点才显示选中边框
     bool sunken(state & (QStyle::State_On | QStyle::State_Sunken));
     bool flat(buttonOption->features & QStyleOptionButton::Flat);
 
@@ -1307,8 +1304,8 @@ void Style::drawPEPanelButtonCommand(const QStyleOption *option, QPainter *paint
     auto background = palettes->getColor(option->state, Palette::WIDGET);
     auto border = palettes->getColor(option->state, Palette::BORDER);
 
-    StylePrivate::ButtonType  buttonType = StylePrivate::getButtonType(qobject_cast<const QPushButton*>(widget));
-    if (enabled && qobject_cast<const QPushButton*>(widget) && buttonType != StylePrivate::BUTTON_Normal)
+    StylePrivate::ButtonType buttonType = StylePrivate::getButtonType(qobject_cast<const QPushButton *>(widget));
+    if (enabled && qobject_cast<const QPushButton *>(widget) && buttonType != StylePrivate::BUTTON_Normal)
     {
         if (buttonType == StylePrivate::BUTTON_Default)
         {
@@ -1316,7 +1313,7 @@ void Style::drawPEPanelButtonCommand(const QStyleOption *option, QPainter *paint
             if (mouseOver)
             {
                 background = DEFAULT_PALETTE()->getColor(Palette::MOUSE_OVER, Palette::WIDGET);
-                background = QColor(112, 203, 255); // FIXME: 颜色较特殊，暂时指定
+                background = QColor(112, 203, 255);  // FIXME: 颜色较特殊，暂时指定
             }
             if (sunken)
             {
@@ -1340,7 +1337,7 @@ void Style::drawPEPanelButtonCommand(const QStyleOption *option, QPainter *paint
 
     if (hasKeyboardFocusChange && !sunken)
     {
-        border = DEFAULT_PALETTE()->getColor(Palette::SELECTED,Palette::WIDGET);
+        border = DEFAULT_PALETTE()->getColor(Palette::SELECTED, Palette::WIDGET);
     }
 
     RenderHelper::renderFrame(painter, option->rect, 1, 4, background, border);
@@ -1380,7 +1377,7 @@ void Style::drawPEPanelButtonTool(const QStyleOption *option, QPainter *painter,
     else if (hasFocus)
     {
         auto background = Palette::getDefault()->getBaseColors().widgetWarning;
-//        auto border = DEFAULT_PALETTE()->getColor(Palette::SELECTED,Palette::WIDGET);
+        //        auto border = DEFAULT_PALETTE()->getColor(Palette::SELECTED,Palette::WIDGET);
         RenderHelper::renderFrame(painter, rect, 1, 4, background);
     }
     else
@@ -1838,8 +1835,8 @@ void Style::drawCCComboBox(const QStyleOptionComplex *option, QPainter *painter,
             else
             {
                 auto backgroundColor = Palette::getDefault()->getColor(option->state, Palette::WIDGET);
-                //combobox在选中状态时，背景颜色需设置为ACTIVE状态下的颜色
-                if(option->state & QStyle::State_Selected)
+                // combobox在选中状态时，背景颜色需设置为ACTIVE状态下的颜色
+                if (option->state & QStyle::State_Selected)
                 {
                     backgroundColor = Palette::getDefault()->getColor(Palette::ACTIVE, Palette::WIDGET);
                 }
@@ -1983,7 +1980,7 @@ void Style::drawPEFrameLineEdit(const QStyleOption *option, QPainter *painter, c
 
     if (hasFocus)
     {
-        const auto frameOption = qstyleoption_cast<const QStyleOptionFrame*>(option);
+        const auto frameOption = qstyleoption_cast<const QStyleOptionFrame *>(option);
         if (frameOption)
         {
             QColor borderColor = DEFAULT_PALETTE()->getColor(Palette::SELECTED, Palette::WIDGET);
@@ -2174,31 +2171,33 @@ void Style::drawPEIndicatorRadioButton(const QStyleOption *option, QPainter *pai
     }
     QString iconUrl = QString(":/style/images/radio-%1-%2.svg").arg(checked ? "checked" : "unchecked").arg(state);
     // 参考 UI　设计文稿　6.1 单选框 & 复选框 设置　Hover　状态背景色
-    if (option->state & State_MouseOver) {
+    if (option->state & State_MouseOver)
+    {
         painter->save();
         painter->setPen(Qt::NoPen);
-        painter->setBrush(DEFAULT_PALETTE()->getColor(Palette::MOUSE_OVER, Palette::WIDGET)); // # 454545
+        painter->setBrush(DEFAULT_PALETTE()->getColor(Palette::MOUSE_OVER, Palette::WIDGET));  // # 454545
         painter->drawEllipse(rect);
         painter->restore();
     }
 
     // 参考 UI　设计文稿　6.1 单选框 & 复选框 设置　Focus　状态背景色
-    if (option->state & State_HasFocus) {
+    if (option->state & State_HasFocus)
+    {
         painter->save();
         painter->setPen(Qt::NoPen);
-        painter->setBrush(DEFAULT_PALETTE()->getColor(option->state, Palette::WINDOW)); // # 222222
+        painter->setBrush(DEFAULT_PALETTE()->getColor(option->state, Palette::WINDOW));  // # 222222
         painter->drawEllipse(rect);
         painter->restore();
     }
 
-//    if (!(option->state & State_Enabled)) {
-//        painter->save();
-//        painter->setPen(QPen(QColor(145, 145, 145))); // # 919191 //TODO: 取消手动指定颜色
-//        painter->setPen(Qt::NoPen);
-//        painter->setBrush(QColor(145, 145, 145));
-//        painter->drawEllipse(option->rect);
-//        painter->restore();
-//    }
+    //    if (!(option->state & State_Enabled)) {
+    //        painter->save();
+    //        painter->setPen(QPen(QColor(145, 145, 145))); // # 919191 //TODO: 取消手动指定颜色
+    //        painter->setPen(Qt::NoPen);
+    //        painter->setBrush(QColor(145, 145, 145));
+    //        painter->drawEllipse(option->rect);
+    //        painter->restore();
+    //    }
 
     painter->save();
     painter->setRenderHints(QPainter::SmoothPixmapTransform | QPainter::HighQualityAntialiasing);
@@ -2228,34 +2227,36 @@ void Style::drawPEIndicatorCheckBox(const QStyleOption *option, QPainter *painte
     QString iconUrl = QString(":/style/images/check-%1-%2.svg").arg(checked ? "checked" : "unchecked").arg(state);
 
     // 参考 UI　设计文稿　6.1 单选框 & 复选框 设置　Hover　状态背景色
-    if (option->state & State_MouseOver) {
+    if (option->state & State_MouseOver)
+    {
         auto lineColor = Palette::getDefault()->getColor(option->state, Palette::BORDER);
 
         painter->save();
         painter->setPen(QPen(lineColor, 1));
-        painter->setBrush(DEFAULT_PALETTE()->getColor(Palette::MOUSE_OVER, Palette::WIDGET)); // # 454545
+        painter->setBrush(DEFAULT_PALETTE()->getColor(Palette::MOUSE_OVER, Palette::WIDGET));  // # 454545
         painter->drawRect(rect);
         painter->restore();
     }
 
     // 参考 UI　设计文稿　6.1 单选框 & 复选框 设置　Focus　状态背景色
-    if (option->state & State_HasFocus) {
+    if (option->state & State_HasFocus)
+    {
         // 自定义获取焦点时的背景色
         painter->save();
         painter->setPen(QPen());
-        painter->setBrush(DEFAULT_PALETTE()->getColor(option->state, Palette::WINDOW)); // # 222222
+        painter->setBrush(DEFAULT_PALETTE()->getColor(option->state, Palette::WINDOW));  // # 222222
         painter->drawRect(rect);
         painter->restore();
     }
 
-//    if (!(option->state & State_Enabled)) {
-//        painter->save();
-//        painter->setPen(QPen(QColor(145, 145, 145))); // # 919191 //TODO: 取消手动指定颜色
-//        painter->setPen(Qt::NoPen);
-//        painter->setBrush(QColor(145, 145, 145));
-//        painter->drawRect(option->rect);
-//        painter->restore();
-//    }
+    //    if (!(option->state & State_Enabled)) {
+    //        painter->save();
+    //        painter->setPen(QPen(QColor(145, 145, 145))); // # 919191 //TODO: 取消手动指定颜色
+    //        painter->setPen(Qt::NoPen);
+    //        painter->setBrush(QColor(145, 145, 145));
+    //        painter->drawRect(option->rect);
+    //        painter->restore();
+    //    }
 
     painter->save();
     painter->setRenderHints(QPainter::SmoothPixmapTransform | QPainter::HighQualityAntialiasing);
@@ -2541,7 +2542,7 @@ void Style::drawControlMenuBarItem(const QStyleOption *option, QPainter *painter
         painter->drawRoundedRect(option->rect,4,4);
     }
 #endif
-    //TODO: menubaritem 和 menubar背景存在差异
+    // TODO: menubaritem 和 menubar背景存在差异
     if (menuItemOption)
     {
         int alignment = Qt::AlignCenter | Qt::TextShowMnemonic | Qt::TextDontClip | Qt::TextSingleLine;
@@ -2581,42 +2582,7 @@ void Style::drawControlMenuBarEmptyArea(const QStyleOption *option, QPainter *pa
     painter->fillRect(option->rect, background);
 }
 
-void Style::drawControlMenuItem(const QStyleOption* option, QPainter* painter, const QWidget* widget) const
-{
-    const auto menuItemOption(qstyleoption_cast<const QStyleOptionMenuItem *>(option));
-    RETURN_IF_FALSE(menuItemOption);
-
-    painter->save();
-
-    int alignment = Qt::AlignVCenter | Qt::TextShowMnemonic | Qt::TextDontClip | Qt::TextSingleLine;
-
-    if (!this->styleHint(QStyle::SH_UnderlineShortcut, option, widget))
-    {
-        alignment |= Qt::TextHideMnemonic;
-    }
-    alignment |= Qt::AlignLeft;
-
-    const bool enabled(menuItemOption->state & QStyle::State_Enabled);
-    const bool mouseOver((menuItemOption->state & QStyle::State_MouseOver) && enabled);
-    const bool sunken((menuItemOption->state & QStyle::State_Sunken) && enabled);
-    const bool selected((menuItemOption->state & QStyle::State_Selected) && enabled);
-
-    if (selected || mouseOver || sunken) {
-        // 设置背景颜色
-        auto backgroundColor = Palette::getDefault()->getBaseColors().widgetMain;
-        painter->fillRect(menuItemOption->rect, backgroundColor);
-    }
-
-    //绘制文字
-    if(!menuItemOption->text.isEmpty())
-    {
-        auto itemTextRect = menuItemOption->rect.adjusted(Metrics::ComboBox_FrameWidth, 0, -1, 0);
-        this->drawItemText(painter,itemTextRect, alignment, menuItemOption->palette, enabled, menuItemOption->text, QPalette::ButtonText);
-        painter->restore();
-    }
-}
-
-void Style::drawPEPanelMenu(const QStyleOption* option, QPainter* painter, const QWidget* widget) const
+void Style::drawPEPanelMenu(const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
     const auto panelMenuOption(qstyleoption_cast<const QStyleOptionFrame *>(option));
     RETURN_IF_FALSE(panelMenuOption);
@@ -2624,8 +2590,7 @@ void Style::drawPEPanelMenu(const QStyleOption* option, QPainter* painter, const
     if (widget && widget->inherits("QComboBoxPrivateContainer"))
     {
         painter->save();
-        auto bgColor =  Palette::getDefault()->getBaseColors().widgetMain;   //与combobox菜单项颜色一致
-        auto borderColor = Palette::getDefault()->getColor(option->state, Palette::BORDER);
+        auto bgColor = Palette::getDefault()->getBaseColors().widgetMain;  // 与combobox菜单项颜色一致
         painter->fillRect(option->rect, bgColor);
         painter->restore();
     }
@@ -2763,9 +2728,9 @@ void Style::drawControlProgressBar(const QStyleOption *option, QPainter *painter
     }
 
     // TODO: BUSY动画
-//    if (busy) {
+    //    if (busy) {
 
-//    }
+    //    }
 }
 
 void Style::drawControlProgressBarGroove(const QStyleOption *option, QPainter *painter, const QWidget *widget) const
@@ -3365,7 +3330,7 @@ void Style::drawCCSpinBox(const QStyleOptionComplex *option, QPainter *painter, 
         flat |= (rect.height() < 2 * Metrics::Frame_FrameWidth + Metrics::SpinBox_ArrowButtonWidth);
         if (flat)
         {
-            const auto &background = palette.color(QPalette::Base);
+            const auto &background = Palette::getDefault()->getColor(option->state, Palette::WIDGET);
 
             painter->setBrush(background);
             painter->setPen(Qt::NoPen);
@@ -3643,18 +3608,19 @@ QPainterPath roundedItemPath(const QStyleOptionViewItem *o, const QWidget *w)
 
 void Style::drawPanelItemViewRow(const QStyleOption *pOption, QPainter *pPainter, const QWidget *pWidget) const
 {
-    if (const auto vopt = qstyleoption_cast<const QStyleOptionViewItem *>(pOption)) {
-
+    if (const auto vopt = qstyleoption_cast<const QStyleOptionViewItem *>(pOption))
+    {
         pPainter->setRenderHint(QPainter::Antialiasing);
         QPainterPath path = roundedItemPath(vopt, pWidget);
         QPalette::ColorGroup colorGroup = (pWidget ? pWidget->isEnabled() : (vopt->state & QStyle::State_Enabled))
-                                  ? QPalette::Normal : QPalette::Disabled;
+                                              ? QPalette::Normal
+                                              : QPalette::Disabled;
         if (colorGroup == QPalette::Normal && !(vopt->state & QStyle::State_Active))
             colorGroup = QPalette::Inactive;
 
-        if ((vopt->state & QStyle::State_Selected) &&  proxy()->styleHint(QStyle::SH_ItemView_ShowDecorationSelected, pOption, pWidget))
+        if ((vopt->state & QStyle::State_Selected) && proxy()->styleHint(QStyle::SH_ItemView_ShowDecorationSelected, pOption, pWidget))
         {
-            pPainter->fillRect(vopt->rect, vopt->palette.brush(colorGroup, QPalette::Text)); // 选中高亮
+            pPainter->fillRect(vopt->rect, vopt->palette.brush(colorGroup, QPalette::Text));  // 选中高亮
         }
         else if (vopt->features & QStyleOptionViewItem::Alternate)
         {
@@ -3665,12 +3631,13 @@ void Style::drawPanelItemViewRow(const QStyleOption *pOption, QPainter *pPainter
 
 void Style::drawPanelItemViewItem(const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
-    if (const auto vopt = qstyleoption_cast<const QStyleOptionViewItem *>(option)) {
-
+    if (const auto vopt = qstyleoption_cast<const QStyleOptionViewItem *>(option))
+    {
         painter->setRenderHint(QPainter::Antialiasing);
         QPainterPath path = roundedItemPath(vopt, widget);
         QPalette::ColorGroup cg = (widget ? widget->isEnabled() : (vopt->state & QStyle::State_Enabled))
-                                  ? QPalette::Normal : QPalette::Disabled;
+                                      ? QPalette::Normal
+                                      : QPalette::Disabled;
         if (cg == QPalette::Normal && !(vopt->state & QStyle::State_Active))
             cg = QPalette::Inactive;
         if (vopt->showDecorationSelected && (vopt->state & QStyle::State_Selected))
@@ -3679,15 +3646,17 @@ void Style::drawPanelItemViewItem(const QStyleOption *option, QPainter *painter,
         }
         else
         {
-            if (vopt->backgroundBrush.style() != Qt::NoBrush) {
+            if (vopt->backgroundBrush.style() != Qt::NoBrush)
+            {
                 QPointF brushOriginOld = painter->brushOrigin();
                 painter->setBrushOrigin(vopt->rect.topLeft());
                 painter->fillPath(path, vopt->backgroundBrush);
                 painter->setBrushOrigin(brushOriginOld);
             }
 
-            if (vopt->state & QStyle::State_Selected) {
-                QRect textRect = subElementRect(QStyle::SE_ItemViewItemText,  option, widget);
+            if (vopt->state & QStyle::State_Selected)
+            {
+                QRect textRect = subElementRect(QStyle::SE_ItemViewItemText, option, widget);
                 painter->fillRect(textRect, vopt->palette.brush(cg, QPalette::Text));
             }
         }
@@ -3695,11 +3664,11 @@ void Style::drawPanelItemViewItem(const QStyleOption *option, QPainter *painter,
 }
 void Style::drawTextEditor(QStyle::ControlElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
-    const auto itemOption = qstyleoption_cast<const QStyleOptionViewItem*>(option);
+    const auto itemOption = qstyleoption_cast<const QStyleOptionViewItem *>(option);
     if (itemOption && itemOption->state & QStyle::State_Selected)
     {
         QStyleOptionViewItem newOption(*itemOption);
-//        newOption.palette.setColor(QPalette::Highlight, Qt::transparent);
+        //        newOption.palette.setColor(QPalette::Highlight, Qt::transparent);
         QProxyStyle::drawControl(element, &newOption, painter, widget);
         return;
     }

@@ -37,7 +37,9 @@ public:
                        const QColor& widget,
                        const QColor& icon,
                        const QColor& scroll,
-                       const QColor& border);
+                       const QColor& border,
+                       const QColor& highlight,
+                       const QColor& highlightedText);
 
     QColor getColor(Palette::ColorGroup colorGroup, Palette::ColorRole colorRole);
 

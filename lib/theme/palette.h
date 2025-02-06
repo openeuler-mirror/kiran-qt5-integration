@@ -107,6 +107,10 @@ public:
         SCROLL,
         // 边框
         BORDER,
+        // 高亮背景色，如选中项颜色
+        HIGHLIGHT,
+        // 高亮文本颜色
+        HIGHLIGHTED_TEXT,
         // 总数
         N_COLOR_ROLES,
     };
