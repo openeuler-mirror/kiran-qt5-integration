@@ -38,6 +38,7 @@
 #include "plugins/platformtheme/themed-icon-engine.h"
 
 #define THEMED_SVG_ICON_PREFIX "ksvg-"
+#define THEMED_RSVG_ICON_PREFIX "krsvg-"
 
 namespace Kiran
 {
@@ -66,10 +67,17 @@ QPlatformDialogHelper* Theme::createPlatformDialogHelper(QPlatformTheme::DialogT
 
 QIconEngine* Theme::createIconEngine(const QString& iconName) const
 {
-    // 针对特定图标前缀的svg，跟随主题变化, 目前只支持单色图标
-    if (iconName.startsWith(THEMED_SVG_ICON_PREFIX) && ThemedIconEngine::isValid(iconName))
+    if (ThemedIconEngine::isValid(iconName))
     {
-        return new ThemedIconEngine(iconName);
+        // 针对特定图标前缀的svg，跟随主题变化
+        if (iconName.startsWith(THEMED_SVG_ICON_PREFIX))
+        {
+            return new ThemedIconEngine(iconName, ThemedIconEngine::SVG_CONVERT_COMPOSITION);
+        }
+        else if (iconName.startsWith(THEMED_RSVG_ICON_PREFIX))
+        {
+            return new ThemedIconEngine(iconName, ThemedIconEngine::SVG_CONVERT_INVERT_PIXELS);
+        }
     }
     return QGenericUnixTheme::createIconEngine(iconName);
 }

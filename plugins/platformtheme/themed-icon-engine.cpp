@@ -27,14 +27,14 @@ namespace Kiran
 {
 namespace Platformtheme
 {
-ThemedIconEngine::ThemedIconEngine(const QString &themeSvgIconName)
+ThemedIconEngine::ThemedIconEngine(const QString &themeSvgIconName, const SvgConvertType type)
     : QIconEngine(),
-      m_iconName(themeSvgIconName)
+      m_iconName(themeSvgIconName),
+      m_svgConvertType(type)
 {
     m_settingsMonitor = Kiran::Platformtheme::AppearanceMonitor::instance();
-    QObject::connect(m_settingsMonitor, &Kiran::Platformtheme::AppearanceMonitor::gtkThemeChanged, [this](){
-        changeSvgIconColor();
-    });
+    QObject::connect(m_settingsMonitor, &Kiran::Platformtheme::AppearanceMonitor::gtkThemeChanged, [this]()
+                     { changeSvgIconColor(); });
 }
 
 ThemedIconEngine::~ThemedIconEngine() = default;
@@ -76,7 +76,9 @@ QPixmap ThemedIconEngine::pixmap(const QSize &size, QIcon::Mode mode, QIcon::Sta
     }
 
     QSvgRenderer renderer(m_svgIconPath);
-    auto actualSize = renderer.defaultSize();
+    // 设置为图标大小，防止原图像过大导致经img反转像素后图片过大
+    auto actualSize = size;
+
     QImage img(actualSize, QImage::Format_ARGB32_Premultiplied);
     img.fill(0x00000000);
 
@@ -86,9 +88,19 @@ QPixmap ThemedIconEngine::pixmap(const QSize &size, QIcon::Mode mode, QIcon::Sta
     // Selected 状态下保持本色
     if (mode != QIcon::Selected)
     {
-        m_svgColor = Kiran::Theme::Palette::getDefault()->getBaseColors().baseForeground;
-        p.setCompositionMode(QPainter::CompositionMode_SourceIn);
-        p.fillRect(QRect(0, 0, actualSize.width(), actualSize.height()), m_svgColor);
+        if (m_svgConvertType == SvgConvertType::SVG_CONVERT_COMPOSITION)
+        {
+            m_svgColor = Kiran::Theme::Palette::getDefault()->getBaseColors().baseForeground;
+            p.setCompositionMode(QPainter::CompositionMode_SourceIn);
+            p.fillRect(QRect(0, 0, actualSize.width(), actualSize.height()), m_svgColor);
+        }
+        else if (m_svgConvertType == SvgConvertType::SVG_CONVERT_INVERT_PIXELS)
+        {
+            if (!m_settingsMonitor->gtkTheme().contains("dark"))
+            {
+                img.invertPixels(QImage::InvertRgb);
+            }
+        }
     }
 
     p.end();
@@ -110,7 +122,7 @@ void ThemedIconEngine::paint(QPainter *painter, const QRect &rect, QIcon::Mode m
         pixmapSize *= painter->device()->devicePixelRatioF();
     }
 
-    painter->drawPixmap(rect, pixmap(pixmapSize,mode,state));
+    painter->drawPixmap(rect, pixmap(pixmapSize, mode, state));
 }
 
 QIconEngine *ThemedIconEngine::clone() const
@@ -180,13 +192,13 @@ void ThemedIconEngine::virtual_hook(int id, void *data)
     break;
     case QIconEngine::IsNullHook:
     {
-        *reinterpret_cast<bool*>(data) = m_svgIconPath.isEmpty();
+        *reinterpret_cast<bool *>(data) = m_svgIconPath.isEmpty();
     }
     break;
     default:
         QIconEngine::virtual_hook(id, data);
     }
-} 
+}
 
 void ThemedIconEngine::changeSvgIconColor()
 {
@@ -195,7 +207,7 @@ void ThemedIconEngine::changeSvgIconColor()
 
     // 通知所有窗口重绘制
     QEvent update(QEvent::UpdateRequest);
-    for (QWindow* window : qGuiApp->allWindows())
+    for (QWindow *window : qGuiApp->allWindows())
     {
         if (window->type() == Qt::Desktop)
             continue;
