@@ -14,10 +14,10 @@
 #pragma once
 
 #include <QIconEngine>
-#include <QPixmap>
-#include <QMap>
-#include <QPixmapCache>
 #include <QList>
+#include <QMap>
+#include <QPixmap>
+#include <QPixmapCache>
 #include "lib/theme/palette.h"
 #include "plugins/platformtheme/appearance-monitor.h"
 
@@ -25,13 +25,20 @@ namespace Kiran
 {
 namespace Platformtheme
 {
-class ThemedIconEngine:public QIconEngine
+class ThemedIconEngine : public QIconEngine
 {
 public:
-    explicit ThemedIconEngine(const QString& themeSvgIconName);
+    enum SvgConvertType
+    {
+        SVG_CONVERT_COMPOSITION,  /** < 合成模式 */
+        SVG_CONVERT_INVERT_PIXELS /** < 像素反转 */
+    };
+
+public:
+    explicit ThemedIconEngine(const QString &themeSvgIconName, const SvgConvertType type);
     ~ThemedIconEngine() override;
 
-    static bool isValid(const QString& themeSvgIconName);
+    static bool isValid(const QString &themeSvgIconName);
     QSize actualSize(const QSize &size, QIcon::Mode mode, QIcon::State state) override;
     QPixmap pixmap(const QSize &size, QIcon::Mode mode, QIcon::State state) override;
     void paint(QPainter *painter, const QRect &rect, QIcon::Mode mode, QIcon::State state) override;
@@ -39,10 +46,10 @@ public:
 
 private:
     QByteArray pixmapCacheKey(const QSize &size, QIcon::Mode mode, QIcon::State state);
-    static QStringList getScalableSvgIconFromTheme(const QString& iconName);
+    static QStringList getScalableSvgIconFromTheme(const QString &iconName);
     void ensureLoaded();
-    void virtual_hook(int id, void *data) override; 
-    
+    void virtual_hook(int id, void *data) override;
+
 private slots:
     void changeSvgIconColor();
 
@@ -54,7 +61,9 @@ private:
     QMap<QString, QPixmap> m_pixmapCache;
 
     uint m_iconLoaderThemeKey = 0;
-    Platformtheme::AppearanceMonitor* m_settingsMonitor;
+    Platformtheme::AppearanceMonitor *m_settingsMonitor;
+
+    SvgConvertType m_svgConvertType;
 };
 }  // namespace Platformtheme
 }  // namespace Kiran
