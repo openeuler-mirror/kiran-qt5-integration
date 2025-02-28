@@ -1949,7 +1949,9 @@ void Style::drawPEFrameLineEdit(const QStyleOption *option, QPainter *painter, c
 {
     const auto &rect = option->rect;
 
-    auto background = DEFAULT_PALETTE()->getColor(option->state, Palette::WINDOW);
+    // QLineEdit::paintEvent中设置option->state |= QStyle::State_Sunken，导致获取的获取颜色为Sunken状态下的控件颜色，与预期不一致
+    // 指定获取ACTIVE状态下的控件颜色，与QCombobox颜色保持一致
+    auto background = DEFAULT_PALETTE()->getColor(Palette::ACTIVE, Palette::WIDGET);
     auto border = DEFAULT_PALETTE()->getColor(option->state, Palette::BORDER);
 
     // 控件高度不足够绘制边框
