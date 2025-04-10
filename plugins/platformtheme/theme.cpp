@@ -321,7 +321,8 @@ void Theme::handleScaleFactorChanged(int factor)
                     // qInfo() << "native geo:" << nativeGeo;
 
                     window->handle()->setGeometry(nativeGeo);
-                    QGuiApplication::sendEvent(window, new QEvent(QEvent::UpdateRequest));
+                    QEvent event(QEvent::UpdateRequest);
+                    QGuiApplication::sendEvent(window, &event);
                 }
             }
         }

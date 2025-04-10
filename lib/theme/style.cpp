@@ -269,9 +269,7 @@ QRect StylePrivate::scrollBarInternalSubControlRect(const QStyleOptionComplex *o
 
 void StylePrivate::drawPEIndicatorArrow(ArrowOrientation orientation, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
-    auto palettes = Palette::getDefault();
     auto arrowColor = Palette::getDefault()->getColor(option->state, Palette::ICON);
-
     RenderHelper::renderArrow(painter, option->rect, orientation, arrowColor);
 }
 
@@ -1065,7 +1063,6 @@ void Style::polish(QPalette &palette)
 
 void Style::drawPEFrame(const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
-    auto palettes = Palette::getDefault();
     auto background = Palette::getDefault()->getColor(option->state, Palette::WINDOW);
     auto border = Palette::getDefault()->getColor(option->state, Palette::BORDER);
 
@@ -1118,7 +1115,6 @@ void Style::drawControlShapedFrame(const QStyleOption *option, QPainter *painter
     case QFrame::HLine:
     case QFrame::VLine:
     {
-        const QRect &rect(option->rect);
         bool isVertical(frameOption->frameShape == QFrame::VLine);
         auto color = Palette::getDefault()->getColor(option->state, Palette::BORDER);
         RenderHelper::renderSeparator(painter, option->rect, isVertical, color);
@@ -1217,11 +1213,6 @@ QSize Style::toolButtonSizeFromContents(const QStyleOption *option, const QSize 
     if (!toolButtonOption) return contentSize;
 
     QSize size = contentSize;
-
-    const QStyle::State &state(option->state);
-
-    // Auto Raise标志： true表示自动突出，false表示与父窗口齐平
-    const bool autoRaise(state & QStyle::State_AutoRaise);
     const bool hasPopupMenu(toolButtonOption->features & QStyleOptionToolButton::MenuButtonPopup);
     const bool hasInlineIndicator(toolButtonOption->features & QStyleOptionToolButton::HasMenu && toolButtonOption->features & QStyleOptionToolButton::PopupDelay && !hasPopupMenu);
 
@@ -1288,18 +1279,8 @@ void Style::drawPEPushButton(ControlElement element, const QStyleOption *option,
     auto buttonOption = qstyleoption_cast<const QStyleOptionButton *>(option);
     RETURN_IF_FALSE(buttonOption);
 
-    const QRect &rect(buttonOption->rect);
     const QStyle::State &state(option->state);
     bool enabled(state & QStyle::State_Enabled);
-    bool windowActive(state & QStyle::State_Active);
-    bool mouseOver((state & QStyle::State_Active) && enabled && (state & QStyle::State_MouseOver));
-    bool hasFocus((enabled && (state & QStyle::State_HasFocus)) && !(widget && widget->focusProxy()));
-    bool sunken = (state & (QStyle::State_On | QStyle::State_Sunken));
-    bool flat(buttonOption->features & QStyleOptionButton::Flat);
-
-    auto palette = Palette::getDefault();
-    auto background = palette->getColor(option->state, Palette::WIDGET);
-    auto border = palette->getColor(option->state, Palette::BORDER);
 
     StylePrivate::ButtonType buttonType = StylePrivate::getButtonType(qobject_cast<const QPushButton *>(widget));
     // 若为 Button_Default 按钮中的文字为白色
@@ -1345,10 +1326,8 @@ void Style::drawPEPanelButtonCommand(const QStyleOption *option, QPainter *paint
     auto buttonOption = qstyleoption_cast<const QStyleOptionButton *>(option);
     RETURN_IF_FALSE(buttonOption);
 
-    const QRect &rect(option->rect);
     const QStyle::State &state(option->state);
     bool enabled(state & QStyle::State_Enabled);
-    bool windowActive(state & QStyle::State_Active);
     bool mouseOver((state & QStyle::State_Active) && enabled && (state & QStyle::State_MouseOver));
     bool hasFocus((enabled && (state & QStyle::State_HasFocus)) && !(widget && widget->focusProxy()));
     bool hasKeyboardFocusChange((option->state & State_KeyboardFocusChange) && hasFocus);  // 加入 State_KeyboardFocusChange 的目的：确保是使用 TAB 键切换焦点才显示选中边框
@@ -1400,13 +1379,10 @@ void Style::drawPEPanelButtonCommand(const QStyleOption *option, QPainter *paint
 
 void Style::drawPEPanelButtonTool(const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
-    const QPalette &palette(option->palette);
     QRect rect(option->rect);
-
     const QStyle::State &state(option->state);
     bool autoRaise(state & QStyle::State_AutoRaise);
     bool enabled(state & QStyle::State_Enabled);
-    bool windowActive(state & QStyle::State_Active);
     bool sunken(state & (QStyle::State_On | QStyle::State_Sunken));
     bool mouseOver((state & QStyle::State_Active) && enabled && (option->state & QStyle::State_MouseOver));
     bool hasFocus(enabled && (option->state & (QStyle::State_HasFocus)));
@@ -1575,7 +1551,6 @@ void Style::drawCCToolButton(const QStyleOptionComplex *option, QPainter *painte
     const QStyle::State &state(option->state);
     bool enabled(state & QStyle::State_Enabled);
     bool mouseOver((state & QStyle::State_Active) && enabled && (option->state & QStyle::State_MouseOver));
-    bool hasFocus(enabled && (option->state & QStyle::State_HasFocus));
     bool sunken(state & (QStyle::State_On | QStyle::State_Sunken));
     bool flat(state & QStyle::State_AutoRaise);
 
@@ -1641,6 +1616,9 @@ void Style::drawCCToolButton(const QStyleOptionComplex *option, QPainter *painte
                 break;
             case Qt::RightArrow:
                 painter->drawRect(rect.adjusted(0, 1, -2, -2));
+                break;
+            case Qt::NoArrow:
+            default:
                 break;
             }
 
@@ -1814,7 +1792,6 @@ void Style::drawCCComboBox(const QStyleOptionComplex *option, QPainter *painter,
 
     const QStyle::State &state(option->state);
     bool enabled(state & QStyle::State_Enabled);
-    bool windowActive(state & QStyle::State_Active);
     bool editable(comboBoxOption->editable);
     bool arrowActive(comboBoxOption->activeSubControls & QStyle::SC_ComboBoxArrow);
     bool flat(!comboBoxOption->frame);
@@ -1828,6 +1805,7 @@ void Style::drawCCComboBox(const QStyleOptionComplex *option, QPainter *painter,
     {
         sunken = enabled && (state & (QStyle::State_On | QStyle::State_Sunken));
     }
+    Q_UNUSED(sunken);
 
     const auto comboBox = qobject_cast<const QComboBox *>(widget);
     if (!comboBox)
@@ -1920,7 +1898,6 @@ void Style::drawControlComboBoxLabel(const QStyleOption *option, QPainter *paint
 
     const QStyle::State &state(option->state);
     const bool enabled(state & QStyle::State_Enabled);
-    const bool sunken(state & (QStyle::State_On | QStyle::State_Sunken));
     const bool mouseOver(enabled && (option->state & QStyle::State_MouseOver));
     const bool hasFocus(enabled && !mouseOver && (option->state & QStyle::State_HasFocus));
     const bool flat(!comboBoxOption->frame);
@@ -2158,7 +2135,6 @@ void Style::drawPEIndicatorButtonDropDown(const QStyleOption *option, QPainter *
     // do nothing for autoraise buttons
     RETURN_IF_TRUE((autoRaise && !sunken && !mouseOver) || !(toolButtonOption->subControls & QStyle::SC_ToolButtonMenu));
 
-    const QPalette &palette(option->palette);
     const QRect &rect(option->rect);
 
     auto backgroundColor = Palette::getDefault()->getColor(option->state, Palette::WIDGET);
@@ -2325,7 +2301,6 @@ void Style::drawPEIndicatorCheckBox(const QStyleOption *option, QPainter *painte
 void Style::drawPEIndicatorBranch(const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
     const QRect &rect(option->rect);
-    const QPalette &palette(option->palette);
 
     const QStyle::State &state(option->state);
     bool reverseLayout(option->direction == Qt::RightToLeft);
@@ -2336,8 +2311,6 @@ void Style::drawPEIndicatorBranch(const QStyleOption *option, QPainter *painter,
     {
         // state
         bool expanderOpen(state & QStyle::State_Open);
-        bool enabled(state & QStyle::State_Enabled);
-        bool mouseOver((state & QStyle::State_Active) && enabled && (state & QStyle::State_MouseOver));
 
         // expander rect
         int expanderSize = qMin(rect.width(), rect.height());
@@ -2396,7 +2369,6 @@ void Style::drawPEIndicatorBranch(const QStyleOption *option, QPainter *painter,
 void Style::drawPEIndicatorToolBarSeparator(const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
     const QStyle::State &state = option->state;
-    bool enable = (state & QStyle::State_Enabled);
     bool separatorIsVertical(state & QStyle::State_Horizontal);
 
     auto separatorColor = Palette::getDefault()->getColor(option->state, Palette::BORDER);
@@ -2409,8 +2381,6 @@ void Style::drawPEIndicatorToolBarHandle(const QStyleOption *option, QPainter *p
     const QStyle::State &state = option->state;
     QRect rect(option->rect);
     bool separatorIsVertical(state & QStyle::State_Horizontal);
-    bool enabled(state & QStyle::State_Enabled);
-
     auto separatorColor = Palette::getDefault()->getColor(option->state, Palette::BORDER);
 
     if (separatorIsVertical)
@@ -2438,10 +2408,6 @@ void Style::drawPEIndicatorToolBarHandle(const QStyleOption *option, QPainter *p
 void Style::drawControlHeaderSection(const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
     const QRect &rect(option->rect);
-    const QPalette &palette(option->palette);
-    const QStyle::State &state(option->state);
-    bool enabled(state & QStyle::State_Enabled);
-    bool mouseOver((state & QStyle::State_Active) && enabled && (state & QStyle::State_MouseOver));
 
     const auto *headerOption(qstyleoption_cast<const QStyleOptionHeader *>(option));
     RETURN_IF_FALSE(headerOption);
@@ -2582,7 +2548,6 @@ void Style::drawControlHeaderEmptyArea(const QStyleOption *option, QPainter *pai
 void Style::drawControlMenuBarItem(const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
     auto menuItemOption = qstyleoption_cast<const QStyleOptionMenuItem *>(option);
-    const QStyle::State &state = option->state;
     const bool enabled(option->state & QStyle::State_Enabled);
     const bool mouseOver((option->state & QStyle::State_MouseOver) && enabled);
     const bool sunken((option->state & QStyle::State_Sunken) && enabled);
@@ -2927,14 +2892,11 @@ void Style::drawCCScrollBar(const QStyleOptionComplex *option, QPainter *painter
     const auto scrollbarOption = qstyleoption_cast<const QStyleOptionSlider *>(option);
     RETURN_IF_FALSE(scrollbarOption);
 
-    bool enabled(option->state & QStyle::State_Enabled);
-    bool mouseOver((option->state & QStyle::State_Active) && option->state & QStyle::State_MouseOver);
-
     if (option->subControls & QStyle::SC_ScrollBarGroove)
     {
-        auto grooveRect = this->subControlRect(QStyle::CC_ScrollBar, option, QStyle::SC_ScrollBarGroove, widget);
 // 不绘制滑动槽
 #if 0
+        auto grooveRect = this->subControlRect(QStyle::CC_ScrollBar, option, QStyle::SC_ScrollBarGroove, widget);
         if( mouseOver )
         {
             QColor grooveColor = KiranPalette::instance()->color(widget,option,KiranPalette::Window,KiranPalette::Background);
@@ -2971,23 +2933,6 @@ void Style::drawControlScrollBarSlider(const QStyleOption *option, QPainter *pai
 
     bool enabled(state & QStyle::State_Enabled);
     bool mouseOver((state & QStyle::State_Active) && enabled && (state & QStyle::State_MouseOver));
-
-    const QWidget *parent = nullptr;
-    if ((widget && widget->parentWidget()))
-    {
-        auto scrollBar = qobject_cast<const QScrollBar *>(widget);
-
-        QAbstractScrollArea *scrollArea = nullptr;
-        if (!(scrollArea = qobject_cast<QAbstractScrollArea *>(widget->parentWidget())))
-        {
-            scrollArea = qobject_cast<QAbstractScrollArea *>(widget->parentWidget()->parentWidget());
-        }
-
-        if (scrollArea && (scrollBar == scrollArea->verticalScrollBar() || scrollBar == scrollArea->horizontalScrollBar()))
-        {
-            parent = scrollArea;
-        }
-    }
 
     handleRect = rect;
     if (!mouseOver && horizontal)
@@ -3062,20 +3007,24 @@ void Style::drawCCSlider(const QStyleOptionComplex *option, QPainter *painter, c
 
     // copy rect and palette
     const QRect &rect(option->rect);
-    const QPalette &palette(option->palette);
 
     // copy state
     const QStyle::State &state(option->state);
     bool enabled(state & QStyle::State_Enabled);
-    bool windowActive(state & QStyle::State_Active);
-    bool mouseOver((state & QStyle::State_Active) && enabled && (state & QStyle::State_MouseOver));
     bool hasFocus(enabled && (state & QStyle::State_HasFocus));
     bool horizontal(sliderOption->orientation == Qt::Horizontal);
+
+    // CWE-571: Operator '|' with one operand equal to zero is redundant.
+    // sonarqube block off
     Side tickSide{SideNone};
     if (horizontal && sliderOption->tickPosition == QSlider::TicksAbove) tickSide = (Side)((int)tickSide | (int)SideTop);
     if (horizontal && sliderOption->tickPosition == QSlider::TicksBelow) tickSide = (Side)((int)tickSide | (int)SideBottom);
     if (!horizontal && sliderOption->tickPosition == QSlider::TicksLeft) tickSide = (Side)((int)tickSide | (int)SideLeft);
     if (!horizontal && sliderOption->tickPosition == QSlider::TicksRight) tickSide = (Side)((int)tickSide | (int)SideRight);
+    // sonarqube block on
+
+    // 保留tickSide选项
+    Q_UNUSED(tickSide);
 
     auto palettes = Palette::getDefault();
     // 背景只考虑启用和禁用状态，悬浮和点击不用变颜色
@@ -3204,8 +3153,8 @@ void Style::drawCCSlider(const QStyleOptionComplex *option, QPainter *painter, c
         QRectF handleRect(this->subControlRect(QStyle::CC_Slider, sliderOption, QStyle::SC_SliderHandle, widget));
 
         // handle state
-        bool handleActive(sliderOption->activeSubControls & QStyle::SC_SliderHandle);
-        bool sunken(state & (QStyle::State_On | QStyle::State_Sunken));
+        // bool handleActive(sliderOption->activeSubControls & QStyle::SC_SliderHandle);
+        // bool sunken(state & (QStyle::State_On | QStyle::State_Sunken));
 
         auto handleBorder = QColor(255, 255, 255);
         auto handleBackground = palettes->getColor(option->state, Palette::SCROLL);
@@ -3381,9 +3330,7 @@ void Style::drawCCSpinBox(const QStyleOptionComplex *option, QPainter *painter, 
     const auto spinBoxOption(qstyleoption_cast<const QStyleOptionSpinBox *>(option));
     RETURN_IF_FALSE(spinBoxOption);
 
-    const QPalette &palette(option->palette);
     const QRect &rect(option->rect);
-
     if (option->subControls & QStyle::SC_SpinBoxFrame)
     {
         // detect flat spinboxes
@@ -3460,7 +3407,6 @@ QSize Style::tabBarTabSizeFromContents(const QStyleOption *option, const QSize &
 
 void Style::drawPEFrameTabWidget(const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
-    auto palettes = Palette::getDefault();
     auto background = Palette::getDefault()->getColor(option->state, Palette::WINDOW);
     auto border = Palette::getDefault()->getColor(option->state, Palette::BORDER);
     RenderHelper::renderFrame(painter, option->rect, 1, 0, background, border);
@@ -3471,19 +3417,9 @@ void Style::drawControlTabBarTabShape(const QStyleOption *option, QPainter *pain
     const auto tabOption(qstyleoption_cast<const QStyleOptionTab *>(option));
     RETURN_IF_FALSE(tabOption);
 
-    const QPalette &palette(option->palette);
-    const QStyle::State &state(option->state);
-    bool enabled(state & QStyle::State_Enabled);
-    bool selected(state & QStyle::State_Selected);
-    bool mouseOver((state & QStyle::State_Active) && !selected && (state & QStyle::State_MouseOver) && enabled);
-
-    // check if tab is being dragged
-    bool isDragged(widget && selected && painter->device() != widget);
-    // bool isLocked(widget && _tabBarData->isLocked(widget));
 
     const QStyleOptionTab::TabPosition &position = tabOption->position;
     const bool isSingle(position == QStyleOptionTab::OnlyOneTab);
-    const bool isQtQuickControl(RenderHelper::isQtQuickControl(option, widget));
     bool isFirst(isSingle || position == QStyleOptionTab::Beginning);
     bool isLast(isSingle || position == QStyleOptionTab::End);
     bool isLeftOfSelected(/*!isLocked &&*/ tabOption->selectedPosition == QStyleOptionTab::NextIsSelected);
