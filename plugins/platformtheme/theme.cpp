@@ -106,6 +106,8 @@ QVariant Theme::themeHint(QPlatformTheme::ThemeHint hint) const
                              << "/usr/local/share/icons";
     case StyleNames:
         return QStringList{"kiran", "fusion"};
+    case ShowShortcutsInContextMenus:
+        return false;
     default:
         break;
     }

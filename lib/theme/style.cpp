@@ -61,6 +61,7 @@ namespace Kiran
 {
 namespace Theme
 {
+
 static const int groupBoxTopMargin = 3;
 
 StylePrivate::StylePrivate(Style *ptr) : q_ptr(ptr)
@@ -274,6 +275,35 @@ void StylePrivate::drawPEIndicatorArrow(ArrowOrientation orientation, const QSty
     RenderHelper::renderArrow(painter, option->rect, orientation, arrowColor);
 }
 
+static const char *property_translucented_background = "_kiran_translucented_background";
+void StylePrivate::enusreMenuWindowTranslucentBackground(QMenu *widget)
+{
+    // 确保QMenu(QWidget::create)调用之前，该方法得到调用，否则窗口背景透明将失效
+    if (!widget->testAttribute(Qt::WA_TranslucentBackground) && widget->testAttribute(Qt::WA_WState_Created))
+    {
+        // 句柄已创建，需要销毁并重新创建窗口句柄，否则设置Qt::WA_TranslucentBackground不会生效
+        // #0  QWidget::create
+        // #1  QWidgetPrivate::setScreen(QScreen*)
+        // #3  QMenuPrivate::popup(QPoint const&, QAction*, std::function<QPoint (QSize const&)>)
+        // #4  QMenu::popup(QPoint const&, QAction*)
+        // #5  QWidget::event(QEvent*)
+        qWarning() << "menu window set translucent background failed";
+        return;
+    }
+
+    if (widget->testAttribute(Qt::WA_WState_Created) || !widget->property(property_translucented_background).isNull())
+    {
+        return;
+    }
+
+    widget->setAttribute(Qt::WA_TranslucentBackground);
+    widget->setProperty(property_translucented_background, 1);
+
+    // NOTE:
+    // 设置窗口属性，标记该ARGB窗口需要绘制阴影
+    // 目前考虑修改窗口管理器实现读取窗口属性，然后进行绘制阴影，部分窗口管理器调整绘制圆角阴影
+}
+
 StylePrivate::ButtonType StylePrivate::getButtonType(const QPushButton *btn)
 {
     ButtonType buttonType = BUTTON_Normal;
@@ -310,6 +340,12 @@ Style::~Style()
 
 int Style::styleHint(QStyle::StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const
 {
+    if (qobject_cast<const QMenu *>(widget))
+    {
+        auto menu = qobject_cast<const QMenu *>(widget);
+        d_ptr->enusreMenuWindowTranslucentBackground(const_cast<QMenu *>(menu));
+    }
+
     switch (hint)
     {
     // 下栏框的下栏列表鼠标追踪
@@ -393,6 +429,9 @@ int Style::styleHint(QStyle::StyleHint hint, const QStyleOption *option, const Q
     // Table里网格线的颜色
     case SH_Table_GridLineColor:
         return Palette::getDefault()->getBaseColors().widgetBorder.rgb();
+    // 禁用蚀刻禁用文本功能
+    case SH_EtchDisabledText:
+        return false;
     default:
         return QProxyStyle::styleHint(hint, option, widget, returnData);
     }
@@ -512,7 +551,7 @@ int Style::pixelMetric(QStyle::PixelMetric metric, const QStyleOption *option, c
     case PM_ScrollBarSliderMin:
         return 20;
 
-        // scrollview
+    // scrollview
     case PM_ScrollView_ScrollBarOverlap:
         return 1;
 
@@ -554,7 +593,23 @@ int Style::pixelMetric(QStyle::PixelMetric metric, const QStyleOption *option, c
         return 1;
     case PM_DockWidgetSeparatorExtent:
         return 1;
-
+    // 后续 Menu R角预留阴影8像素
+    case PM_MenuHMargin:
+    {
+        if( widget && widget->inherits("QMenu") )
+        {
+            return 8;
+        }
+        break;
+    }
+    case PM_MenuVMargin:
+    {
+        if( widget && widget->inherits("QMenu") )
+        {
+            return 12;
+        }
+        break;
+    }
     default:  // fallback
         break;
     }
@@ -2586,15 +2641,19 @@ void Style::drawControlMenuBarEmptyArea(const QStyleOption *option, QPainter *pa
 
 void Style::drawPEPanelMenu(const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
-    const auto panelMenuOption(qstyleoption_cast<const QStyleOptionFrame *>(option));
-    RETURN_IF_FALSE(panelMenuOption);
-
-    if (widget && widget->inherits("QComboBoxPrivateContainer"))
+    PainterSaver pSaver(painter);
+    if (widget->inherits("QMenu"))
     {
-        painter->save();
-        auto bgColor = Palette::getDefault()->getBaseColors().widgetMain;  // 与combobox菜单项颜色一致
-        painter->fillRect(option->rect, bgColor);
-        painter->restore();
+        // NOTE: 需和KiranTitleBarWindow统一圆角，后续圆角等参数定义统一转到kiran-desktop开发包里
+        auto backgroundrect = option->rect.adjusted(8, 8, -8, -8);
+        auto painterPath = RenderHelper::roundedPath(backgroundrect, AllCorners, 8);
+        auto bgColor = Palette::getDefault()->getBaseColors().baseBackground;
+        auto borderColor = Palette::getDefault()->getBaseColors().widgetBorder;
+
+        painter->setRenderHint(QPainter::Antialiasing);
+        painter->setPen({borderColor, 0.5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin});
+        painter->setBrush(bgColor);
+        painter->drawPath(painterPath);
     }
 }
 
