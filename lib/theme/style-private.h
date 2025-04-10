@@ -20,7 +20,7 @@
 
 class QStyleOptionTab;
 class QStyleOptionSpinBox;
-
+class QMenu;
 namespace Kiran
 {
 namespace Theme
@@ -48,13 +48,13 @@ class StylePrivate : QObject
 
 public:
     explicit StylePrivate(Style* ptr);
-
     static ButtonType getButtonType(const QPushButton *btn);
     void tabLayout(const QStyleOptionTab* opt, const QWidget* widget, QRect* textRect, QRect* iconRect) const;
     void renderSpinBoxArrow(const QStyle::SubControl& subControl, const QStyleOptionSpinBox* option, QPainter* painter, const QWidget* widget) const;
     int scrollBarButtonHeight(ScrollBarButtonType type) const;
     QRect scrollBarInternalSubControlRect(const QStyleOptionComplex* option, QStyle::SubControl subControl) const;
     void drawPEIndicatorArrow(ArrowOrientation orientation, const QStyleOption* option, QPainter* painter, const QWidget* widget) const;
+    void enusreMenuWindowTranslucentBackground(QMenu* widget);
 
 private:
     Style* q_ptr;
