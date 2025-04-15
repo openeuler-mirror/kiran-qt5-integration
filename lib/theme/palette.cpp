@@ -213,7 +213,11 @@ void PalettePrivate::dumpColors()
                                << qSetFieldWidth(2)
                                << qSetPadChar('0')
                                << "0x"
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
+                               << Qt::hex
+#else
                                << hex
+#endif
                                << this->m_colors[colorGroup][colorRole].red()
                                << this->m_colors[colorGroup][colorRole].green()
                                << this->m_colors[colorGroup][colorRole].blue()

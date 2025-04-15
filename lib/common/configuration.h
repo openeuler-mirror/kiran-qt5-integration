@@ -27,8 +27,10 @@ class Configuration
 {
 public:
     static Configuration* instance();
+    Configuration(Configuration& other) = delete;
+    Configuration& operator=(Configuration& other) = delete;
 
-    ~Configuration() = default;;
+    ~Configuration() = default;
 
     // KQI_CONFIGURATION_PATH 示例
     // [Style]

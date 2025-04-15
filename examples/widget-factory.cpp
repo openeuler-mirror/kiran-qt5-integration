@@ -187,7 +187,9 @@ void QtWidgetFactor::initTabBar()
 
 void QtWidgetFactor::initThemedIcon()
 {
+    // sonarqube block off
     auto mainLayout = new QHBoxLayout(ui->themedIconContainerWidget);
+    // sonarqube block on
 
     QList<QString> iconList = {
         "firefox",
