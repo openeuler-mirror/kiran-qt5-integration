@@ -106,6 +106,8 @@ QVariant Theme::themeHint(QPlatformTheme::ThemeHint hint) const
                              << "/usr/local/share/icons";
     case StyleNames:
         return QStringList{"kiran", "fusion"};
+    case ShowShortcutsInContextMenus:
+        return false;
     default:
         break;
     }
@@ -319,7 +321,8 @@ void Theme::handleScaleFactorChanged(int factor)
                     // qInfo() << "native geo:" << nativeGeo;
 
                     window->handle()->setGeometry(nativeGeo);
-                    QGuiApplication::sendEvent(window, new QEvent(QEvent::UpdateRequest));
+                    QEvent event(QEvent::UpdateRequest);
+                    QGuiApplication::sendEvent(window, &event);
                 }
             }
         }

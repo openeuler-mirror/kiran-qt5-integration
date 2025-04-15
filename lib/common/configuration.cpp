@@ -58,8 +58,11 @@ QSet<QString> Configuration::getEnabledApps()
     m_settings->beginGroup(KQI_INI_GROUP_NAME);
     QStringList enabledAppsList = m_settings->value(KQI_INI_KEY_ENABLED_APPS).toStringList();
     m_settings->endGroup();
-
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
+    enabledApps = QSet<QString>(enabledAppsList.begin(), enabledAppsList.end());
+#else
     enabledApps = QSet<QString>::fromList(enabledAppsList);
+#endif
     return enabledApps;
 }
 

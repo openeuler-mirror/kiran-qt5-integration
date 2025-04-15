@@ -346,7 +346,7 @@ void RenderHelper::renderArrow(QPainter *painter, const QRect &rect, ArrowOrient
     }
     QMatrix matrix;
     matrix.rotate(rotateAngle);
-    QPixmap arrowPixmap = tempPixmap.transformed(matrix, Qt::SmoothTransformation);
+    QPixmap arrowPixmap = tempPixmap.transformed(QTransform(matrix), Qt::SmoothTransformation);
 
     // 绘制图片
     QRect arrowRect = centerRect(rect, arrowPixmap.size());
