@@ -17,16 +17,17 @@ add_library(${TARGET_NAME} SHARED ${STYLE_CPP_FILES} ${STYLE_QRC} ${STYLE_QRC_SO
 
 set_target_properties(${TARGET_NAME} PROPERTIES VERSION ${PROJECT_VERSION}
                                                 SOVERSION 2)
-
 target_include_directories(
   ${TARGET_NAME}
-  PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
+  PRIVATE 
           ${CMAKE_CURRENT_BINARY_DIR}
           ${PROJECT_SOURCE_DIR}
           ${PROJECT_SOURCE_DIR}/include
           ${Qt5Gui_PRIVATE_INCLUDE_DIRS}
           ${Qt5Widgets_PRIVATE_INCLUDE_DIRS}
-          ${Qt5Svg_PRIVATE_INCLUDE_DIRS})
+          ${Qt5Svg_PRIVATE_INCLUDE_DIRS}
+  INTERFACE
+  ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_link_libraries(${TARGET_NAME} Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Svg)
 
