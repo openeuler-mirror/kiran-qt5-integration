@@ -22,6 +22,8 @@
 #include <QSvgRenderer>
 #include <QTimer>
 #include <QWindow>
+#include "lib/theme/palette.h"
+#include "plugins/platformtheme/appearance-monitor.h"
 
 namespace Kiran
 {
@@ -29,15 +31,35 @@ namespace Platformtheme
 {
 ThemedIconEngine::ThemedIconEngine(const QString &themeSvgIconName, const SvgConvertType type)
     : QIconEngine(),
+      m_svgColor(Kiran::Theme::Palette::getDefault()->getBaseColors().baseForeground),
       m_iconName(themeSvgIconName),
       m_svgConvertType(type)
 {
     m_settingsMonitor = Kiran::Platformtheme::AppearanceMonitor::instance();
-    QObject::connect(m_settingsMonitor, &Kiran::Platformtheme::AppearanceMonitor::gtkThemeChanged, [this]()
-                     { changeSvgIconColor(); });
+    m_themeChangedConn = QObject::connect(m_settingsMonitor, &AppearanceMonitor::gtkThemeChanged, [this]()
+                                                              { changeSvgIconColor(); });
 }
 
-ThemedIconEngine::~ThemedIconEngine() = default;
+ThemedIconEngine::ThemedIconEngine(const ThemedIconEngine &other)
+    : QIconEngine(other),
+      m_svgColor(other.m_svgColor),
+      m_iconName(other.m_iconName),
+      m_svgIconPath(other.m_svgIconPath),
+      m_pixmapCache(other.m_pixmapCache),
+      m_iconLoaderThemeKey(other.m_iconLoaderThemeKey),
+      m_settingsMonitor(other.m_settingsMonitor),
+      m_svgConvertType(other.m_svgConvertType),
+      m_themeChangedConn(QMetaObject::Connection())
+{
+    m_settingsMonitor = Kiran::Platformtheme::AppearanceMonitor::instance();
+    m_themeChangedConn = QObject::connect(m_settingsMonitor, &AppearanceMonitor::gtkThemeChanged, [this]()
+                                                              { changeSvgIconColor(); });
+}
+
+ThemedIconEngine::~ThemedIconEngine()
+{
+    QObject::disconnect(m_themeChangedConn);
+}
 
 bool ThemedIconEngine::isValid(const QString &themeSvgIconName)
 {
