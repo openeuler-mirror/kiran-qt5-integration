@@ -17,14 +17,12 @@
 #include <QList>
 #include <QMap>
 #include <QPixmap>
-#include <QPixmapCache>
-#include "lib/theme/palette.h"
-#include "plugins/platformtheme/appearance-monitor.h"
 
 namespace Kiran
 {
 namespace Platformtheme
 {
+class AppearanceMonitor;
 class ThemedIconEngine : public QIconEngine
 {
 public:
@@ -36,6 +34,7 @@ public:
 
 public:
     explicit ThemedIconEngine(const QString &themeSvgIconName, const SvgConvertType type);
+    ThemedIconEngine(const ThemedIconEngine& other);
     ~ThemedIconEngine() override;
 
     static bool isValid(const QString &themeSvgIconName);
@@ -54,16 +53,15 @@ private slots:
     void changeSvgIconColor();
 
 private:
-    QColor m_svgColor = Kiran::Theme::Palette::getDefault()->getBaseColors().baseForeground;
+    QColor m_svgColor;
     QString m_iconName;
     QString m_svgIconPath;
-
     QMap<QString, QPixmap> m_pixmapCache;
-
     uint m_iconLoaderThemeKey = 0;
-    Platformtheme::AppearanceMonitor *m_settingsMonitor;
-
+    AppearanceMonitor *m_settingsMonitor;
     SvgConvertType m_svgConvertType;
+    QMetaObject::Connection m_themeChangedConn;
+
 };
 }  // namespace Platformtheme
 }  // namespace Kiran
