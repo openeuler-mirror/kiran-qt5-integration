@@ -9,6 +9,7 @@ variables:
                    enabled=1
   RPM_BUILD_REQUIRES: 'gcc-c++ cmake pkgconf qt5-qtbase-devel qt5-qtbase-private-devel qt5-qtbase-static qt5-qtsvg-devel qt5-linguist gsettings-qt-devel kiran-qdbusxml2cpp kiran-log-qt5-devel kiran-cc-daemon-devel'
   DEFAULT_IMAGE: kylinsec-3.5.2
+  WORK_BRANCHES: '2.7'
 include:
   - project: 'os/ks-devops'
     ref: main
