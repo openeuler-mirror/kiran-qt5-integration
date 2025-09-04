@@ -13,6 +13,7 @@
  */
 
 #include "appearance-monitor.h"
+#include <kiran-session-daemon/settings-i.h>
 #include <QApplication>
 #include <QDebug>
 #include <QFont>
@@ -27,14 +28,6 @@ namespace Kiran
 namespace Platformtheme
 {
 
-// TODO：后面改为include "xsettings-i.h"
-#define XSETTINGS_SCHEMA_ID "com.kylinsec.kiran.xsettings"
-#define XSETTINGS_SCHEMA_GTK_FONT_NAME "gtkFontName"
-#define XSETTINGS_SCHEMA_NET_ICON_THEME_NAME "netIconThemeName"
-#define XSETTINGS_SCHEMA_NET_THEME_NAME "netThemeName"
-#define XSETTINGS_SCHEMA_GTK_CURSOR_THEME_NAME "gtkCursorThemeName"
-#define XSETTINGS_SCHEMA_WINDOW_SCALING_FACTOR "windowScalingFactor"
-
 #define MARCO_SCHEMA_ID "org.mate.Marco.general"
 #define MARCO_SCHAME_KEY_TITLEBAR_FONT "titlebarFont"
 
@@ -43,7 +36,7 @@ AppearanceMonitor::AppearanceMonitor(QObject *parent) : QObject(parent)
     m_polishCursorTimer = new QTimer(this);
     m_polishCursorTimer->setInterval(500);
     m_polishCursorTimer->setSingleShot(true);
-    m_xsettingsSettings = new QGSettings(XSETTINGS_SCHEMA_ID, "", this);
+    m_xsettingsSettings = new QGSettings(SETTINGS_SCHEMA_ID, "", this);
     m_marcoSettings = new QGSettings(MARCO_SCHEMA_ID, "", this);
 
     loadAppearance();
@@ -140,7 +133,7 @@ void AppearanceMonitor::loadAppearance()
 
 void AppearanceMonitor::loadScalingFactor()
 {
-    auto windowScaleFactor = m_xsettingsSettings->get(XSETTINGS_SCHEMA_WINDOW_SCALING_FACTOR).toInt();
+    auto windowScaleFactor = m_xsettingsSettings->get(SETTINGS_SCHEMA_WINDOW_SCALING_FACTOR).toInt();
 
     if (m_scaleFactor != windowScaleFactor)
     {
@@ -154,7 +147,7 @@ void AppearanceMonitor::updateAppFont()
     QString fontName;
     int fontSize = 10;
 
-    auto fontValue = m_xsettingsSettings->get(XSETTINGS_SCHEMA_GTK_FONT_NAME).toString();
+    auto fontValue = m_xsettingsSettings->get(SETTINGS_SCHEMA_GTK_FONT_NAME).toString();
     if (!parseFontValue(fontValue, fontName, fontSize))
     {
         qWarning() << "Parse application font" << fontValue << "failed!";
@@ -195,7 +188,7 @@ void AppearanceMonitor::updateWindowFont()
 
 void AppearanceMonitor::updateIconTheme()
 {
-    auto iconTheme = m_xsettingsSettings->get(XSETTINGS_SCHEMA_NET_ICON_THEME_NAME).toString();
+    auto iconTheme = m_xsettingsSettings->get(SETTINGS_SCHEMA_NET_ICON_THEME_NAME).toString();
     qDebug() << "Icon theme is" << iconTheme;
 
     if (iconTheme != m_iconTheme)
@@ -207,7 +200,7 @@ void AppearanceMonitor::updateIconTheme()
 
 void AppearanceMonitor::updateWindowTheme()
 {
-    QString gtkThemeName = m_xsettingsSettings->get(XSETTINGS_SCHEMA_NET_THEME_NAME).toString();
+    QString gtkThemeName = m_xsettingsSettings->get(SETTINGS_SCHEMA_NET_THEME_NAME).toString();
     QString windowThemeName;
     if (gtkThemeName.contains("dark", Qt::CaseInsensitive))
         windowThemeName = "kiran-dark";
@@ -239,23 +232,23 @@ void AppearanceMonitor::processXSettingsSettingChanged(const QString &key)
 {
     qDebug() << "Xsettings gsettings key" << key << "is changed.";
 
-    if (key == XSETTINGS_SCHEMA_GTK_FONT_NAME)
+    if (key == SETTINGS_SCHEMA_GTK_FONT_NAME)
     {
         updateAppFont();
     }
-    else if (key == XSETTINGS_SCHEMA_NET_ICON_THEME_NAME)
+    else if (key == SETTINGS_SCHEMA_NET_ICON_THEME_NAME)
     {
         updateIconTheme();
     }
-    else if (key == XSETTINGS_SCHEMA_NET_THEME_NAME)
+    else if (key == SETTINGS_SCHEMA_NET_THEME_NAME)
     {
         updateWindowTheme();
     }
-    else if (key == XSETTINGS_SCHEMA_GTK_CURSOR_THEME_NAME)
+    else if (key == SETTINGS_SCHEMA_GTK_CURSOR_THEME_NAME)
     {
         updateCursorTheme();
     }
-    else if (key == XSETTINGS_SCHEMA_WINDOW_SCALING_FACTOR)
+    else if (key == SETTINGS_SCHEMA_WINDOW_SCALING_FACTOR)
     {
         loadScalingFactor();
     }
