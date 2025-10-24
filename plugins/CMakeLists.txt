@@ -1,3 +1,4 @@
 add_subdirectory(platformtheme)
 add_subdirectory(style)
 add_subdirectory(kdecoration)
+add_subdirectory(windowswitcher)

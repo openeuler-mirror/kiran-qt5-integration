@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Kiran TabBox Simple
+Comment=Minimal KWin task switcher with icons and text
+Icon=preferences-system-windows
+Type=Service
+X-KDE-ServiceTypes=KWin/WindowSwitcher
+X-Plasma-API=declarativeappletscript
+X-Plasma-MainScript=ui/main.qml
+X-KDE-PluginInfo-Author=Kiran
+X-KDE-PluginInfo-Name=kiran-windowswitcher-simple
+X-KDE-PluginInfo-Version=1.0
+X-KDE-PluginInfo-License=Mulan
+X-KDE-PluginInfo-EnabledByDefault=true
