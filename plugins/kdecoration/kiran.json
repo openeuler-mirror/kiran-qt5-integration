@@ -1,0 +1,14 @@
+{
+    "KPlugin": {
+        "Description": "Window decoration",
+        "EnabledByDefault": false,
+        "Id": "com.kylinsec.Kiran",
+        "Name": "Kiran",
+        "ServiceTypes": [
+            "org.kde.kdecoration2"
+        ]
+    },
+    "org.kde.kdecoration2": {
+        "blur": false
+    }
+}
