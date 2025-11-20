@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/kdecoration/Kiran">
+        <file alias="window-close-symbolic.svg">images/Kiran/window-close-symbolic.svg</file>
+        <file alias="window-maximize-symbolic.svg">images/Kiran/window-maximize-symbolic.svg</file>
+        <file alias="window-minimize-symbolic.svg">images/Kiran/window-minimize-symbolic.svg</file>
+    </qresource>
+    <qresource prefix="/kdecoration/Kiran-Rounded">
+        <file alias="window-close-symbolic.svg">images/Kiran-Rounded/window-close-symbolic.svg</file>
+        <file alias="window-maximize-symbolic.svg">images/Kiran-Rounded/window-maximize-symbolic.svg</file>
+        <file alias="window-minimize-symbolic.svg">images/Kiran-Rounded/window-minimize-symbolic.svg</file>
+    </qresource>
+</RCC>

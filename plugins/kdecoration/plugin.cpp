@@ -18,6 +18,9 @@
 K_PLUGIN_FACTORY_WITH_JSON(
     KiranDecorationFactory,
     "kiran.json",
-    registerPlugin<Kiran::KDecoration::Decoration>(););
+    registerPlugin<Kiran::KDecoration::Decoration>();
+    registerPlugin<Kiran::KDecoration::ThemeProvider>();
+);
 
+    
 #include "plugin.moc"

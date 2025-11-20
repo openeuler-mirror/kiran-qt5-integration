@@ -21,13 +21,14 @@
 #include <KSharedConfig>
 #include <QDebug>
 #include <QPainter>
+#include <QPainterPath>
 #include <QPalette>
 #include <QPoint>
 #include <QSharedPointer>
-#include "box-shadow-helper.h"
 #include "button.h"
+#include "internel-setting.h"
 #include "palette.h"
-#include "shadow-params.h"
+#include "utils.h"
 
 namespace Kiran
 {
@@ -53,6 +54,12 @@ static QSharedPointer<KDecoration2::DecorationShadow> s_cachedShadow;
 Decoration::Decoration(QObject *parent, const QVariantList &args)
     : KDecoration2::Decoration(parent, args)
 {
+    QVariantMap map;
+    if (args.size() >= 1 && args.at(0).canConvert<QVariantMap>())
+    {
+        map = args.at(0).toMap();
+    }
+    m_internelSetting = new InternelSetting(map, this);
     ++s_decoCount;
 }
 
@@ -69,40 +76,26 @@ void Decoration::paint(QPainter *painter, const QRect &repaintRegion)
     auto decoratedClient = client().toStrongRef();
     if (!decoratedClient->isShaded())
     {
+        // 绘制边框背景
         paintFrameBackground(painter, repaintRegion);
     }
-
     paintTitleBarBackground(painter, repaintRegion);
     paintButtons(painter, repaintRegion);
     paintCaption(painter, repaintRegion);
+    paintBorder(painter, repaintRegion);
 }
 
 void Decoration::init()
 {
     auto c = client().toStrongRef();
     auto s = settings();
+    auto themePalette = Theme::Palette::getDefault();
 
-    connect(c.data(), &KDecoration2::DecoratedClient::widthChanged,
-            this, &Decoration::updateTitleBar);
-    connect(c.data(), &KDecoration2::DecoratedClient::widthChanged,
-            this, &Decoration::updateButtonsGeometry);
-    connect(c.data(), &KDecoration2::DecoratedClient::maximizedChanged,
-            this, &Decoration::updateButtonsGeometry);
-
-    auto repaintTitleBar = [this]
-    {
-        update(titleBar());
-    };
-    connect(c.data(), &KDecoration2::DecoratedClient::captionChanged,
-            this, repaintTitleBar);
-    connect(c.data(), &KDecoration2::DecoratedClient::activeChanged,
-            this, repaintTitleBar);
-    connect(Theme::Palette::getDefault(), &Theme::Palette::baseColorsChanged,
-            this, repaintTitleBar);
+    Q_UNUSED(s)
 
     updateBorders();
-    updateResizeBorders();
     updateTitleBar();
+    updateResizeBorders();
 
     auto buttonCreator = [this](KDecoration2::DecorationButtonType type, KDecoration2::Decoration *decoration, QObject *parent)
         -> KDecoration2::DecorationButton *
@@ -114,7 +107,6 @@ void Decoration::init()
         }
         return new Button(type, this, parent);
     };
-
     m_leftButtons = new KDecoration2::DecorationButtonGroup(
         KDecoration2::DecorationButtonGroup::Position::Left,
         this,
@@ -124,52 +116,90 @@ void Decoration::init()
         KDecoration2::DecorationButtonGroup::Position::Right,
         this,
         buttonCreator);
-
     updateButtonsGeometry();
 
     // For some reason, the shadow should be installed the last. Otherwise,
     // the Window Decorations KCM crashes.
     updateShadow();
+
+    connect(themePalette, &Theme::Palette::baseColorsChanged,
+            this, [this]
+            { update(); });
+    connect(c.data(), &KDecoration2::DecoratedClient::widthChanged, this, [this]
+            {
+                updateTitleBar();
+                updateButtonsGeometry();
+                update();
+            });
+    connect(c.data(), &KDecoration2::DecoratedClient::maximizedChanged,
+            this, [this]
+            {
+                updateBorders();
+                updateTitleBar();
+                updateButtonsGeometry();
+                update();
+            });
+    auto repaintTitleBar = [this]
+    {
+        update(titleBar());
+    };
+    connect(c.data(), &KDecoration2::DecoratedClient::captionChanged,
+            this, repaintTitleBar);
+    connect(c.data(), &KDecoration2::DecoratedClient::activeChanged,
+            this, repaintTitleBar);
 }
 
 void Decoration::updateBorders()
 {
-    QMargins borders;
-    borders.setTop(titleBarHeight());
-    setBorders(borders);
+    QMargins margins;
+    const int border = borderWidth();
+    const int titleBarHeight = m_internelSetting->titleBarHeight();
+    margins.setTop(titleBarHeight + border);
+    margins.setBottom(border);
+    margins.setLeft(border);
+    margins.setRight(border);
+    setBorders(margins);
 }
 
 void Decoration::updateResizeBorders()
 {
     QMargins borders;
-
     const int extender = settings()->largeSpacing();
     borders.setLeft(extender);
     borders.setTop(extender);
     borders.setRight(extender);
     borders.setBottom(0);
-
     setResizeOnlyBorders(borders);
 }
 
 void Decoration::updateTitleBar()
 {
+    // 窗口标题栏填充边框区域，边框绘制在标题栏上方
     auto decoratedClient = client().toStrongRef();
-    setTitleBar(QRect(0, 0, decoratedClient->width(), titleBarHeight()));
+    const int border = borderWidth();
+    QRect titleBarRect(0, 0,
+                       decoratedClient->width() + 2 * border,
+                       m_internelSetting->titleBarHeight() + border);
+    setTitleBar(titleBarRect);
 }
 
 void Decoration::updateButtonsGeometry()
 {
+    // 根据按钮大小以及标题栏高度，保持按钮居中
+    auto buttonSize = m_internelSetting->buttonSize();
+    auto titleBarHeightValue = m_internelSetting->titleBarHeight();
+    qreal yOffset = (titleBarHeightValue - buttonSize) / 2.0;
+
     if (!m_leftButtons->buttons().isEmpty())
     {
-        m_leftButtons->setPos(QPointF(0, 0));
-        m_leftButtons->setSpacing(0);
+        m_leftButtons->setPos(QPointF(m_internelSetting->buttonSpacing(), yOffset));
+        m_leftButtons->setSpacing(m_internelSetting->buttonSpacing());
     }
 
     if (!m_rightButtons->buttons().isEmpty())
     {
-        m_rightButtons->setPos(QPointF(size().width() - m_rightButtons->geometry().width(), 0));
-        m_rightButtons->setSpacing(0);
+        m_rightButtons->setPos(QPointF(size().width() - m_rightButtons->geometry().width() - m_internelSetting->buttonSpacing(), yOffset));
+        m_rightButtons->setSpacing(m_internelSetting->buttonSpacing());
     }
 
     update();
@@ -190,6 +220,8 @@ void Decoration::updateShadow()
         return c;
     };
 
+    // 形成9Patch机制的阴影图像数据,窗口调整大小时无需重新计算阴影图像数据
+    //
     // 为了保证阴影完整显示，需根据最大阴影半径计算绘制区域：
     // shadowSize：取两层阴影中较大的半径，确保所有阴影都能被容纳。
     // box：实际用于绘制阴影的矩形区域，中心为(shadowSize, shadowSize)，宽高为2*shadowSize+1。
@@ -198,40 +230,45 @@ void Decoration::updateShadow()
     const QRect box(shadowSize, shadowSize, 2 * shadowSize + 1, 2 * shadowSize + 1);
     const QRect rect = box.adjusted(-shadowSize, -shadowSize, shadowSize, shadowSize);
 
+    const int shadowRadius = m_internelSetting->borderRadius();
+    CornerRadii radii(shadowRadius);
+    QPainterPath roundedBoxPath = Utils::createRoundedRectPath(box, radii, TopLeftCorner | TopRightCorner);
+
     QImage shadow(rect.size(), QImage::Format_ARGB32_Premultiplied);
     shadow.fill(Qt::transparent);
 
     QPainter painter(&shadow);
     painter.setRenderHint(QPainter::Antialiasing);
 
-    // 绘制主体阴影
-    BoxShadowHelper::boxShadow(
+    // 绘制主体阴影（使用圆角路径）
+    Utils::boxShadow(
         &painter,
-        box,
+        roundedBoxPath,
         s_shadowParams.shape.offset,
         s_shadowParams.shape.radius,
         withOpacity(s_shadowColor, s_shadowParams.shape.opacity));
 
-    // 绘制对比阴影
-    BoxShadowHelper::boxShadow(
+    // 绘制对比阴影（使用圆角路径）
+    Utils::boxShadow(
         &painter,
-        box,
+        roundedBoxPath,
         s_shadowParams.contrast.offset,
         s_shadowParams.contrast.radius,
         withOpacity(s_shadowColor, s_shadowParams.contrast.opacity));
 
-    // 去除内矩形，只保留外环阴影
+    // 去除内圆角矩形，只保留外环阴影
     const QMargins padding = QMargins(
         shadowSize - s_shadowParams.offset.x(),
         shadowSize - s_shadowParams.offset.y(),
         shadowSize + s_shadowParams.offset.x(),
         shadowSize + s_shadowParams.offset.y());
     const QRect innerRect = rect - padding;
+    QPainterPath innerRoundedPath = Utils::createRoundedRectPath(innerRect, radii, AllCorners);
 
     painter.setPen(Qt::NoPen);
     painter.setBrush(Qt::black);
     painter.setCompositionMode(QPainter::CompositionMode_DestinationOut);
-    painter.drawRect(innerRect);
+    painter.drawPath(innerRoundedPath);
     painter.end();
 
     // 生成阴影对象并缓存
@@ -244,38 +281,75 @@ void Decoration::updateShadow()
     setShadow(s_cachedShadow);
 }
 
-int Decoration::titleBarHeight() const
-{
-    return 35;
-}
-
 void Decoration::paintFrameBackground(QPainter *painter, const QRect &repaintRegion) const
 {
     Q_UNUSED(repaintRegion)
-
     const auto decoratedClient = client().toStrongRef();
-    const auto group = decoratedClient->isActive()
-                           ? KDecoration2::ColorGroup::Active
-                           : KDecoration2::ColorGroup::Inactive;
-    const auto frameColor = decoratedClient->color(group, KDecoration2::ColorRole::Frame);
-
+    const auto frameColor = frameBackgroundColor();
     painter->save();
-    painter->fillRect(rect(), Qt::transparent);
     painter->setRenderHint(QPainter::Antialiasing);
-    painter->setPen(Qt::NoPen);
+    painter->setPen(QPen(frameColor, 1));
     painter->setBrush(frameColor);
     painter->setClipRect(0, borderTop(), size().width(), size().height() - borderTop(), Qt::IntersectClip);
-    painter->drawRect(rect());
+
+    const bool isMaximized = decoratedClient->isMaximized();
+    if (isMaximized)
+    {
+        painter->drawRect(rect());
+    }
+    else
+    {
+        CornerRadii radii(m_internelSetting->borderRadius());
+        CornerPositions corners = BottomLeftCorner | BottomRightCorner;
+        QPainterPath path = Utils::createRoundedRectPath(rect(), radii, corners, 0);
+        painter->drawPath(path);
+    }
     painter->restore();
+}
+
+QColor Decoration::frameBackgroundColor() const
+{
+    const auto palette = Theme::Palette::getDefault();
+    const auto decoratedClient = client().toStrongRef();
+    const auto active = decoratedClient->isActive();
+    auto bg = palette->getColor(active ? Theme::Palette::ACTIVE : Theme::Palette::INACTIVE, Theme::Palette::WINDOW);
+    return bg;
+}
+
+int Decoration::borderWidth() const
+{
+    const auto decoratedClient = client().toStrongRef();
+    const bool isMaximized = decoratedClient->isMaximized();
+    return isMaximized ? 0 : m_internelSetting->borderWidth();
+}
+
+QColor Decoration::borderColor() const
+{
+    const auto palette = Theme::Palette::getDefault();
+    const auto decoratedClient = client().toStrongRef();
+    const auto active = decoratedClient->isActive();
+    auto bg = palette->getColor(active ? Theme::Palette::ACTIVE : Theme::Palette::INACTIVE, Theme::Palette::BORDER);
+    return bg;
 }
 
 QColor Decoration::titleBarBackgroundColor() const
 {
+    const auto palette = Theme::Palette::getDefault();
     const auto decoratedClient = client().toStrongRef();
-    Q_UNUSED(decoratedClient);
+    const auto active = decoratedClient->isActive();
 
-    auto palette = Theme::Palette::getDefault();
+#if 0
+    auto bg = palette->getColor(active ? Theme::Palette::ACTIVE : Theme::Palette::INACTIVE, Theme::Palette::WINDOW);
+#else
+    // 由于目前Theme::Palette INACTIVE状态与ACTIVE状态颜色相同
+    // 暂时在外部对Active状态颜色调暗变成INACTIVE状态颜色(10%)
     auto bg = palette->getColor(Theme::Palette::ACTIVE, Theme::Palette::WINDOW);
+    if (!active)
+    {
+        bg = bg.darker(110);
+    }
+#endif
+
     return bg;
 }
 
@@ -294,12 +368,24 @@ void Decoration::paintTitleBarBackground(QPainter *painter, const QRect &repaint
     Q_UNUSED(repaintRegion)
 
     const auto decoratedClient = client().toStrongRef();
+    const bool isMaximized = decoratedClient->isMaximized();
     auto rect = titleBar();
 
     painter->save();
-    painter->setPen(Qt::NoPen);
+    painter->setRenderHint(QPainter::Antialiasing);
     painter->setBrush(titleBarBackgroundColor());
-    painter->drawRect(rect);
+
+    if (isMaximized)
+    {
+        painter->drawRect(rect);
+    }
+    else
+    {
+        CornerRadii radii(m_internelSetting->borderRadius());
+        CornerPositions corners = TopLeftCorner | TopRightCorner;
+        QPainterPath path = Utils::createRoundedRectPath(rect, radii, corners, 0.5);
+        painter->fillPath(path, titleBarBackgroundColor());
+    }
     painter->restore();
 }
 
@@ -324,13 +410,15 @@ void Decoration::paintCaption(QPainter *painter, const QRect &repaintRegion) con
                               iconSize.width(),
                               iconSize.height());
 
-        icon.paint(painter, iconRect, Qt::AlignLeft | Qt::AlignVCenter, QIcon::Normal, decoratedClient->isActive() ? QIcon::On : QIcon::Off);
+        icon.paint(painter, iconRect, Qt::AlignLeft | Qt::AlignVCenter,
+                   QIcon::Normal,
+                   decoratedClient->isActive() ? QIcon::On : QIcon::Off);
         availableRect.adjust(iconRect.height() + settings()->largeSpacing(), 0, 0, 0);
     }
 
     // 定位文本
     const int textWidth = settings()->fontMetrics().boundingRect(decoratedClient->caption()).width();
-    const QRect textRect(availableRect.topLeft(), QSize(textWidth, titleBarHeight()));
+    const QRect textRect(availableRect.topLeft(), QSize(textWidth, m_internelSetting->titleBarHeight()));
     Q_UNUSED(textRect);
 
     QRect captionRect = availableRect;
@@ -354,5 +442,50 @@ void Decoration::paintButtons(QPainter *painter, const QRect &repaintRegion) con
     m_rightButtons->paint(painter, repaintRegion);
 }
 
+void Decoration::paintBorder(QPainter *painter, const QRect &repaintRegion) const
+{
+    Q_UNUSED(repaintRegion)
+    const int width = this->borderWidth();
+    if (width <= 0)
+    {
+        return;
+    }
+
+    QPen pen(borderColor(), width, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+    painter->save();
+    painter->setRenderHint(QPainter::Antialiasing);
+    painter->setPen(pen);
+    painter->setBrush(Qt::NoBrush);
+
+    QPainterPath path = Utils::createRoundedRectPath(rect(),
+                                                     CornerRadii(m_internelSetting->borderRadius()),
+                                                     TopLeftCorner | TopRightCorner,
+                                                     0);
+    painter->strokePath(path, pen);
+    painter->restore();
+}
+
+ThemeProvider::ThemeProvider(QObject *parent,
+                             const KPluginMetaData &data,
+                             const QVariantList &args)
+    : KDecoration2::DecorationThemeProvider(parent, data, args),
+    m_data(data)
+{
+    init();
+}
+
+void ThemeProvider::init()
+{
+    auto themes = InternelSetting::supportedThemes();
+    for (const auto &theme : themes)
+    {
+        KDecoration2::DecorationThemeMetaData data;
+        data.setPluginId(m_data.pluginId());
+        data.setThemeName(theme);
+        data.setVisibleName(theme);
+        data.setHasConfiguration(true);
+        m_themes.append(data);
+    }
+}
 }  // namespace KDecoration
 }  // namespace Kiran
