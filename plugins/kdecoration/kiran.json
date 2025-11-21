@@ -9,6 +9,10 @@
         ]
     },
     "org.kde.kdecoration2": {
-        "blur": false
+        "blur": false,
+        "borderRadius": 0,
+        "themes": true,
+        "defaultTheme": "Kiran",
+        "themeListKeyword": "themes"
     }
 }
