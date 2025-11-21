@@ -19,6 +19,7 @@
 #include <QMap>
 #include <QPainter>
 #include <QWeakPointer>
+#include "internel-setting.h"
 
 namespace Kiran
 {
@@ -33,10 +34,33 @@ struct ButtonRenderRule
         : icon(icon), hoverBackground(hoverBackground) {}
 };
 
+// clang-format off
 static QMap<Button::Type, ButtonRenderRule> buttonRenderRuleMap = {
-    {KDecoration2::DecorationButtonType::Close, {QStringLiteral("window-close-symbolic"), QColor(255, 0, 0, 200)}},
-    {KDecoration2::DecorationButtonType::Maximize, {QStringLiteral("window-maximize-symbolic"), QColor(65, 65, 65, 50)}},
-    {KDecoration2::DecorationButtonType::Minimize, {QStringLiteral("window-minimize-symbolic"), QColor(65, 65, 65, 50)}}};
+    // {type, {icon, hoverBackground}}
+    {
+        KDecoration2::DecorationButtonType::Close,
+        {
+            QStringLiteral("window-close-symbolic"),
+            QColor(255, 0, 0, 200)
+        }
+    },
+    {
+        KDecoration2::DecorationButtonType::Maximize,
+        {
+            QStringLiteral("window-maximize-symbolic"),
+            QColor(65, 65, 65, 50)
+        }
+    },
+    {
+        KDecoration2::DecorationButtonType::Minimize,
+        {
+            QStringLiteral("window-minimize-symbolic"),
+            QColor(65, 65, 65, 50)
+        }
+    }
+};
+// clang-format on
+
 Button::Button(Type type, Decoration *decoration, QObject *parent)
     : KDecoration2::DecorationButton(type, decoration, parent)
 {
@@ -47,7 +71,11 @@ Button::Button(Type type, Decoration *decoration, QObject *parent)
             this, &Button::updateVisible);
     connect(decoratedClient.data(), &KDecoration2::DecoratedClient::minimizeableChanged,
             this, &Button::updateVisible);
-    setGeometry(QRect(QPoint(0, 0), QSize(decoration->titleBarHeight(), decoration->titleBarHeight())));
+
+    m_buttonSize = decoration->getInternelSetting()->buttonSize();
+    m_decorationTheme = decoration->getInternelSetting()->decorationTheme();
+    m_buttonRadius = decoration->getInternelSetting()->buttonRadius();
+    setGeometry(QRect(QPoint(0, 0), QSize(m_buttonSize, m_buttonSize)));
 }
 
 Button::~Button()
@@ -66,34 +94,39 @@ bool Button::isSupported(Type type)
 
 void Button::paint(QPainter *painter, const QRect &repaintRegion)
 {
+    Q_UNUSED(repaintRegion)
+    
     auto renderRule = buttonRenderRuleMap.value(type(), ButtonRenderRule(QString(), QColor()));
-    auto icon = QIcon::fromTheme(renderRule.icon);
-
+    QIcon icon(QString(":/kdecoration/%1/%2").arg(m_decorationTheme).arg(renderRule.icon));
     if (!icon.isNull())
     {
-        auto pixmap = icon.pixmap(QSize(16, 16));
-        auto pixmapRect = pixmap.rect();
-
         auto rect = geometry();
-        pixmapRect.moveCenter(rect.center().toPoint());
-
+        
+        // 计算图标大小（可以比按钮稍小一些）
+        int iconSize = qRound(m_buttonSize * 0.75);
+        auto pixmap = icon.pixmap(QSize(iconSize, iconSize));
+        
         painter->save();
+        painter->setRenderHint(QPainter::Antialiasing, true);
 
-        // Background
+        QPainterPath path;
+        path.addRoundedRect(rect.adjusted(0.5, 0.5, -0.5, -0.5), m_buttonRadius, m_buttonRadius);
+
+        // 悬浮、点击状态下填充背景色
         bool hoverd = isHovered() || isPressed();
         if (hoverd)
         {
-            // Draw hover background
-            auto background = renderRule.hoverBackground;
             painter->setPen(Qt::NoPen);
-            painter->setBrush(background);
-            painter->drawRect(rect);
+            painter->setBrush(renderRule.hoverBackground);
+            painter->drawPath(path);
         }
 
-        // Foreground
-        painter->setRenderHints(QPainter::Antialiasing, false);
-        painter->drawPixmap(pixmapRect, pixmap, pixmap.rect());
-
+        // Foreground - 居中绘制图标
+        QRectF iconRect(QPoint(0, 0), pixmap.size());
+        iconRect.moveCenter(rect.center());
+        
+        painter->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+        painter->drawPixmap(iconRect.topLeft(), pixmap);
         painter->restore();
     }
 }
@@ -122,7 +155,7 @@ void Button::updateVisible()
         visible = false;
         break;
     }
-
+    
     if (isVisible() != visible)
     {
         setVisible(visible);

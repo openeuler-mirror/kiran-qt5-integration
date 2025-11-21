@@ -5,4 +5,3 @@ install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/kiran-qt5-integration.ini
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/kiran-integration-theme.pc
         DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}/pkgconfig/)
-install(DIRECTORY Kiran DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/icons/)

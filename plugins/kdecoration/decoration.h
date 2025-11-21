@@ -15,38 +15,42 @@
 #pragma once
 #include <KDecoration2/Decoration>
 #include <KDecoration2/DecorationButtonGroup>
+#include <KDecoration2/DecorationThemeProvider>
+#include <KPluginMetaData>
 #include <QVariant>
+#include "utils.h"
 
 namespace Kiran
 {
 namespace KDecoration
 {
-class CloseButton;
-class MaximizeButton;
-class MinimizeButton;
+class InternelSetting;
 class Decoration : public KDecoration2::Decoration
 {
-    Q_OBJECT
     friend class Button;
-
+    Q_OBJECT
 public:
     Decoration(QObject *parent = nullptr, const QVariantList &args = QVariantList());
     ~Decoration() override;
-
     void paint(QPainter *painter, const QRect &repaintRegion) override;
 
 public slots:
     void init() override;
 
 private:
+    InternelSetting *getInternelSetting() const
+    {
+        return m_internelSetting;
+    }
     void updateBorders();
     void updateResizeBorders();
     void updateTitleBar();
     void updateButtonsGeometry();
     void updateShadow();
 
-    int titleBarHeight() const;
-
+    QColor frameBackgroundColor() const;
+    int borderWidth() const;
+    QColor borderColor() const;
     QColor titleBarBackgroundColor() const;
     QColor titleBarForegroundColor() const;
 
@@ -54,10 +58,34 @@ private:
     void paintTitleBarBackground(QPainter *painter, const QRect &repaintRegion) const;
     void paintCaption(QPainter *painter, const QRect &repaintRegion) const;
     void paintButtons(QPainter *painter, const QRect &repaintRegion) const;
+    void paintBorder(QPainter *painter, const QRect &repaintRegion) const;
 
 private:
     KDecoration2::DecorationButtonGroup *m_leftButtons;
     KDecoration2::DecorationButtonGroup *m_rightButtons;
+    InternelSetting *m_internelSetting;
+};
+
+// 外部提取插件主题的接口
+class ThemeProvider : public KDecoration2::DecorationThemeProvider
+{
+    Q_OBJECT
+public:
+    explicit ThemeProvider(QObject *parent,
+                           const KPluginMetaData &data,
+                           const QVariantList &args);
+
+    QList<KDecoration2::DecorationThemeMetaData> themes() const override
+    {
+        return m_themes;
+    }
+
+private:
+    void init();
+
+private:
+    const KPluginMetaData m_data;
+    QList<KDecoration2::DecorationThemeMetaData> m_themes;
 };
 
 }  // namespace KDecoration

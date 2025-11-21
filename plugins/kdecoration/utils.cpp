@@ -1,17 +1,18 @@
 /**
-  * Copyright (c) 2020 ~ 2025 KylinSec Co., Ltd.
-  * kiran-qt5-integration is licensed under Mulan PSL v2.
-  * You can use this software according to the terms and conditions of the Mulan PSL v2.
-  * You may obtain a copy of Mulan PSL v2 at:
-  *          http://license.coscl.org.cn/MulanPSL2
-  * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
-  * EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
-  * MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
-  * See the Mulan PSL v2 for more details.
-  *
-  * Author:     liuxinhao <liuxinhao@kylinsec.com.cn>
-  */
-#include "box-shadow-helper.h"
+ * Copyright (c) 2020 ~ 2025 KylinSec Co., Ltd.
+ * kiran-qt5-integration is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *          http://license.coscl.org.cn/MulanPSL2
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
+ * EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
+ * MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
+ *
+ * Author:     liuxinhao <liuxinhao@kylinsec.com.cn>
+ */
+
+#include "utils.h"
 #include <QVector>
 #include <cmath>
 
@@ -19,8 +20,73 @@ namespace Kiran
 {
 namespace KDecoration
 {
-namespace BoxShadowHelper
+namespace Utils
 {
+QPainterPath createRoundedRectPath(const QRect &rect,
+                                   const CornerRadii &cornerRadii,
+                                   CornerPositions corners,
+                                   qreal extension)
+{
+    QPainterPath path;
+    const qreal pixelOffset = 0.5;  // 像素对齐偏移
+
+    // 计算实际边界（考虑扩展）
+    const qreal left = rect.left() + pixelOffset - extension;
+    const qreal right = rect.right() + pixelOffset + extension;
+    const qreal top = rect.top() + pixelOffset - extension;
+    const qreal bottom = rect.bottom() + pixelOffset + extension;
+
+    // 左上角
+    if (corners & TopLeftCorner && cornerRadii.topLeft > 0)
+    {
+        const int radius = cornerRadii.topLeft;
+        path.moveTo(left + radius, top);
+        path.arcTo(left, top, 2 * radius, 2 * radius, 90, 90);
+    }
+    else
+    {
+        path.moveTo(left, top);
+    }
+
+    // 左下角
+    if (corners & BottomLeftCorner && cornerRadii.bottomLeft > 0)
+    {
+        const int radius = cornerRadii.bottomLeft;
+        path.lineTo(left, bottom - radius);
+        path.arcTo(left, bottom - 2 * radius, 2 * radius, 2 * radius, 180, 90);
+    }
+    else
+    {
+        path.lineTo(left, bottom);
+    }
+
+    // 右下角
+    if (corners & BottomRightCorner && cornerRadii.bottomRight > 0)
+    {
+        const int radius = cornerRadii.bottomRight;
+        path.lineTo(right - radius, bottom);
+        path.arcTo(right - 2 * radius, bottom - 2 * radius, 2 * radius, 2 * radius, 270, 90);
+    }
+    else
+    {
+        path.lineTo(right, bottom);
+    }
+
+    // 右上角
+    if (corners & TopRightCorner && cornerRadii.topRight > 0)
+    {
+        const int radius = cornerRadii.topRight;
+        path.lineTo(right, top + radius);
+        path.arcTo(right - 2 * radius, top, 2 * radius, 2 * radius, 0, 90);
+    }
+    else
+    {
+        path.lineTo(right, top);
+    }
+
+    path.closeSubpath();
+    return path;
+}
 // According to the CSS Level 3 spec, standard deviation must be equal to
 // half of the blur radius. https://www.w3.org/TR/css-backgrounds-3/#shadow-blur
 // Current window size is too small for sigma equal to half of the blur radius.
@@ -29,12 +95,12 @@ namespace BoxShadowHelper
 // Maybe, it should be changed in the future.
 const qreal SIGMA_BLUR_SCALE = 0.4375;
 
-inline qreal radiusToSigma(qreal radius)
+qreal radiusToSigma(qreal radius)
 {
     return radius * SIGMA_BLUR_SCALE;
 }
 
-inline int boxSizeToRadius(int boxSize)
+int boxSizeToRadius(int boxSize)
 {
     return (boxSize - 1) / 2;
 }
@@ -180,6 +246,49 @@ void boxShadow(QPainter *p, const QRect &box, const QPoint &offset, int radius, 
     p->drawImage(shadowRect, shadow);
 }
 
-}  // namespace BoxShadowHelper
+/**
+ * @brief 在指定路径绘制带有模糊效果的阴影（支持圆角）
+ */
+void boxShadow(QPainter *p, const QPainterPath &path, const QPoint &offset, int radius, const QColor &color)
+{
+    // 1. 获取路径的边界矩形，计算阴影图像尺寸
+    const QRect pathBounds = path.boundingRect().toAlignedRect();
+    const QSize size = pathBounds.size() + 2 * QSize(radius, radius);
+    const qreal dpr = p->device()->devicePixelRatioF();
+
+    QPainter painter;
+
+    // 2. 创建一个透明的 QImage 作为阴影缓冲区
+    QImage shadow(size * dpr, QImage::Format_ARGB32_Premultiplied);
+    shadow.setDevicePixelRatio(dpr);
+    shadow.fill(Qt::transparent);
+
+    // 3. 在缓冲区中，使用路径填充黑色区域
+    painter.begin(&shadow);
+    painter.setRenderHint(QPainter::Antialiasing);
+    // 将路径平移到阴影图像中的正确位置（考虑半径偏移）
+    QPainterPath translatedPath = path;
+    translatedPath.translate(radius - pathBounds.left(), radius - pathBounds.top());
+    painter.fillPath(translatedPath, Qt::black);
+    painter.end();
+
+    // 4. 对缓冲区的 alpha 通道进行多次 box blur，实现高斯模糊近似
+    const int numIterations = 3;
+    boxBlurAlpha(shadow, radius, numIterations);
+
+    // 5. 用目标颜色覆盖整个阴影区域，保留原本的Alpha
+    painter.begin(&shadow);
+    painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
+    painter.fillRect(shadow.rect(), color);
+    painter.end();
+
+    // 6. 计算阴影最终显示的位置（中心点偏移），并将阴影绘制到目标 QPainter 上
+    QRect shadowRect = shadow.rect();
+    shadowRect.setSize(shadowRect.size() / dpr);
+    shadowRect.moveCenter(pathBounds.center() + offset);
+    p->drawImage(shadowRect, shadow);
+}
+
+}  // namespace Utils
 }  // namespace KDecoration
 }  // namespace Kiran

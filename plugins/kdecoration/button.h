@@ -34,6 +34,11 @@ public:
 
 private slots:
     void updateVisible();
+    
+private:
+    QString m_decorationTheme;
+    int m_buttonRadius = 0;
+    int m_buttonSize = 35;
 };
 }  // namespace KDecoration
 }  // namespace Kiran

@@ -10,9 +10,12 @@ find_package(KF5CoreAddons)
 find_package(KF5GuiAddons)
 find_package(KF5WindowSystem)
 
-file(GLOB_RECURSE decoration_SRCS "*.cpp" "*.h" "*.ui")
+file(GLOB_RECURSE DECORATION_SRCS "*.cpp" "*.h" "*.ui")
+set(DECORATION_QRC ${PROJECT_SOURCE_DIR}/data/kdecoration/kdecoration.qrc)
+
 add_library (${TARGET_NAME} MODULE
-    ${decoration_SRCS}
+    ${DECORATION_SRCS}
+    ${DECORATION_QRC}
 )
 
 target_link_libraries (${TARGET_NAME}
