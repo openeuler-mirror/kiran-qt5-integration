@@ -20,6 +20,7 @@
 #include <KDecoration2/DecorationShadow>
 #include <KSharedConfig>
 #include <QDebug>
+#include <QMap>
 #include <QPainter>
 #include <QPainterPath>
 #include <QPalette>
@@ -38,18 +39,19 @@ namespace KDecoration
 // https://material.io/design/environment/elevation.html#default-elevations
 // https://material.io/design/environment/elevation.html#shadows
 const CompositeShadowParams s_shadowParams = CompositeShadowParams(
-    QPoint(0, 18),
-    ShadowParams(QPoint(0, 0), 64, 0.8),
-    ShadowParams(QPoint(0, -10), 24, 0.1));
+    QPoint(0, 4),
+    ShadowParams(QPoint(0, 0), 16, 0.6),
+    ShadowParams(QPoint(0, -2), 8, 0.1));
 
 // 阴影颜色，固定为深灰色
 static QColor s_shadowColor(33, 33, 33);
 
-// 当前Decoration实例计数，用于管理全局资源释放
-static int s_decoCount = 0;
-
-// 全局缓存的阴影对象，避免重复生成，提升性能
-static QSharedPointer<KDecoration2::DecorationShadow> s_cachedShadow;
+// 按主题类型（borderRadius）分别缓存的阴影对象，避免重复生成，提升性能
+// key: borderRadius值，value: 缓存的阴影对象
+static QMap<int, QSharedPointer<KDecoration2::DecorationShadow>> s_cachedShadows;
+// 每个主题类型的使用计数，用于管理资源释放
+// key: borderRadius值，value: 使用该主题的Decoration实例数量
+static QMap<int, int> s_themeUsageCount;
 
 Decoration::Decoration(QObject *parent, const QVariantList &args)
     : KDecoration2::Decoration(parent, args)
@@ -60,14 +62,20 @@ Decoration::Decoration(QObject *parent, const QVariantList &args)
         map = args.at(0).toMap();
     }
     m_internelSetting = new InternelSetting(map, this);
-    ++s_decoCount;
+    // 增加当前主题类型的使用计数
+    int borderRadius = m_internelSetting->borderRadius();
+    s_themeUsageCount[borderRadius]++;
 }
 
 Decoration::~Decoration()
 {
-    if (--s_decoCount == 0)
+    // 减少当前主题类型的使用计数
+    int borderRadius = m_internelSetting->borderRadius();
+    if (--s_themeUsageCount[borderRadius] == 0)
     {
-        s_cachedShadow.clear();
+        // 如果没有其他实例使用该主题，清除对应的阴影缓存和使用计数
+        s_cachedShadows.remove(borderRadius);
+        s_themeUsageCount.remove(borderRadius);
     }
 }
 
@@ -79,10 +87,15 @@ void Decoration::paint(QPainter *painter, const QRect &repaintRegion)
         // 绘制边框背景
         paintFrameBackground(painter, repaintRegion);
     }
+
     paintTitleBarBackground(painter, repaintRegion);
     paintButtons(painter, repaintRegion);
     paintCaption(painter, repaintRegion);
-    paintBorder(painter, repaintRegion);
+
+    if (!decoratedClient->isMaximized())
+    {
+        paintBorder(painter, repaintRegion);
+    }
 }
 
 void Decoration::init()
@@ -207,9 +220,13 @@ void Decoration::updateButtonsGeometry()
 
 void Decoration::updateShadow()
 {
-    if (!s_cachedShadow.isNull())
+    // 根据当前主题的borderRadius获取对应的阴影缓存
+    int borderRadius = m_internelSetting->borderRadius();
+    auto cachedShadow = s_cachedShadows.value(borderRadius);
+    
+    if (!cachedShadow.isNull())
     {
-        setShadow(s_cachedShadow);
+        setShadow(cachedShadow);
         return;
     }
 
@@ -271,14 +288,17 @@ void Decoration::updateShadow()
     painter.drawPath(innerRoundedPath);
     painter.end();
 
-    // 生成阴影对象并缓存
-    s_cachedShadow = QSharedPointer<KDecoration2::DecorationShadow>::create();
-    s_cachedShadow->setPadding(padding);
-    s_cachedShadow->setInnerShadowRect(QRect(shadow.rect().center(), QSize(1, 1)));
-    s_cachedShadow->setShadow(shadow);
+    // 生成阴影对象并按主题类型缓存
+    auto newShadow = QSharedPointer<KDecoration2::DecorationShadow>::create();
+    newShadow->setPadding(padding);
+    newShadow->setInnerShadowRect(QRect(shadow.rect().center(), QSize(1, 1)));
+    newShadow->setShadow(shadow);
+    
+    // 缓存当前主题类型的阴影
+    s_cachedShadows[borderRadius] = newShadow;
 
     // 安装阴影
-    setShadow(s_cachedShadow);
+    setShadow(newShadow);
 }
 
 void Decoration::paintFrameBackground(QPainter *painter, const QRect &repaintRegion) const
@@ -377,7 +397,7 @@ void Decoration::paintTitleBarBackground(QPainter *painter, const QRect &repaint
 
     if (isMaximized)
     {
-        painter->drawRect(rect);
+        painter->fillRect(rect, titleBarBackgroundColor());
     }
     else
     {
@@ -459,8 +479,7 @@ void Decoration::paintBorder(QPainter *painter, const QRect &repaintRegion) cons
 
     QPainterPath path = Utils::createRoundedRectPath(rect(),
                                                      CornerRadii(m_internelSetting->borderRadius()),
-                                                     TopLeftCorner | TopRightCorner,
-                                                     0);
+                                                     TopLeftCorner | TopRightCorner);
     painter->strokePath(path, pen);
     painter->restore();
 }
@@ -469,7 +488,7 @@ ThemeProvider::ThemeProvider(QObject *parent,
                              const KPluginMetaData &data,
                              const QVariantList &args)
     : KDecoration2::DecorationThemeProvider(parent, data, args),
-    m_data(data)
+      m_data(data)
 {
     init();
 }
