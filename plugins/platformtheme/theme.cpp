@@ -25,12 +25,17 @@
 #include <QGuiApplication>
 #include <QIcon>
 #include <QLabel>
+#include <QLibraryInfo>
 #include <QPixmap>
 #include <QScreen>
 #include <QStyle>
 #include <QTimer>
+#include <QTranslator>
 #include <QVariant>
 #include <QWindow>
+
+#include "cmake-macros.h"
+#include "gtk-file-dialog.h"
 #include "lib/common/configuration.h"
 #include "lib/theme/palette.h"
 #include "lib/theme/style.h"
@@ -57,11 +62,25 @@ Theme::~Theme() = default;
 
 bool Theme::usePlatformNativeDialog(QPlatformTheme::DialogType type) const
 {
+    switch (type)
+    {
+    case QPlatformTheme::DialogType::FileDialog:
+        return true;
+    default:
+        break;
+    }
     return QGenericUnixTheme::usePlatformNativeDialog(type);
 }
 
 QPlatformDialogHelper* Theme::createPlatformDialogHelper(QPlatformTheme::DialogType type) const
 {
+    switch (type)
+    {
+    case QPlatformTheme::DialogType::FileDialog:
+        return new GtkFileDialogHelper();
+    default:
+        break;
+    }
     return QGenericUnixTheme::createPlatformDialogHelper(type);
 }
 
@@ -121,7 +140,8 @@ const QPalette* Theme::palette(QPlatformTheme::Palette type) const
         return QGenericUnixTheme::palette(type);
     }
 
-    bool enable = Configuration::instance()->match(qAppName());
+    Kiran::Configuration conf;
+    bool enable = conf.match(qAppName());
     if (!enable)
     {
         return QGenericUnixTheme::palette(type);
@@ -134,6 +154,19 @@ const QPalette* Theme::palette(QPlatformTheme::Palette type) const
 
 void Theme::init()
 {
+    // 加载内部kiran-integration翻译
+    QTranslator* integrationTranslator = new QTranslator(this);
+    integrationTranslator->load(QLocale(), "kiran-integration", ".", KQI_INSTALL_TRANSLATIONDIR);
+    qApp->installTranslator(integrationTranslator);
+
+    // 加载qt5-qttranslations翻译
+    QTranslator* qtTranslator = new QTranslator(this);
+    qtTranslator->load(QLocale(), "qt", "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    qApp->installTranslator(qtTranslator);
+
+    // 初始化GTK相关全局变量, 后续需使用GtkFileChooser相关功能
+    GtkFileDialogHelper::ensureGtkInitialized();
+
     qDebug() << "init kiran theme...";
     m_settingsMonitor = AppearanceMonitor::instance();
 
@@ -148,8 +181,8 @@ void Theme::init()
 
     updateAppFont(m_settingsMonitor->appFont().family(),
                   m_settingsMonitor->appFont().pointSize());
-
-    qDebug() << "\tapplication font:" << m_settingsMonitor->appFont().family() << m_settingsMonitor->appFont().pointSize();
+    qDebug() << "\tapplication font:" << m_settingsMonitor->appFont().family()
+             << m_settingsMonitor->appFont().pointSize();
 
     m_titleBarFont.setFamily(m_settingsMonitor->titleBarFont().family());
     m_titleBarFont.setPointSize(m_settingsMonitor->titleBarFont().pointSize());
@@ -161,12 +194,6 @@ void Theme::init()
     QObject::connect(m_settingsMonitor, &AppearanceMonitor::scaleFactorChanged, this, &Theme::handleScaleFactorChanged);
     QObject::connect(m_settingsMonitor, &AppearanceMonitor::cursorThemeChanged, this, &Theme::handleCursorThemeChanged);
     QObject::connect(m_settingsMonitor, &AppearanceMonitor::gtkThemeChanged, this, &Theme::handleThemeChanged);
-
-    // TODO: 确定从AppearanceMonitor监听是否可行
-    // 不从AppearanceMonitor接受主题变更事件，修改为接受KiranPalette的主题变更信号，能监听到系统主题变更以及应用程序手动指定主题
-    // QObject::connect(m_settingsMonitor, &AppearanceMonitor::gtkThemeChanged, this, &KiranTheme::handleThemeChanged);
-    // QObject::connect(StylePalette::instance(), &StylePalette::cursorThemeChanged, this, &Theme::handleThemeChanged);
-
     QObject::connect(qApp, &QGuiApplication::screenAdded, this, &Theme::handleScreenAdded);
 
     handleScaleFactorChanged(m_scaleFactor);
@@ -429,7 +456,8 @@ void Theme::handleThemeChanged()
 
                            // 该接口原本用于windows通知窗口主题变化时使用,现用来通知调用QGuiApplicationPrivate::notifyThemeChanged
                            QGuiApplicationPrivate::processThemeChanged(&event);
-                           emit qApp->paletteChanged(*palette(SystemPalette)); });
+                           emit qApp->paletteChanged(*palette(SystemPalette));
+                       });
 }
 
 }  // namespace Platformtheme
