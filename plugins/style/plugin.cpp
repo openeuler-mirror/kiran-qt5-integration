@@ -29,11 +29,12 @@ Plugin::Plugin(QObject *parent) : QStylePlugin(parent)
 
 QStyle *Plugin::create(const QString &key)
 {
+    Kiran::Configuration conf;
     // 对比平台主题名称，若为匹配则应用 Kiran 主题
     if (key.compare("kiran", Qt::CaseInsensitive) == 0)
     {
         auto appName = qAppName();
-        if (!Kiran::Configuration::instance()->match(appName))
+        if (!conf.match(appName))
         {
             qDebug("%s not enable kiran style, create fusion style for it.", appName.toStdString().c_str());
             return QStyleFactory::create("fusion");

@@ -37,10 +37,7 @@ public:
     void initMenu();
     void initToolBar();
     void initTabBar();
-    /*
-     * @description: 初始化主题ICON，测试图标引擎是否生效
-     **/
-    void initThemedIcon();
+    void initFileDialog();
 
 private:
     Ui::QtWidgetFactor *ui;
