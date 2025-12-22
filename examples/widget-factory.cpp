@@ -16,6 +16,7 @@
 
 #include <QApplication>
 #include <QDebug>
+#include <QFileDialog>
 #include <QMenu>
 #include <QMetaEnum>
 #include <QRadioButton>
@@ -38,7 +39,7 @@ QtWidgetFactor::QtWidgetFactor(QWidget* parent) : QWidget(parent), ui(new Ui::Qt
     initMenu();
     initToolBar();
     initTabBar();
-    initThemedIcon();
+    initFileDialog();
 }
 
 QtWidgetFactor::~QtWidgetFactor()
@@ -185,24 +186,82 @@ void QtWidgetFactor::initTabBar()
             { ui->tabWidget->setTabBarAutoHide(checked); });
 }
 
-void QtWidgetFactor::initThemedIcon()
+void QtWidgetFactor::initFileDialog()
 {
-    // sonarqube block off
-    auto mainLayout = new QHBoxLayout(ui->themedIconContainerWidget);
-    // sonarqube block on
-
-    QList<QString> iconList = {
-        "firefox",
-        "kcp-authentication-driver",
-        "kcp-authentication-fingerprint"
-    };
-    for(const auto& iconName:iconList)
+    auto getOptions = [this]() -> QFileDialog::Options
     {
-        auto btn = new QPushButton(ui->themedIconContainerWidget);
-        auto icon = QIcon::fromTheme(iconName);
-        btn->setIcon(icon);
-        btn->setText(iconName);
-        btn->setIconSize(QSize(48,48));
-        mainLayout->addWidget(btn);
-    }
+        QFileDialog::Options options;
+        if (ui->check_showdirs_only->isChecked())
+        {
+            options |= QFileDialog::ShowDirsOnly;
+        }
+        if (ui->check_dont_resolve_symlinks->isChecked())
+        {
+            options |= QFileDialog::DontResolveSymlinks;
+        }
+        if (ui->check_dont_confirm_overwrite->isChecked())
+        {
+            options |= QFileDialog::DontConfirmOverwrite;
+        }
+        if (ui->check_readonly->isChecked())
+        {
+            options |= QFileDialog::ReadOnly;
+        }
+        if (ui->check_hide_namefilter_details->isChecked())
+        {
+            options |= QFileDialog::HideNameFilterDetails;
+        }
+        if (ui->check_dont_use_sheet->isChecked())
+        {
+            options |= QFileDialog::DontUseSheet;
+        }
+        if (ui->check_dont_user_custom_directory_icons->isChecked())
+        {
+            options |= QFileDialog::DontUseCustomDirectoryIcons;
+        }
+        return options;
+    };
+
+    auto getFileDialogFilters = [this]() -> QString
+    {
+        return ui->edit_file_dialog_filter->text();
+    };
+
+    auto getFileDialogSelectedFilter = [this]() -> QString
+    {
+        return ui->edit_file_dialog_selected_filter->text();
+    };
+
+    connect(ui->btn_getExistingDirectory, &QPushButton::clicked, [this, getOptions]()
+            {
+                QString dir = QFileDialog::getExistingDirectory(this, "Get Existing Directory", "~");
+                ui->edit_file_dialog_result->setText(dir);
+            });
+
+    connect(ui->btn_getOpenFileName, &QPushButton::clicked, [this, getOptions, getFileDialogFilters, getFileDialogSelectedFilter]()
+            {
+                auto selectedFilter = getFileDialogSelectedFilter();
+                QString file = QFileDialog::getOpenFileName(this, "Get Open File Name", "~",
+                                                            getFileDialogFilters(), &selectedFilter,
+                                                            getOptions());
+                ui->edit_file_dialog_result->setText(file);
+            });
+
+    connect(ui->btn_getOpenFileNames, &QPushButton::clicked, [this, getOptions, getFileDialogFilters, getFileDialogSelectedFilter]()
+            {
+                auto selectedFilter = getFileDialogSelectedFilter();
+                QStringList files = QFileDialog::getOpenFileNames(this, "Get Open File Names", "/home/liuxinhao/",
+                                                                  getFileDialogFilters(), &selectedFilter,
+                                                                  getOptions());
+                ui->edit_file_dialog_result->setText(files.join(","));
+            });
+
+    connect(ui->btn_getSaveFileName, &QPushButton::clicked, [this, getOptions, getFileDialogFilters, getFileDialogSelectedFilter]()
+            {
+                auto selectedFilter = getFileDialogSelectedFilter();
+                QString file = QFileDialog::getSaveFileName(this, "Get Save File Name", "~",
+                                                            getFileDialogFilters(), &selectedFilter,
+                                                            getOptions());
+                ui->edit_file_dialog_result->setText(file);
+            });
 }

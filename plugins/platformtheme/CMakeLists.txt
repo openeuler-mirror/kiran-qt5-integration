@@ -1,11 +1,5 @@
 set(TARGET_NAME "qkiran")
 
-find_package(KiranDBusGenerate REQUIRED)
-find_package(PkgConfig REQUIRED)
-find_package(Qt5ThemeSupport REQUIRED)
-pkg_search_module(KIRAN_CC_DAEMON REQUIRED kiran-cc-daemon)
-pkg_search_module(QGSETTINGS REQUIRED gsettings-qt)
-
 # 生成使用的DBus接口源文件 kiran session appearance proxy
 set_source_files_properties(
   ${PROJECT_SOURCE_DIR}/data/com.kylinsec.Kiran.SessionDaemon.Appearance.xml
@@ -42,8 +36,9 @@ target_include_directories(
          ${Qt5Gui_PRIVATE_INCLUDE_DIRS}
          ${Qt5Widgets_PRIVATE_INCLUDE_DIRS}
          ${Qt5ThemeSupport_INCLUDE_DIRS}
-         ${QGSETTINGS_INCLUDE_DIRS}
-         ${KIRAN_CC_DAEMON_INCLUDE_DIRS})
+         ${GSETTINGS_QT_INCLUDE_DIRS}
+         ${KIRAN_CC_DAEMON_INCLUDE_DIRS}
+         ${GTK_INCLUDE_DIRS})
 
 target_link_libraries(
   ${TARGET_NAME}
@@ -55,6 +50,7 @@ target_link_libraries(
   Qt5::DBus
   Qt5::Svg
   ${Qt5ThemeSupport_LIBRARIES}
-  ${QGSETTINGS_LIBRARIES})
+  ${GSETTINGS_QT_LIBRARIES}
+  ${GTK_LIBRARIES})
 
 install(TARGETS ${TARGET_NAME} DESTINATION ${QT5_PLATFORM_THEME_INSTALL_DIR})
