@@ -1,15 +1,5 @@
 set(TARGET_NAME kiran-decoration)
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
-
-include(KDEInstallDirs)
-
-find_package (KDecoration2 REQUIRED)
-find_package(KF5Config)
-find_package(KF5CoreAddons)
-find_package(KF5GuiAddons)
-find_package(KF5WindowSystem)
-
 file(GLOB_RECURSE DECORATION_SRCS "*.cpp" "*.h" "*.ui")
 set(DECORATION_QRC ${PROJECT_SOURCE_DIR}/data/kdecoration/kdecoration.qrc)
 

@@ -26,25 +26,20 @@ namespace Kiran
 class Configuration
 {
 public:
-    static Configuration* instance();
+    Configuration();
+    ~Configuration() = default;
     Configuration(Configuration& other) = delete;
     Configuration& operator=(Configuration& other) = delete;
-
-    ~Configuration() = default;
 
     // KQI_CONFIGURATION_PATH 示例
     // [Style]
     // #启用kiran style的应用列表,已内置部分kiran桌面环境的组件，eg: kiran-*,kiran-panel
     // enabled-apps=ksl-os-gui,ksl-server-gui,ks-scmc-gui
-
     // 在 getEnabledApps() 中通过获取到的 m_settings 转为 QSet 实现去重
     QSet<QString> getEnabledApps();
+
     // 通过应用名称判断是否是打开主题的应用（两种地方判断: m_kiranStyleApps 以及 getEnabledApps 中的）
     bool match(const QString& appName);
-
-private:
-    Configuration();
-
 private:
     QStringList m_kiranStyleApps = {
         "kiran-control-panel",
@@ -59,7 +54,6 @@ private:
         "kiran-manual"
     };
 //    "kiran-integration-example"
-
     QSettings* m_settings{};
 };
 

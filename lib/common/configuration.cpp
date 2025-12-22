@@ -34,23 +34,6 @@ m_settings(new QSettings(KQI_CONFIGURATION_PATH, QSettings::IniFormat))
 {
 }
 
-Configuration* Configuration::instance()
-{
-    static QMutex mutex;
-    static QScopedPointer<Configuration> pInst;
-
-    if (Q_UNLIKELY(!pInst))
-    {
-        QMutexLocker locker(&mutex);
-        if (pInst.isNull())
-        {
-            pInst.reset(new Configuration);
-        }
-    }
-
-    return pInst.data();
-}
-
 QSet<QString> Configuration::getEnabledApps()
 {
     QSet<QString> enabledApps;

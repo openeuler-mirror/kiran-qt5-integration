@@ -22,52 +22,6 @@
 #include "examples/widget-factory.h"
 #include "lib/theme/palette.h"
 
-bool test_load_plugin()
-{
-    QPluginLoader loader;
-    loader.setFileName("/usr/lib64/qt5/plugins/platformthemes/libqkiran.so");
-    if (loader.load())
-    {
-        auto plugin = qobject_cast<QPlatformThemePlugin*>(loader.instance());
-        if (!plugin)
-        {
-            qInfo() << "can't cast to QPlatformThemePlugin";
-            return false;
-        }
-        else
-        {
-            qInfo() << "cast to QPlatformThemePlugin success";
-        }
-    }
-    else
-    {
-        qInfo() << "load failed" << loader.errorString();
-        return false;
-    }
-
-    loader.setFileName("/usr/lib64/qt5/plugins/styles/libkiranstyle.so");
-    if (loader.load())
-    {
-        auto plugin = qobject_cast<QStylePlugin*>(loader.instance());
-        if (!plugin)
-        {
-            qInfo() << "can't cast to QStylePlugin";
-            return false;
-        }
-        else
-        {
-            qInfo() << "cast to QStylePlugin success";
-        }
-    }
-    else
-    {
-        qInfo() << "load failed" << loader.errorString();
-        return false;
-    }
-
-    return true;
-}
-
 int main(int argc, char* argv[])
 {
 //    qputenv("QT_QPA_PLATFORMTHEME","kiran");
@@ -83,9 +37,8 @@ int main(int argc, char* argv[])
     QtWidgetFactor factor;
     factor.show();
 
-    QPalette palette = app.palette();
-    palette.setColor(QPalette::Active, QPalette::Window, "red");
-    app.setPalette(palette, "");
-
+    // QPalette palette = app.palette();
+    // palette.setColor(QPalette::Active, QPalette::Window, "red");
+    // app.setPalette(palette, "");
     return app.exec();
 }
