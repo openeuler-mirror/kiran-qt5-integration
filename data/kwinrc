@@ -21,3 +21,6 @@ screenedgeEnabled=false
 slideEnabled=false
 slidingpopupsEnabled=false
 zoomEnabled=false
+
+[TabBox]
+LayoutName=kiran-windowswitcher-thumbnail
