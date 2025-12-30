@@ -7,4 +7,4 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/kiran-integration-theme.pc
         DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}/pkgconfig/)
 
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/kwinrc
-        DESTINATION /${KDE_INSTALL_CONFDIR}/ )
+        DESTINATION ${KDE_INSTALL_CONFDIR}/ )
