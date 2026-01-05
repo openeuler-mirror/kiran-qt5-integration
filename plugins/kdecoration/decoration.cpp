@@ -357,29 +357,16 @@ QColor Decoration::titleBarBackgroundColor() const
     const auto palette = Theme::Palette::getDefault();
     const auto decoratedClient = client().toStrongRef();
     const auto active = decoratedClient->isActive();
-
-#if 0
     auto bg = palette->getColor(active ? Theme::Palette::ACTIVE : Theme::Palette::INACTIVE, Theme::Palette::WINDOW);
-#else
-    // 由于目前Theme::Palette INACTIVE状态与ACTIVE状态颜色相同
-    // 暂时在外部对Active状态颜色调暗变成INACTIVE状态颜色(10%)
-    auto bg = palette->getColor(Theme::Palette::ACTIVE, Theme::Palette::WINDOW);
-    if (!active)
-    {
-        bg = bg.darker(110);
-    }
-#endif
-
     return bg;
 }
 
 QColor Decoration::titleBarForegroundColor() const
 {
-    const auto decoratedClient = client().toStrongRef();
-    Q_UNUSED(decoratedClient);
-
     auto palette = Theme::Palette::getDefault();
-    auto fg = palette->getColor(Theme::Palette::ACTIVE, Theme::Palette::TEXT);
+    const auto decoratedClient = client().toStrongRef();
+    const auto active = decoratedClient->isActive();
+    auto fg = palette->getColor(active ? Theme::Palette::ACTIVE : Theme::Palette::INACTIVE, Theme::Palette::TEXT);
     return fg;
 }
 
