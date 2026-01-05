@@ -69,6 +69,11 @@ public:
         double disabledAlpha;
         // 被禁用后的亮度调节
         double disabledLightness;
+        // 非激活状态的透明度
+        double inactiveAlpha;
+        // 非激活色
+        QColor inactiveColor;
+        double inactiveAmount;
     };
 
     // 类似QPalette::ColorGroup

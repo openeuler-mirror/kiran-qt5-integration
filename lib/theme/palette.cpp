@@ -47,7 +47,10 @@ Palette::ColorFactor g_colorFactor = {.widgetHover = 0.9,
                                       .iconHover = 0.3,
                                       .iconSunken = 0.4,
                                       .disabledAlpha = 0.65,
-                                      .disabledLightness = 0.1};
+                                      .disabledLightness = 0.1,
+                                      .inactiveAlpha = 0.05,
+                                      .inactiveColor = QColor(112, 111, 110),
+                                      .inactiveAmount = 0.1};
 
 PalettePrivate::PalettePrivate(Palette* qptr) : q_ptr(qptr)
 {
@@ -123,8 +126,8 @@ void PalettePrivate::calcWidgetColors()
 
     // 未激活状态暂时跟激活状态保持相同
     this->setColorGroup(Palette::INACTIVE,
-                        this->m_baseColors.baseBackground,
-                        this->m_baseColors.baseForeground,
+                        this->inactiveColor(this->m_baseColors.baseBackground),
+                        this->inactiveColor(this->m_baseColors.baseForeground),
                         this->m_baseColors.widgetBackground,
                         this->m_baseColors.baseForeground,
                         this->m_baseColors.widgetBorder,
@@ -177,9 +180,11 @@ void PalettePrivate::calcWidgetColors()
 
 QColor PalettePrivate::mixColor(const QColor& color1, const QColor& color2, double factor)
 {
-    return QColor(int(color1.red() * factor + color2.red() * (1 - factor)),
-                  int(color1.green() * factor + color2.green() * (1 - factor)),
-                  int(color1.blue() * factor + color2.blue() * (1 - factor)));
+    return QColor::fromRgbF(
+        color1.redF() * factor + color2.redF() * (1.0 - factor),
+        color1.greenF() * factor + color2.greenF() * (1.0 - factor),
+        color1.blueF() * factor + color2.blueF() * (1.0 - factor)
+    );
 }
 
 QColor PalettePrivate::disabledColor(const QColor& color)
@@ -197,6 +202,30 @@ QColor PalettePrivate::disabledColor(const QColor& color)
 
     disabledColor = disabledColor.lighter(100 * (1 - this->m_colorFactors.disabledLightness));
     return disabledColor;
+}
+
+QColor PalettePrivate::inactiveColor(const QColor& color)
+{
+    // 沿用GTK主题的非激活色计算算法
+    QColor resultColor = color;
+
+    // 1. 对比度调整、透明化
+    // internal_Contrast ContrastEffect,ContrastAmount
+    if ((this->m_baseColors.baseBackground.lightness() > this->m_baseColors.baseForeground.lightness() &&
+         color.lightness() < this->m_baseColors.baseBackground.lightness()) ||
+        (this->m_baseColors.baseBackground.lightness() <= this->m_baseColors.baseForeground.lightness() &&
+         color.lightness() > this->m_baseColors.baseBackground.lightness()))
+    {
+        resultColor.setAlphaF(1-this->m_colorFactors.inactiveAlpha);
+    }
+
+    // 2. 调色颜色亮度强度,主题中Inactive色转换未涉及此项
+    // internal_Intensity IntensityEffect,IntensityAmount
+    
+    // 3. 颜色混合
+    // internal_Color Color,ColorAmount
+    resultColor = this->mixColor(this->m_colorFactors.inactiveColor, resultColor, this->m_colorFactors.inactiveAmount);
+    return resultColor;
 }
 
 void PalettePrivate::dumpColors()
