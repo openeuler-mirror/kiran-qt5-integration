@@ -49,6 +49,8 @@ private:
     QColor mixColor(const QColor& color1, const QColor& color2, double factor);
     // 计算禁用颜色
     QColor disabledColor(const QColor& color);
+    // 计算非激活颜色
+    QColor inactiveColor(const QColor& color);
     // 打印颜色信息
     void dumpColors();
 
