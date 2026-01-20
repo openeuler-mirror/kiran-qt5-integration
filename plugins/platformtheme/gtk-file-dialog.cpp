@@ -266,10 +266,16 @@ void GtkFileDialogHelper::selectFile(const QUrl &filename)
     QString path = filename.toLocalFile();
     if (path.isEmpty())
         path = filename.path();
-
-    if (!path.isEmpty())
+    
+    if( options()->acceptMode() == QFileDialogOptions::AcceptSave )
     {
-        gtk_file_chooser_set_filename(fileChooser, path.toUtf8().constData());
+        QFileInfo fi(filename.toLocalFile());
+        gtk_file_chooser_set_current_folder(fileChooser, qUtf8Printable(fi.path()));
+        gtk_file_chooser_set_current_name(fileChooser, qUtf8Printable(fi.fileName()));
+    }
+    else 
+    {
+        gtk_file_chooser_select_filename(fileChooser, qUtf8Printable(filename.toLocalFile()));   
     }
 }
 
