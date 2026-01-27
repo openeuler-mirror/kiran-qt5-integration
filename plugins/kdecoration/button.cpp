@@ -40,21 +40,21 @@ static QMap<Button::Type, ButtonRenderRule> buttonRenderRuleMap = {
     {
         KDecoration2::DecorationButtonType::Close,
         {
-            QStringLiteral("window-close-symbolic"),
+            QStringLiteral("window-close-symbolic.svg"),
             QColor(255, 0, 0, 200)
         }
     },
     {
         KDecoration2::DecorationButtonType::Maximize,
         {
-            QStringLiteral("window-maximize-symbolic"),
+            QStringLiteral("window-maximize-symbolic.svg"),
             QColor(65, 65, 65, 50)
         }
     },
     {
         KDecoration2::DecorationButtonType::Minimize,
         {
-            QStringLiteral("window-minimize-symbolic"),
+            QStringLiteral("window-minimize-symbolic.svg"),
             QColor(65, 65, 65, 50)
         }
     }
@@ -75,6 +75,8 @@ Button::Button(Type type, Decoration *decoration, QObject *parent)
     m_buttonSize = decoration->getInternelSetting()->buttonSize();
     m_decorationTheme = decoration->getInternelSetting()->decorationTheme();
     m_buttonRadius = decoration->getInternelSetting()->buttonRadius();
+    m_iconSize = decoration->getInternelSetting()->iconSize();
+
     setGeometry(QRect(QPoint(0, 0), QSize(m_buttonSize, m_buttonSize)));
 }
 
@@ -97,14 +99,12 @@ void Button::paint(QPainter *painter, const QRect &repaintRegion)
     Q_UNUSED(repaintRegion)
     
     auto renderRule = buttonRenderRuleMap.value(type(), ButtonRenderRule(QString(), QColor()));
+
     QIcon icon(QString(":/kdecoration/%1/%2").arg(m_decorationTheme).arg(renderRule.icon));
+
     if (!icon.isNull())
     {
         auto rect = geometry();
-        
-        // 计算图标大小（可以比按钮稍小一些）
-        int iconSize = qRound(m_buttonSize * 0.75);
-        auto pixmap = icon.pixmap(QSize(iconSize, iconSize));
         
         painter->save();
         painter->setRenderHint(QPainter::Antialiasing, true);
@@ -122,11 +122,10 @@ void Button::paint(QPainter *painter, const QRect &repaintRegion)
         }
 
         // Foreground - 居中绘制图标
-        QRectF iconRect(QPoint(0, 0), pixmap.size());
+        // 使用 iconSize 而不是 pixmap.size()，确保即使 pixmap 实际大小不匹配也能按预期大小绘制
+        QRectF iconRect(QPoint(0, 0), QSizeF(m_iconSize, m_iconSize));
         iconRect.moveCenter(rect.center());
-        
-        painter->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
-        painter->drawPixmap(iconRect.topLeft(), pixmap);
+        icon.paint(painter, iconRect.toRect());
         painter->restore();
     }
 }

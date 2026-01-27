@@ -42,6 +42,7 @@ private:
     {
         return m_internelSetting;
     }
+    bool atEdge(Qt::Edge edge) const;
     void updateBorders();
     void updateResizeBorders();
     void updateTitleBar();

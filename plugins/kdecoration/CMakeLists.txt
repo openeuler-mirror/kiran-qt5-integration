@@ -8,6 +8,12 @@ add_library (${TARGET_NAME} MODULE
     ${DECORATION_QRC}
 )
 
+target_include_directories(${TARGET_NAME}
+    PRIVATE
+        ${GSETTINGS_QT_INCLUDE_DIRS}
+        ${KIRAN_CC_DAEMON_INCLUDE_DIRS}
+)
+
 target_link_libraries (${TARGET_NAME}
     PUBLIC
         Qt5::Core
@@ -20,6 +26,7 @@ target_link_libraries (${TARGET_NAME}
     PRIVATE
         KDecoration2::KDecoration
         kiran-integration-theme
+        ${GSETTINGS_QT_LIBRARIES}
 )
 
 install (TARGETS ${TARGET_NAME}
