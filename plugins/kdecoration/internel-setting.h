@@ -12,8 +12,10 @@
  * Author:     liuxinhao <liuxinhao@kylinsec.com.cn>
  */
 #pragma once
+#include <KDecoration2/DecoratedClient>
 #include <QObject>
 #include <QVariantMap>
+#include "decoration.h"
 
 namespace Kiran
 {
@@ -28,8 +30,12 @@ class InternelSetting : public QObject
     Q_PROPERTY(int buttonRadius READ buttonRadius WRITE setButtonRadius)
     Q_PROPERTY(int buttonSize READ buttonSize WRITE setButtonSize)
     Q_PROPERTY(int buttonSpacing READ buttonSpacing WRITE setButtonSpacing)
+    Q_PROPERTY(int iconSize READ iconSize WRITE setIconSize)
+    Q_PROPERTY(qreal scaleFactor READ scaleFactor)
 public:
-    explicit InternelSetting(QVariantMap settings = QVariantMap(), QObject *parent = nullptr);
+    explicit InternelSetting(QVariantMap settings = QVariantMap(),
+                             Decoration *decoration = nullptr,
+                             QObject *parent = nullptr);
     ~InternelSetting() override;
     static QStringList supportedThemes();
     QString decorationTheme() const
@@ -38,29 +44,36 @@ public:
     };
     int titleBarHeight() const
     {
-        return m_titleBarHeight;
+        return qRound(m_titleBarHeight * m_scaleFactor);
     };
     int borderRadius() const
     {
-        return m_borderRadius;
+        return qRound(m_borderRadius * m_scaleFactor);
     };
     int borderWidth() const
     {
-        return m_borderWidth;
+        return qRound(m_borderWidth * m_scaleFactor);
     };
     int buttonRadius() const
     {
-        return m_buttonRadius;
+        return qRound(m_buttonRadius * m_scaleFactor);
     };
     int buttonSize() const
     {
-        return m_buttonSize;
+        return qRound(m_buttonSize * m_scaleFactor);
     };
     int buttonSpacing() const
     {
         return m_buttonSpacing;
     };
-
+    qreal scaleFactor() const
+    {
+        return m_scaleFactor;
+    };
+    int iconSize() const
+    {
+        return qRound(m_iconSize * m_scaleFactor);
+    };
 private:
     void loadSettings(QVariantMap settings);
     void setTitleBarHeight(int height)
@@ -87,8 +100,12 @@ private:
     {
         m_buttonSpacing = spacing;
     }
-
+    void setIconSize(int size)
+    {
+        m_iconSize = size;
+    }
 private:
+    Decoration *m_decoration = nullptr;
     QString m_decorationTheme;
     int m_titleBarHeight = 35;
     int m_borderRadius = 0;
@@ -96,6 +113,8 @@ private:
     int m_buttonRadius = 0;
     int m_buttonSize = 35;
     int m_buttonSpacing = 0;
+    int m_iconSize = 20;
+    qreal m_scaleFactor = 1.0;
 };
 }  // namespace KDecoration
 }  // namespace Kiran
