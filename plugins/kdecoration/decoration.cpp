@@ -61,7 +61,7 @@ Decoration::Decoration(QObject *parent, const QVariantList &args)
     {
         map = args.at(0).toMap();
     }
-    m_internelSetting = new InternelSetting(map, this);
+    m_internelSetting = new InternelSetting(map,this, this);
     // 增加当前主题类型的使用计数
     int borderRadius = m_internelSetting->borderRadius();
     s_themeUsageCount[borderRadius]++;
@@ -162,6 +162,40 @@ void Decoration::init()
             this, repaintTitleBar);
 }
 
+bool Decoration::atEdge(Qt::Edge edge) const
+{
+    auto c = client().toStrongRef();
+    const bool drawBorderOnMaximizedWindows = false;
+
+    // 如果启用最大化窗口时绘制边框，则不考虑边缘情况
+    if( drawBorderOnMaximizedWindows )
+    {
+        return false;
+    }
+
+    if( c->isMaximized() )
+    {
+        return true;
+    }
+
+    if( edge == Qt::LeftEdge || edge == Qt::RightEdge )
+    {
+        if( c->isMaximizedHorizontally() )
+        {
+            return true;
+        }
+    }
+    else if (edge == Qt::TopEdge || edge == Qt::BottomEdge)
+    {
+        if( c->isMaximizedVertically() )
+        {
+            return true;
+        }
+    }
+
+    return c->adjacentScreenEdges().testFlag(edge);
+}
+
 void Decoration::updateBorders()
 {
     QMargins margins;
@@ -202,17 +236,19 @@ void Decoration::updateButtonsGeometry()
     auto buttonSize = m_internelSetting->buttonSize();
     auto titleBarHeightValue = m_internelSetting->titleBarHeight();
     qreal yOffset = (titleBarHeightValue - buttonSize) / 2.0;
+    const qreal spacing = m_internelSetting->buttonSpacing();
 
     if (!m_leftButtons->buttons().isEmpty())
     {
-        m_leftButtons->setPos(QPointF(m_internelSetting->buttonSpacing(), yOffset));
-        m_leftButtons->setSpacing(m_internelSetting->buttonSpacing());
+        m_leftButtons->setSpacing(spacing);
+        m_leftButtons->setPos(QPointF(spacing, yOffset));
     }
 
     if (!m_rightButtons->buttons().isEmpty())
     {
-        m_rightButtons->setPos(QPointF(size().width() - m_rightButtons->geometry().width() - m_internelSetting->buttonSpacing(), yOffset));
-        m_rightButtons->setSpacing(m_internelSetting->buttonSpacing());
+        m_rightButtons->setSpacing(spacing);
+        qreal rightWidth = m_rightButtons->geometry().width();
+        m_rightButtons->setPos(QPointF(size().width() - rightWidth - spacing, yOffset));
     }
 
     update();
@@ -399,9 +435,11 @@ void Decoration::paintTitleBarBackground(QPainter *painter, const QRect &repaint
 void Decoration::paintCaption(QPainter *painter, const QRect &repaintRegion) const
 {
     Q_UNUSED(repaintRegion)
-
     const auto decoratedClient = client().toStrongRef();
     QRect availableRect = titleBar();
+
+    const auto s = settings();
+    const auto scaleFactor = m_internelSetting->scaleFactor();
 
     // 去除左右两个ButtonGroup占位
     availableRect.adjust(m_leftButtons->geometry().width() + settings()->largeSpacing(), 0,
@@ -411,7 +449,7 @@ void Decoration::paintCaption(QPainter *painter, const QRect &repaintRegion) con
     if (!decoratedClient->icon().isNull())
     {
         auto icon = decoratedClient->icon();
-        auto iconSize = QSize(20, 20);
+        auto iconSize = QSize(20*scaleFactor, 20*scaleFactor);
         auto iconRect = QRect(availableRect.left(),
                               (availableRect.height() - iconSize.height()) / 2,
                               iconSize.width(),
@@ -424,7 +462,9 @@ void Decoration::paintCaption(QPainter *painter, const QRect &repaintRegion) con
     }
 
     // 定位文本
-    const int textWidth = settings()->fontMetrics().boundingRect(decoratedClient->caption()).width();
+    painter->save();
+    painter->setFont(s->font());
+    const int textWidth = painter->fontMetrics().boundingRect(decoratedClient->caption()).width();
     const QRect textRect(availableRect.topLeft(), QSize(textWidth, m_internelSetting->titleBarHeight()));
     Q_UNUSED(textRect);
 
@@ -436,8 +476,6 @@ void Decoration::paintCaption(QPainter *painter, const QRect &repaintRegion) con
         Qt::ElideMiddle,
         captionRect.width());
 
-    painter->save();
-    painter->setFont(settings()->font());
     painter->setPen(titleBarForegroundColor());
     painter->drawText(captionRect, alignment, caption);
     painter->restore();

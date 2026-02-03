@@ -154,6 +154,8 @@ const QPalette* Theme::palette(QPlatformTheme::Palette type) const
 
 void Theme::init()
 {
+    Kiran::Configuration conf;
+
     // 加载内部kiran-integration翻译
     QTranslator* integrationTranslator = new QTranslator(this);
     integrationTranslator->load(QLocale(), "kiran-integration", ".", KQI_INSTALL_TRANSLATIONDIR);
@@ -166,6 +168,22 @@ void Theme::init()
 
     // 初始化GTK相关全局变量, 后续需使用GtkFileChooser相关功能
     GtkFileDialogHelper::ensureGtkInitialized();
+
+    // 较新版本Q5(目前发现5.15.10)
+    // 不遵循PlatformTheme::themeHint ShowShortcutsInContextMenus来禁用菜单快捷键显示(#115801)
+    // 1. init_platform中会先创建PlatformTheme后再设置该属性，需延迟设置
+    // 2. 需判断当前应用是否是Kiran相关应用，避免覆盖其他应用配置
+    // see also:
+    // https://github.com/qt/qtbase/commit/68297195759492594ac4143b7f208e17fe6f594b
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+    if ( conf.match(qAppName()) )
+    {
+        QTimer::singleShot(0, this,[]() {
+            qDebug() << "kiran-integration disable shortcuts in context menus for" << qAppName();
+            QGuiApplication::setAttribute(Qt::AA_DontShowShortcutsInContextMenus,true);
+        });
+    }
+#endif
 
     qDebug() << "init kiran theme...";
     m_settingsMonitor = AppearanceMonitor::instance();
