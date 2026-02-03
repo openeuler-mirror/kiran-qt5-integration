@@ -236,17 +236,19 @@ void Decoration::updateButtonsGeometry()
     auto buttonSize = m_internelSetting->buttonSize();
     auto titleBarHeightValue = m_internelSetting->titleBarHeight();
     qreal yOffset = (titleBarHeightValue - buttonSize) / 2.0;
+    const qreal spacing = m_internelSetting->buttonSpacing();
 
     if (!m_leftButtons->buttons().isEmpty())
     {
-        m_leftButtons->setPos(QPointF(m_internelSetting->buttonSpacing(), yOffset));
-        m_leftButtons->setSpacing(m_internelSetting->buttonSpacing());
+        m_leftButtons->setSpacing(spacing);
+        m_leftButtons->setPos(QPointF(spacing, yOffset));
     }
 
     if (!m_rightButtons->buttons().isEmpty())
     {
-        m_rightButtons->setPos(QPointF(size().width() - m_rightButtons->geometry().width() - m_internelSetting->buttonSpacing(), yOffset));
-        m_rightButtons->setSpacing(m_internelSetting->buttonSpacing());
+        m_rightButtons->setSpacing(spacing);
+        qreal rightWidth = m_rightButtons->geometry().width();
+        m_rightButtons->setPos(QPointF(size().width() - rightWidth - spacing, yOffset));
     }
 
     update();
