@@ -39,6 +39,7 @@ private:
     QString m_decorationTheme;
     int m_buttonRadius = 0;
     int m_buttonSize = 35;
+    int m_iconSize = 20;
 };
 }  // namespace KDecoration
 }  // namespace Kiran
