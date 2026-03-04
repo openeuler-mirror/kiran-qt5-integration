@@ -27,7 +27,7 @@ class Configuration
 {
 public:
     Configuration();
-    ~Configuration() = default;
+    ~Configuration();
     Configuration(Configuration& other) = delete;
     Configuration& operator=(Configuration& other) = delete;
 

@@ -63,8 +63,6 @@ ThemedIconEngine::~ThemedIconEngine()
 
 bool ThemedIconEngine::isValid(const QString &themeSvgIconName)
 {
-    auto themeIconInfo = QIconLoader::instance()->loadIcon(themeSvgIconName);
-
     auto scalableSvgIcons = getScalableSvgIconFromTheme(themeSvgIconName);
     return !scalableSvgIcons.isEmpty();
 }
@@ -177,7 +175,7 @@ QStringList ThemedIconEngine::getScalableSvgIconFromTheme(const QString &iconNam
             res << themeIconEntry->filename;
         }
     }
-
+    qDeleteAll(themeIconInfo.entries);
     return res;
 }
 
