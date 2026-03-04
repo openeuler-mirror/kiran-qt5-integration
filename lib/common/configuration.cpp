@@ -29,9 +29,14 @@ namespace Kiran
 #define KQI_INI_GROUP_NAME "Style"
 #define KQI_INI_KEY_ENABLED_APPS "enabled-apps"
 
-Configuration::Configuration() :
-m_settings(new QSettings(KQI_CONFIGURATION_PATH, QSettings::IniFormat))
+Configuration::Configuration() 
+    : m_settings(new QSettings(KQI_CONFIGURATION_PATH, QSettings::IniFormat))
 {
+}
+
+Configuration::~Configuration()
+{
+    delete m_settings;
 }
 
 QSet<QString> Configuration::getEnabledApps()
