@@ -20,7 +20,7 @@ find_package(KiranDBusGenerate REQUIRED)
 find_package(KQI REQUIRED)
 
 # Qt Deps
-find_package(Qt5 COMPONENTS Core Gui Widgets Svg DBus LinguistTools)
+find_package(Qt5 COMPONENTS Core Gui Widgets Svg DBus LinguistTools X11Extras)
 pkg_search_module(GSETTINGS_QT REQUIRED gsettings-qt)
 find_package(Qt5ThemeSupport REQUIRED)
 

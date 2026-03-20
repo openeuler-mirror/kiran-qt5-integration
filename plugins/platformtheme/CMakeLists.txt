@@ -49,6 +49,7 @@ target_link_libraries(
   Qt5::Gui
   Qt5::DBus
   Qt5::Svg
+  Qt5::X11Extras
   ${Qt5ThemeSupport_LIBRARIES}
   ${GSETTINGS_QT_LIBRARIES}
   ${GTK_LIBRARIES})
