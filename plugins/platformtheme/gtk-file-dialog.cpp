@@ -13,14 +13,15 @@
  */
 #include "gtk-file-dialog.h"
 #include <private/qguiapplication_p.h>
-#include <qpa/qplatformnativeinterface.h>
 #include <QDebug>
 #include <QDir>
 #include <QEventLoop>
 #include <QFileInfo>
+#include <QGuiApplication>
 #include <QSharedPointer>
 #include <QUrl>
 #include <QWindow>
+#include <QX11Info>
 #include "cmake-macros.h"
 
 #undef signals
@@ -154,7 +155,15 @@ bool GtkDialogWrapper::show(Qt::WindowFlags flags, Qt::WindowModality modality, 
     }
 
     gtk_widget_show(m_gtkWidget);
-    gdk_window_focus(gdkWindow, GDK_CURRENT_TIME);
+
+    // 同步 Qt 的时间戳到 GTK，避免窗口管理器因为时间戳落后而将对话框置于底层
+    guint32 timestamp = GDK_CURRENT_TIME;
+    if (QGuiApplication::platformName() == QLatin1String("xcb"))
+    {
+        timestamp = QX11Info::appTime();
+    }
+    gdk_window_focus(gdkWindow, timestamp);
+
     return true;
 }
 
@@ -266,16 +275,16 @@ void GtkFileDialogHelper::selectFile(const QUrl &filename)
     QString path = filename.toLocalFile();
     if (path.isEmpty())
         path = filename.path();
-    
-    if( options()->acceptMode() == QFileDialogOptions::AcceptSave )
+
+    if (options()->acceptMode() == QFileDialogOptions::AcceptSave)
     {
         QFileInfo fi(filename.toLocalFile());
         gtk_file_chooser_set_current_folder(fileChooser, qUtf8Printable(fi.path()));
         gtk_file_chooser_set_current_name(fileChooser, qUtf8Printable(fi.fileName()));
     }
-    else 
+    else
     {
-        gtk_file_chooser_select_filename(fileChooser, qUtf8Printable(filename.toLocalFile()));   
+        gtk_file_chooser_select_filename(fileChooser, qUtf8Printable(filename.toLocalFile()));
     }
 }
 
@@ -302,7 +311,8 @@ void GtkFileDialogHelper::setFilter()
 void GtkFileDialogHelper::selectNameFilter(const QString &filter)
 {
     GtkFileFilter *gtkFilter = m_nameFilters.value(filter);
-    if (gtkFilter) {
+    if (gtkFilter)
+    {
         GtkDialog *gtkDialog = m_dialogWrapper->gtkDialog();
         gtk_file_chooser_set_filter(GTK_FILE_CHOOSER(gtkDialog), gtkFilter);
     }
@@ -496,7 +506,7 @@ void GtkFileDialogHelper::onCurrentFolderChanged(GtkFileDialogHelper *helper)
 
 void GtkFileDialogHelper::onUpdatePreview(GtkDialog *dialog, GtkFileDialogHelper *helper)
 {
-    auto fileChooser = GTK_FILE_CHOOSER(helper->m_dialogWrapper->gtkDialog());  
+    auto fileChooser = GTK_FILE_CHOOSER(helper->m_dialogWrapper->gtkDialog());
     gchar *filename = gtk_file_chooser_get_preview_filename(fileChooser);
     if (!filename)
     {
