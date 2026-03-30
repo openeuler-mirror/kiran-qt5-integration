@@ -16,10 +16,10 @@ class FontSizeManagerPrivate : public QObject
     Q_OBJECT
 public:
     explicit FontSizeManagerPrivate(FontSizeManager* ptr)
+        : QObject(ptr),
+          q_ptr(ptr)
     {
-        // 先缓存该指针，尽量避免访问该指针以及调用方法，因KiranFontBindingManager还为构造完
-        q_ptr = ptr;
-    };
+    }
 
     ~FontSizeManagerPrivate() override{};
 
