@@ -280,15 +280,15 @@ void KiranTheme::handleScaleFactorChanged(int factor)
                 {
                     if (window->type() == Qt::ForeignWindow || window->type() == Qt::Desktop)
                     {
-                        return;
+                        continue;
                     }
 
                     if (!window->handle() || !window->isTopLevel())
-                        return;
+                        continue;
 
                     const QRect currentGeo = QWindowPrivate::get(window)->geometry;
                     if (!currentGeo.isValid())
-                        return;
+                        continue;
 
                     // qInfo() << window->type();
                     // qInfo() << "current geo:" << currentGeo;
@@ -298,7 +298,8 @@ void KiranTheme::handleScaleFactorChanged(int factor)
                     // qInfo() << "native geo:" << nativeGeo;
 
                     window->handle()->setGeometry(nativeGeo);
-                    QGuiApplication::sendEvent(window, new QEvent(QEvent::UpdateRequest));
+                    QEvent updateEvent(QEvent::UpdateRequest);
+                    QGuiApplication::sendEvent(window, &updateEvent);
                 }
             }
         }

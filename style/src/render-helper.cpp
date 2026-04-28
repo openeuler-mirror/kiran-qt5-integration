@@ -290,6 +290,14 @@ QPixmap RenderHelper::changeSVGFillColor(const QString &svgFile, const QColor &f
 {
     // 调用Qt私有接口，修改所有命名节点其所有的fill属性为指定颜色
     auto tinyDoc = QSvgTinyDocument::load(svgFile);
+    if (tinyDoc == nullptr)
+    {
+        qWarning() << "failed to load svg document:" << svgFile;
+        QSize fallbackSize = (size.isValid() && !size.isEmpty()) ? size : QSize(1, 1);
+        QPixmap fallbackPixmap(fallbackSize);
+        fallbackPixmap.fill(Qt::transparent);
+        return fallbackPixmap;
+    }
 
     auto namedNodes = tinyDoc->m_namedNodes;
     for (auto iter = namedNodes.begin(); iter != namedNodes.end(); iter++)
