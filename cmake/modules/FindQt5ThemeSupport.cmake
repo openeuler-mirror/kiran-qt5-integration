@@ -6,11 +6,15 @@ set(Qt5ThemeSupport_DEFINITIONS ${PKG_Qt5ThemeSupport_CFLAGS_OTHER})
 set(Qt5ThemeSupport_VERSION ${PKG_Qt5ThemeSupport_VERSION})
 
 # 拼出Qt5ThemeSupport头文件路径
+# 在老的Qt版本中QtPlatformSupport包含了Qt5ThemeSupport
+# 新的Qt版本QtPlatformSupport拆分成了Qt5ThemeSupport，其他功能汇入其他模块，QtPlatformSupport消失
 find_path(Qt5ThemeSupport_INCLUDE_DIR
         NAMES
         QtThemeSupport/private/qgenericunixthemes_p.h
+        QtPlatformSupport/private/qgenericunixthemes_p.h
         HINTS
         ${PKG_Qt5ThemeSupport_INCLUDEDIR}/QtThemeSupport/${PKG_Qt5ThemeSupport_VERSION}/
+        ${PKG_Qt5ThemeSupport_INCLUDEDIR}/QtPlatformSupport/${PKG_Qt5ThemeSupport_VERSION}/
         )
 
 #　拼出Qt5ThemeSupport静态库位置
@@ -18,6 +22,7 @@ find_library(Qt5ThemeSupport_LIBRARY
         NAMES
         Qt5ThemeSupportKS
         Qt5ThemeSupport
+        Qt5PlatformSupport
         HINTS
         ${PKG_Qt5ThemeSupport_LIBRARY_DIRS}
         )

@@ -425,9 +425,11 @@ QRect Style::subElementRect(QStyle::SubElement element, const QStyleOption *opti
     case QStyle::SE_TabBarTabLeftButton:
     case QStyle::SE_TabBarTabRightButton:
     case QStyle::SE_TabBarTabText:
+#if QT_VERSION >= QT_VERSION_CHECK(5, 7, 0)
     case QStyle::SE_TabBarScrollLeftButton:
     case QStyle::SE_TabBarScrollRightButton:
     case QStyle::SE_TabBarTearIndicatorRight:
+#endif
         rect = tabBarSubElementRect(this, element, option, widget);
         return rect;
 

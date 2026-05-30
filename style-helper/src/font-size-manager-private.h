@@ -35,7 +35,7 @@ public:
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
         connect(&m_destorySignalMapper, &QSignalMapper::mappedWidget, this, &FontSizeManagerPrivate::handleBindWidgetDestroyed);
 #else
-        connect(&m_destorySignalMapper, QOverload<QWidget *>::of(&QSignalMapper::mapped), this, &FontSizeManagerPrivate::handleBindWidgetDestroyed);
+        connect(&m_destorySignalMapper, SIGNAL(mapped(QWidget*)), this, SLOT(handleBindWidgetDestroyed(QWidget*)));
 #endif
     }
 

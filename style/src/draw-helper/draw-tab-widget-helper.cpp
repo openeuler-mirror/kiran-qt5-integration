@@ -248,7 +248,9 @@ QRect tabBarSubElementRect(const QStyle* style, QStyle::SubElement subElement, c
     switch (subElement)
     {
     case QStyle::SE_TabBarTearIndicator:
+#if QT_VERSION >= QT_VERSION_CHECK(5, 7, 0)
     case QStyle::SE_TabBarTearIndicatorRight:
+#endif
         return QRect();
 
     // QTabBar::setTabButton所设置位于单个Tab左右的控件
@@ -331,6 +333,7 @@ QRect tabBarSubElementRect(const QStyle* style, QStyle::SubElement subElement, c
     }
 
     // 当QTabBar过多时，QTabBar左右滑动的按钮
+#if QT_VERSION >= QT_VERSION_CHECK(5, 7, 0)
     case QStyle::SE_TabBarScrollLeftButton:
     case QStyle::SE_TabBarScrollRightButton:
     {
@@ -349,6 +352,7 @@ QRect tabBarSubElementRect(const QStyle* style, QStyle::SubElement subElement, c
         }
         return scrollButtonRect;
     }
+#endif
     default:
         break;
     }

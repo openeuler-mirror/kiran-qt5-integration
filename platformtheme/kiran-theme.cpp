@@ -53,7 +53,7 @@ KiranTheme::KiranTheme(const QStringList& paramList)
 KiranTheme::~KiranTheme()
 {
 }
-
+#if QT_VERSION >= QT_VERSION_CHECK(5, 7, 0)
 bool KiranTheme::usePlatformNativeDialog(QPlatformTheme::DialogType type) const
 {
     return QGenericUnixTheme::usePlatformNativeDialog(type);
@@ -78,6 +78,7 @@ QIcon KiranTheme::fileIcon(const QFileInfo& fileInfo, QPlatformTheme::IconOption
 {
     return QGenericUnixTheme::fileIcon(fileInfo, iconOptions);
 }
+#endif
 
 QVariant KiranTheme::themeHint(QPlatformTheme::ThemeHint hint) const
 {
