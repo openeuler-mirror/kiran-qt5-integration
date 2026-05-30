@@ -1,4 +1,5 @@
 import os
+import errno
 import argparse
 import sys
 import cairo
@@ -8,9 +9,9 @@ import colorsys
 def make_sure_path_exists(path):
     try:
         os.makedirs(path)
-    except FileExistsError as exception:
-        pass
-    pass
+    except OSError as exception:
+        if exception.errno != errno.EEXIST or not os.path.isdir(path):
+            raise
 
 class ReadGlobals():
     def __init__(self,base_file_name):
@@ -18,7 +19,7 @@ class ReadGlobals():
         self._colors = self.read_globals(base_file_name)
 
     def read_globals(self,filename):
-        with open(filename,'r',encoding="utf-8") as lines:
+        with open(filename,'r') as lines:
             while True:
                 prefix_name = str()
                 for line in lines:
