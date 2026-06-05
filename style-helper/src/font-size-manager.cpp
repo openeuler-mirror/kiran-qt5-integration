@@ -86,7 +86,12 @@ void FontSizeManager::bind(QWidget* w, FontSizeManager::FontLevelEnum fontLevel,
     if (!w->property(WIDGET_PROPERTY_BINDED).toBool())
     {
         d_ptr->m_destorySignalMapper.setMapping(w, w);
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 7, 0))
         connect(w, &QWidget::destroyed, &d_ptr->m_destorySignalMapper, QOverload<>::of(&QSignalMapper::map));
+#else
+        connect(w, &QWidget::destroyed, &d_ptr->m_destorySignalMapper,
+            static_cast<void (QSignalMapper::*)()>(&QSignalMapper::map));
+#endif
         w->setProperty(WIDGET_PROPERTY_BINDED, true);
     }
 }
@@ -105,7 +110,12 @@ void FontSizeManager::unbind(QWidget* w)
 
     if (removed)
     {
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 7, 0))
         disconnect(w, &QWidget::destroyed, &d_ptr->m_destorySignalMapper, QOverload<>::of(&QSignalMapper::map));
+#else
+        disconnect(w, &QWidget::destroyed, &d_ptr->m_destorySignalMapper,
+            static_cast<void (QSignalMapper::*)()>(&QSignalMapper::map));
+#endif
         d_ptr->m_destorySignalMapper.removeMappings(w);
         w->setProperty(WIDGET_PROPERTY_BINDED, false);
     }

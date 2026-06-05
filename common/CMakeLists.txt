@@ -4,7 +4,12 @@ find_package(Qt5 COMPONENTS Gui DBus)
 find_package(PkgConfig REQUIRED)
 find_package(KiranDBusGenerate REQUIRED)
 
-pkg_search_module(KIRAN_CC_DAEMON REQUIRED kiran-cc-daemon)
+# 适配低版本系统，不强制依赖kiran-cc-daemon
+pkg_search_module(KIRAN_CC_DAEMON kiran-cc-daemon)
+if(NOT KIRAN_CC_DAEMON_FOUND)
+    message(WARNING "kiran-cc-daemon not found, this feature will be disabled on low version systems")
+endif()
+
 pkg_search_module(KLOG_QT5 REQUIRED klog-qt5)
 pkg_search_module(GSETTINGS_QT REQUIRED gsettings-qt)
 
@@ -45,11 +50,15 @@ target_link_libraries(${TARGET_NAME}
 target_include_directories(${TARGET_NAME} PRIVATE
         ${CMAKE_CURRENT_BINARY_DIR}
         ${QGSETTINGS_INCLUDE_DIRS}
-        ${KIRAN_CC_DAEMON_INCLUDE_DIRS}
         ${GSETTINGS_QT_INCLUDE_DIRS})
 
 target_include_directories(${TARGET_NAME} PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src)
+
+if(KIRAN_CC_DAEMON_FOUND)
+    target_compile_definitions(${TARGET_NAME} PRIVATE HAVE_KIRAN_CC_DAEMON)
+    target_include_directories(${TARGET_NAME} PRIVATE ${KIRAN_CC_DAEMON_INCLUDE_DIRS})
+endif()
 
 install(FILES data/kiran-qt5-integration.ini 
         DESTINATION /${CMAKE_INSTALL_SYSCONFDIR}/kiran-qt5-integration/ )

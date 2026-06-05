@@ -9,7 +9,7 @@ set -e
 # example: render_theme dark.colors base.colors /tmp/dark/ dark
 render_theme () {
   # step-1: 提取colorscheme与base-colorscheme颜色表中所定义的数据提取到generate-dir下的_global.scss之中
-  python3 extract_color_from_scheme.py -c "$1" -b "$2" -d "$3"
+  python extract_color_from_scheme.py -c "$1" -b "$2" -d "$3"
   # step-2: 通过sassc将项目内置的scss与_global.scss,functions.scss转换为一个新的css文件
   sassc -I "$3" ./data/qt5.scss "$3/$4-colors.css"
 }

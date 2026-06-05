@@ -15,7 +15,12 @@
 #define KIRAN_QT5_PLATFORMTHEME_PLATFORMTHEME_KIRAN_THEME_H_
 #include <QObject>
 #include <QScreen>
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 7, 0)
 #include <QtThemeSupport/private/qgenericunixthemes_p.h>
+#else
+#include <QtPlatformSupport/private/qgenericunixthemes_p.h>
+#endif
 
 class KiranAppearanceMonitor;
 class KiranTheme : public QObject,public QGenericUnixTheme
@@ -24,7 +29,10 @@ class KiranTheme : public QObject,public QGenericUnixTheme
 public:
     explicit KiranTheme(const QStringList& paramList);
     ~KiranTheme() override;
-
+    
+// 这些的实现是直接调用的基类方法，无需重写
+// 如果后面要重写，注意 fileIcon 在5.7以下不存在，需要处理fileIconPixmap
+#if QT_VERSION >= QT_VERSION_CHECK(5, 7, 0)
     //是否使用系统本地提示框
     bool usePlatformNativeDialog(DialogType type) const override;
 
@@ -33,6 +41,7 @@ public:
     QIconEngine* createIconEngine(const QString& iconName) const override;
     QPixmap standardPixmap(StandardPixmap sp, const QSizeF& size) const override;
     QIcon fileIcon(const QFileInfo& fileInfo, QPlatformTheme::IconOptions iconOptions) const override;
+#endif
 
     QVariant themeHint(ThemeHint hint) const override;
 

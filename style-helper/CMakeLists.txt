@@ -33,7 +33,9 @@ configure_file(kiranstyle-helper.qrc.in ${KIRANSTYLE_HELPER_QRC})
 # 手动添加resources，避免低版本Qt上AUTORCC未扫描到资源文件并关联上依赖关系
 qt5_add_resources(KIRANSTYLE_HELPER_QRC_SOURCE ${KIRANSTYLE_HELPER_QRC})
 # qt5-qtbase-5.9.2下qt5_add_resources手动添加rcc,不会给qrc文件标记SKIP_AUTORCC
-if("${Qt5_VERSION_MAJOR}.${Qt5_VERSION_MINOR}.${Qt5_VERSION_PATCH}" STREQUAL "5.9.2")
+# 5.6.1也存在这种情况，暂时改为小于等于5.9.2
+# FIXME:若后期发现其他5.9.2以下编译异常再处理
+if(NOT Qt5_VERSION VERSION_GREATER "5.9.2")
         set_source_files_properties(${KIRANSTYLE_HELPER_QRC} PROPERTIES SKIP_AUTORCC ON)
 endif()
 

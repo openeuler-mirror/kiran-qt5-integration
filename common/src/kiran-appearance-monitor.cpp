@@ -17,7 +17,7 @@
 #include "kiran_display_proxy.h"
 #include "logging-category.h"
 
-#include <kiran-session-daemon/appearance-i.h>
+#include "appearance-i.h"
 
 #include <QDBusServiceWatcher>
 #include <QFont>
